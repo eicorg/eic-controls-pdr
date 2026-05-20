@@ -13,6 +13,7 @@
 
 ## How To Work In This Repo
 - Treat edits as documentation authoring (decision records, supporting docs, and presentations), not software feature work.
+- Before drafting, ingest relevant materials from `rod/examples/`, `presentations/examples/`, and `rod/raw_resources/`.
 - For RODs, follow the established section order in existing `rod/*.md` files unless the user requests a different format.
 - For presentations, model structure and level of detail on `presentations/examples/` and align claims with referenced evidence.
 - Keep statements evidence-backed and auditable; explicitly label assumptions.
@@ -33,7 +34,12 @@
 - For presentations, use `presentations/examples/` as precedent for slide flow, technical depth, and audience-ready phrasing.
 
 ## Source Priority
-- Use this order when drafting content: user request -> existing artifact in target folder -> related RODs/supporting docs -> explicitly labeled assumptions.
+- Use this order when drafting content: user request -> examples/raw materials in the target domain (`rod/examples/`, `presentations/examples/`, `rod/raw_resources/`) -> existing artifact in target folder -> related RODs/supporting docs -> explicitly labeled assumptions.
+
+## Foundational Requirements Authority
+- **EIC-SEG-RSI-158-Control.Software-Performance.Requirements.Document.docx** is the authoritative source for all controls system requirements.
+- All presentation claims about requirements, performance, and scope must be traceable to this document.
+- Ingest this document early when preparing any presentation content.
 
 ## Integration Boundaries To Respect
 - EPICS ROD: system-control protocol and migration boundary (PVA default, CA compatibility, ADO bridge only for legacy).
