@@ -1,0 +1,229 @@
+Electron-Ion Collider Requirements, Specifications, and Interfaces
+    Controls Software Functional and Performance Requirements Document
+October 28, 2025
+
+Prepared by:
+__________________________________________	Date: __________________  
+Zhijian Yin, Systems Engineer 
+
+Reviewed by: 
+__________________________________________	Date: ___________________
+
+Seth Nemesure, Controls Software WBS Manager
+
+
+__________________________________________	Date: ___________________
+James Jamilkowski, Controls CAM 
+
+__________________________________________	Date: ____________________
+Thomas Russo, EIC Chief Systems Engineer 
+
+
+Approved by: 
+__________________________________________	Date: ____________________ 
+Joseph Tuozzolo, EIC Accelerator Support Systems Manager
+
+
+
+
+
+
+
+REVISION HISTORY
+Revision #Effective DateAdditional ReviewersSummary of Change00Initial release
+
+
+
+TABLE OF CONTENTS
+1.	PURPOSE AND SCOPE	7
+2.	INTRODUCTION	8
+3.	CONTROLS SOFTWARE DESIGN	10
+3.1	Overview of Design	10
+3.2	Design Scope	12
+4.	CONTROLS SOFTWARE REQUIREMENTS	13
+5.	APPLICABLE DOCUMENTS	29
+6.	DETAILED CHANGE LOG	31
+7.	REFERENCES	31
+
+
+
+LIST OF ACRONYMS
+ADOAccelerator Device ObjectADOBRADO (Accelerator Device Object) BridgeAPIApplication Programming Interface BLIPBrookhaven Linac Isotope ProducerBSABrookhaven Science AssociatesCIContinuous IntegrationCRUDCreate/Read/Update/DeleteCSVComma-Separated Values[SN1]DBDatabaseDEVDevelopmentDOEDepartment of EnergyEICElectron Ion ColliderEPICSExperimental Physics and Industrial Control SystemESHEnvironmental Safety and HealthESRElectron Storage RingFECFront End ComputerFPGAField Programmable Gate ArrayGDDGlobal Design and DevelopmentGUIGraphical User InterfaceHLAHigh Level ApplicationsHSRHadron Storage RingIOCInput Output ControllerIRInteraction RegionJSONJavaScript Object Notation LLRFLow Level Radio FrequencyMCRMain Control RoomODHOxygen Deficiency HazardPPSPersonal Protection SystemsPRDPerformance Requirements DocumentPVProcess VariableRCSRapid Cycling SynchrotronRFRadio FrequencyRHICRelativistic Heavy Ion Collider SBMSSubject-Based Management System SEGSystems Engineering GroupSRSave and RestoreSWSoftwareTAPETool for Automated Procedure ExecutionWBSWork Breakdown Structure
+
+
+
+Controls Software Functional and Performance Requirements Document
+1. PURPOSE AND SCOPE
+This document presents the functional and performance requirements for the Controls Software subsystems of the Electron Ion Collider Project [5.1]. The requirements are managed in accordance with Systems Engineering and Requirement Management Plans [5.2, 5.3, 5.4, 5.5]. The requirements for all systems in the EIC flow down from the system top level Global Requirements [5.6] to the General and Functional Requirements [5.7, 5.8] and finally to the Performance Requirements Document (PRD). These performance requirements are necessary to integrate these sub-systems as part of the Electron Ion Collider (EIC) Project.
+
+The performance requirements (indicated by SHALL) and guidance (indicated by SHOULD) provided for the design have been defined based upon the reference physics design performed by Brookhaven Science Associates (BSA) and the spatial restrictions of the building which it will reside.
+
+The EIC controls WBS is divided into several subsections, as shown in Figure 1-1. It consists of: Global Design and Development (GDD) for hardware device control, High-Level Applications for control software, Networking, and support for other accelerator subsystems, such as Power Supplies, Instrumentation, RF, vacuum etc. This document focuses on the control software requirements.
+
+
+
+[YZ2]
+        Figure 1-1 Accelerator control work breakdown structure
+
+2. INTRODUCTION
+
+The EIC (Electron Ion Collider) will be using the yellow ring of RHIC (Relativistic Heavy Ion Collider) as its Hadron Storage Ring (HSR), while building a new Electron Storage Ring (ESR) in the RHIC tunnel. The two rings intersect at several Interactive Regions (IR), where detectors will be installed to record electron ion collisions.  For the injection systems, a new electron injector comprising a Linac and a Rapid Cycling Synchrotron (RCS) will be built outside the RHIC tunnel. The RHIC injection system remains to serve the hadron storage ring. See Figure 2-1 for a schematic.
+
+
+Figure 2-1 illustrates the overall layout of the EIC. The HSR is shown as the yellow line, the ESR as a wide red line and the RCS as the thin red line.
+
+This brings unique challenges and opportunities for controls.
+
+RHIC was built in the early 90s, the controls mostly made use of the then state-of-the-art technologies. Architecturally, it is a network based distributed accelerator control system with standard two level architecture: The high-level system handles operator interfaces, automatic sequences, alarms, data archiving and electronic logbook etc., while the low-level system directly controls the hardware components like magnets and vacuum systems using mostly VME hardware, with locally-developed ADO (Accelerator Device Objects) applications running on the real-time operating system VxWorks. The system has been successfully running the RHIC accelerator complex for 25 years with careful improvements and upgrades (such as FPGA based LLRF systems) along the way to enhance accelerator performance and support science missions. 
+The existing ADO based control system for the hadron injection, which also serves other facilities such as BLIP (Brookhaven Linac Isotope Producer) and still operates during the EIC construction, will remain. 
+
+With about 2 orders of magnitude increase in beam luminosity compared to RHIC, EIC controls need to employ state-of-the-art technologies. On the lower-level device controls, EIC is designing a common hardware platform that includes a modular and scalable FPGA system. The system will be deployed across all EIC machines, providing integrated support for precise timing, LLRF, beam instrumentation, and other subsystems. 
+
+On the software side, the EIC project prompts us to survey the current accelerator control landscape, paying close attention to code maintainability, to satisfy the goal that controls shall support EIC for its expected 30+ years of lifetime. It is realized that a proprietary development such as RHIC controls could present difficulty attracting future engineers with dedicated and specialized skills to maintain and upgrade the control system. The trend of many new facilities across the DOE complex (and around the world) is moving towards open-source collaborations such as EPICS. EPICS has been successfully supporting many accelerator and beamline facilities for over 30 years. It has been continually developed and grown as a world-wide open-source collaboration. Using a client-server and publish-subscribe model, EPICS is a robust, scalable and high-performance distributed control system, with a myriad of device support. EIC made the decision to join the EPICS collaboration and will adopt the EPICS framework for EIC controls.
+
+For the HSR injector controls that have existing interfaces in place, the plan is to develop ADO bridge software to bring the ADO devices to global controls as EPICS PVs enabling the Main Control Room (MCR) to operate these devices in the same manner as existing EPICS-controlled equipment. An ADO bridge prototype has been developed.
+
+3. CONTROLS SOFTWARE DESIGN
+3.1 Overview of Design
+Figure 3-1 below shows a schematic of the EIC controls software architecture. One of the key components is the Operator Interface subsystem (shown “CS Studio” as example) that serves as the main control console for the MCR and testing workstations. Running in the background are the important control services such as alarm handling, data archiving, save-restore (supports capturing snapshots of control system settings providing capability to restore them on demand), electronic logbook - these services are already built into the existing RHIC controls. EPICS will require a need to adopt or develop the equivalent services. On the client side, support will be provided for high-level physics and modelling applications and bi-directional gateway services to detector system controls.  Communication between client and server  uses EPICS Channel Access (CA) or PV Access (PVA or PVXS) protocols. HTTP protocol will be used extensively to support services. In addition, project support tools such as e-traveler and inventory control (component database) will be supported.  Automatic sequencing control (RHIC TAPE equivalent) and ADO bridge (to serve existing control objects as EPICS PVs) will be developed.
+
+
+
+With this architecture in mind, the requirements for the controls  software scope flow down to the software subsystems as shown in Table 3-1
+
+        Table 3-1: Controls Software Subsystem Functional and Performance Requirements
+
+Table IndexSubsystem NameSubsystem DescriptionTable 4-1EIC-CTRL-SW-DEVControls Software: Development EnvironmentTable 4-2EIC-CTRL-SW-HLAControls Software: High Level Physics ApplicationsTable 4-3EIC-CTRL-SW-OPIControls Software: Operator InterfaceTable 4-4EIC-CTRL-SW-ALRMControls Software: Alarm ServiceTable 4-5EIC-CTRL-SW-ARCHControls Software: Archiving ServiceTable 4-6EIC-CTRL-SW-DIRControls Software: Directory ServiceTable 4-7EIC-CTRL-SW-SRControls Software: Save and Restore ServiceTable 4-8EIC-CTRL-SW-ADOBRControls Software: ADO BridgeTable 4-9EIC-CTRL-SW-SEQControls Software: SequencerTable 4-10EIC-CTRL-SW-LOGBKControls Software: Electronic LogbookTable 4-11EIC-CTRL-SW-GWControls Software: Gateway[SN3][JJ4][YZ5] ServiceTable 4-12EIC-CTRL-SW-DBControls Software: Database ServiceTable 4-13EIC-CTRL-SW-PROJControls Software: Project Support
+
+
+
+
+3.2 Design Scope 
+The Controls Software design shall meet all performance requirements as given in Section 4, whilst abiding by the constraints below. 
+
+3.2.1 Design Considerations
+Constraints:
+* The design shall be delivered within the time interval specified in the latest EIC P6 project schedule. 
+* The design cost shall meet the proposed EIC cost.
+* The design shall be able to meet all relevant regulatory requirements. 
+* The design shall comply with all volume and siting constraints within the RHIC tunnel[JJ6].
+* The designs shall meet all the interface requirements necessitated by the various systems which interface with the controls system
+* All technical specifications which can be used to verify that a primary requirement of the component is met at the design stage shall be identified and called out in the Final Design Review (FDR). 
+* All requirements which can be verified during the FDR shall be satisfied or have a plan in place to satisfy the review team so that the requirements can be met prior to final installation.  
+
+3.2.2 Safety and Environmental Considerations
+The design of the Controls Software assembly shall demonstrate it will meet all the safety and environmental requirements in line with Brookhaven National Lab (BNL) Standards-Based Management System (SBMS) and the Integrated Safety Management Plan (ISMP) [5.9].
+
+4. CONTROLS SOFTWARE REQUIREMENTS
+The following section covers the Controls Software functional and performance requirements for operation in the EIC. 
+The table has the following fields:
+* Unique ID: The performance requirement identifier as defined.
+* Requirement: The performance requirement as defined. “F-” = Functional; “P-” = Performance
+* Verification Method: This attribute defining the method used to verify the requirement. The following methods may be used to verify requirements: Analysis, Inspection, Demonstration, Test
+
+
+Table 4-1:  Subsystem Functional and Performance Requirements for Controls Software : Development Environment
+
+UniqueIDRequirementVerification MethodF-EIC-CTRL-SW-DEV.1The development environment shall support version control, issue tracking, traceability, and collaborative workflowsInspectionF-EIC-CTRL-SW-DEV.2The development environment shall support multiple programming languages and web service developmentInspectionF-EIC-CTRL-SW-DEV.3The system shall support extensible build and packaging mechanisms to support reproducibility and fallback strategiesInspectionF-EIC-CTRL-SW-DEV.4Continuous integration (CI) pipelines should be used to perform automated testing where applicableInspectionF-EIC-CTRL-SW-DEV.5Releases should be versioned and documented with associated changelogsInspection
+
+        Table 4-2:  Subsystem Functional and Performance Requirements for Controls Software: High Level Applications
+
+UniqueIDRequirementVerification MethodF-EIC-CTRL-SW-HLA.1Beam physics support APIs shall be available to interface through custom applicationsInspectionF-EIC-CTRL-SW-HLA.2Controls shall provide software tools for packaging standard beam physics applications in a consistent mannerInspectionF-EIC-CTRL-SW-HLA.3Controls shall provide an interface for communication via PV AccessInspectionF-EIC-CTRL-SW-HLA.4Controls shall provide interfaces to physics modeling tools[SN7][JJ8]Inspection
+        Table 4-3:  Subsystem Functional and Performance Requirements for Controls Software: Operator Interface
+
+UniqueIDRequirementVerification MethodF-EIC-CTRL-SW-OPI.1Synoptic displays shall support common, reusable controls widgets with data bindings to controls system variables.InspectionF-EIC-CTRL-SW-OPI.2Synoptic displays shall support macros and parameterization with preview and test mode capabilityInspectionF-EIC-CTRL-SW-OPI.3Synoptic displays (OPI screens) shall be version controlledInspectionF-EIC-CTRL-SW-OPI.4Synoptic displays shall report live data (with user interface level acceptable update rates)InspectionF-EIC-CTRL-SW-OPI.5Synoptic displays shall support meta data and timestamp consistency with controlled/monitored parametersInspectionF-EIC-CTRL-SW-OPI.6Synoptic displays shall clearly report connection statusInspectionF-EIC-CTRL-SW-OPI.7Synoptic displays shall integrate with control system services including PV monitoring and control, archive data retrieval, and alarm display monitoring and acknowledgement.InspectionF-EIC-CTRL-SW-OPI.8Synoptic displays shall support embedded displays and navigationInspectionP-EIC-CTRL-SW-OPI.1Widget response latency should be <200ms from data update to onscreen changeDemonstrationP-EIC-CTRL-SW-OPI.2Macros should apply and reflect parameterized changes within 1 secondDemonstrationP-EIC-CTRL-SW-OPI.3OPI system shall support update rates up to 30Hz[SN9][YZ10][JJ11]DemonstrationP-EIC-CTRL-SW-OPI.4Timestamps shall reflect source data time within <100msDemonstrationP-EIC-CTRL-SW-OPI.5Connection loss shall be indicated within 5-10 seconds of disconnection[SN12][JJ13][YZ14][NS15][JJ16][NS17]DemonstrationP-EIC-CTRL-SW-OPI.6Data retrieval for historical displays shall complete within 3 seconds for 1-hour spans. Alarm acknowledgement <1 second[NS18][YZ19][NS20][NS21][YZ22]Demonstration
+        Table 4-4:  Subsystem Functional and Performance Requirements for Controls Software: Alarm Service
+
+UniqueIDRequirementVerification MethodF-EIC-CTRL-SW-ALRM.1Controls shall provide a robust, reliable, and horizontally scalable central alarm management service, with minimal response times from generator to display.InspectionF-EIC-CTRL-SW-ALRM.2The alarm service shall interface with various notification, logging, and archiving servicesInspectionF-EIC-CTRL-SW-ALRM.3The alarm service shall monitor critical hardware, engineering, and software signals using a predefined set of thresholds to generate alarmsInspectionF-EIC-CTRL-SW-ALRM.4The alarm service shall support a dynamic set of alarm levels per PV with timestamps and severity statusInspectionF-EIC-CTRL-SW-ALRM.5The alarm service shall provide a user interface for configuration, viewing, acknowledging, and assigning, with access to historical alarmsInspectionF-EIC-CTRL-SW-ALRM.6The alarm service should support access to alarm response instructions and ability to create alarm management state reports.InspectionP-EIC-CTRL-SW-ALRM.1Alarm notification shall be visible in the operator interface within 250ms of the triggering condition under normal load[NS23][JJ24][25]DemonstrationP-EIC-CTRL-SW-ALRM.2Logging and archiving actions shall complete within 500ms of alarm detection. Notifications shall be dispatched within 1 second.DemonstrationP-EIC-CTRL-SW-ALRM.3Alarm threshold evaluation shall occur at a minimum rate of 10Hz per monitored signalDemonstration
+        Table 4-5:  Subsystem Functional and Performance Requirements for Controls Software: Archiving service
+
+UniqueIDRequirementVerification MethodF-EIC-CTRL-SW-ARCH.1The archive service shall support all EPICS scalars, arrays, structures data types with configurable sampling modes (on-change, periodic, event-based) and built-in compression capabilities.InspectionF-EIC-CTRL-SW-ARCH.2The archive service shall scale to millions of control points with tiered storage architecture, optimized data placement, and expandable capacity for 50-year operations.InspectionF-EIC-CTRL-SW-ARCH.3The archive service shall provide configurable data aging policies, automated data reduction (min, max, average), and performance optimization through intelligent data culling.InspectionF-EIC-CTRL-SW-ARCH.4The archive service shall provide well-defined APIs, third-party library support, time-range queries, flexible filtering, and integration with EIC GUI tools.InspectionF-EIC-CTRL-SW-ARCH.5Users should export data in multiple formats, correlate data across time and events, combine EIC and injector data, and access advanced selection tools.InspectionF-EIC-CTRL-SW-ARCH.6The archive service should provide intuitive management interfaces, GUI applications for correlated data display (including array visualizations), and comprehensive documentation.InspectionP-EIC-CTRL-SW-ARCH.1The system shall support sustained write throughput of at least 1-2M control point updates per second with no data loss under nominal load.DemonstrationP-EIC-CTRL-SW-ARCH.2Data reduction and aging routines should process and age out data at a rate of up to a few million samples/hour with <20% CPU usage per archiver appliance.DemonstrationP-EIC-CTRL-SW-ARCH.3Time-range queries of up to one hour of 10Hz data (per signal) shall return results within 3 seconds for up to 1000 signals.DemonstrationP-EIC-CTRL-SW-ARCH.4Export of 1-hour time series (10Hz) for 500 channels should complete within 10 seconds and support streaming formats (e.g., CSV, JSON)Demonstration
+        Table 4-6:  Subsystem Functional and Performance Requirements for Controls Software: Directory Service
+
+UniqueIDRequirementVerification MethodF-EIC-CTRL-SW-DIR.1Directory Service shall manage a directory of uniquely named entries with enforced naming conventionsInspectionF-EIC-CTRL-SW-DIR.2Entries shall be organized using properties and tagsInspectionF-EIC-CTRL-SW-DIR.3Directory clients shall have capability to add, modify, or delete entriesInspectionF-EIC-CTRL-SW-DIR.4The service shall track support tracking changes to entries with an audit trail including support for backup and redundancyInspectionF-EIC-CTRL-SW-DIR.5Entries shall be retrieved by name, class, or shared attributesInspectionF-EIC-CTRL-SW-DIR.6Directory Service should support credential-aware accessInspectionF-EIC-CTRL-SW-DIR.7Directory Service shall support private/sandbox instancesInspectionF-EIC-CTRL-SW-DIR.8Service should be scalable and provide high availability and fault toleranceInspectionP-EIC-CTRL-SW-DIR.1Directory service clients should support completion of add/modify/delete operations within 100msDemonstrationP-EIC-CTRL-SW-DIR.2Audit log entries should be written within 250ms of the associated action. Backups should not introduce more than a 10% latency overheadDemonstrationP-EIC-CTRL-SW-DIR.3Directory lookups should complete within 50ms for attribute-based filtering of <10K entriesDemonstrationP-EIC-CTRL-SW-DIR.4Authentication checks should add no more than 50ms to request latency under normal loadDemonstrationP-EIC-CTRL-SW-DIR.5The service should support at least 5 concurrent read/write clients with 99.9% uptime and recovery within 5 seconds of failover in a replicated configuration[SN26]Demonstration
+        Table 4-7:  Subsystem Functional and Performance Requirements for Controls Software: Save and Restore Service
+
+UniqueIDRequirementVerification MethodF-EIC-CTRL-SW-SR.1Users should be able to define, edit, and organize named configurations that specify which values are to be included in a snapshot using common APIsInspectionF-EIC-CTRL-SW-SR.2The system shall support capturing snapshots that record system state and compare/restore all or part of a snapshotInspectionF-EIC-CTRL-SW-SR.3The system shall support a storage backend that effectively scales and provide redundancy through regular backupsInspectionF-EIC-CTRL-SW-SR.4All snapshot actions including saves and restores shall be logged with relevant metadataInspectionF-EIC-CTRL-SW-SR.5The system shall support versioning and history trackingInspectionF-EIC-CTRL-SW-SR.6The system shall support logical grouping/organization of snapshots.InspectionF-EIC-CTRL-SW-SR.7The system shall support high availabilityInspectionP-EIC-CTRL-SW-SR.1The system should support snapshot storage growth of 10K snapshots/month with retention for >1 year. Backups shall not degrade restore latency by more than about 10%DemonstrationP-EIC-CTRL-SW-SR.2A system snapshot of 10K PVs should be captured in <5 seconds and restored in <10 seconds. Partial restoration of <100 PVs should be completed within 1 second.DemonstrationP-EIC-CTRL-SW-SR.3Metadata logging should complete within 200ms of each save/restore actionDemonstrationP-EIC-CTRL-SW-SR.4The service shall failover within 5 seconds and maintain access to all snapshot metadata and latest saved dataDemonstration
+        Table 4-8:  Subsystem Performance Requirements for Controls Software:ADO bridge 
+
+CodeRequirementVerification MethodF-EIC-CTRL-SW-ADOBR.1The bridge software shall map legacy device I/O points as EPICS PVs to allow EPICS clients in the main control room to control legacy hardware with ADO controlInspectionF-EIC-CTRL-SW-ADOBR.2ADO bridge software shall be able to handle a set [JJ27][JJ28]of ADO objectsInspectionF-EIC-CTRL-SW-ADOBR.3Alarms generated by legacy systems shall pass to the EIC controls alarm serverInspectionF-EIC-CTRL-SW-ADOBR.4All meta data shall be preserved through the lifecycle of the ADO to PV translationInspectionF-EIC-CTRL-SW-ADOBR.5The bridge shall support bi-directional accessInspectionP-EIC-CTRL-SW-ADOBR.1Mapped PVs shall reflect changes in ADO values within 100ms under normal conditionsDemonstrationP-EIC-CTRL-SW-ADOBR.2Each ADO Manager/FEC shall support a number of active parameters comparable to an EPICS IOC/PV Server, with overall throughput and latency on par with EPICS PV update performance.  The bridge shall introduce no more than 100ms of overhead under normal load.DemonstrationP-EIC-CTRL-SW-ADOBR.3Legacy alarm events shall be transmitted to the alarm server within 250ms of generationDemonstrationP-EIC-CTRL-SW-ADOBR.4The bridge should support bi-directional access with latency < 100msDemonstration
+        Table 4-9:  Subsystem Functional and Performance Requirements for Controls Software: Sequencer
+
+CodeRequirementVerification MethodF-EIC-CTRL-SW-SEQ.1The sequencing system shall provide ability to automate well-defined and repeated tasks for multiple EIC GroupsInspectionF-EIC-CTRL-SW-SEQ.2A graphical user interface shall be provided for creating, editing, versioning, viewing, selecting, and running sequences.InspectionF-EIC-CTRL-SW-SEQ.3Users shall be able to navigate through the execution of sequences for debugging and task error response resolutionInspectionF-EIC-CTRL-SW-SEQ.4Sequence transcript history shall be searchable and provide execution time, location, and user information, including summary report automated delivery to interested partiesInspectionF-EIC-CTRL-SW-SEQ.5Sequences shall support nesting of sub-sequencesInspectionF-EIC-CTRL-SW-SEQ.6Sequences shall provide a test mode option that avoids affecting EIC equipmentInspectionF-EIC-CTRL-SW-SEQ.7Real-time list of actively running sequences including location and user shall be availableInspectionF-EIC-CTRL-SW-SEQ.8Sequence clashing prevention shall be supported to avoid multiple sequences from running simultaneously where applicableInspectionP-EIC-CTRL-SW-SEQ.1GUI actions such as loading, editing, or saving a sequence should complete within 1 second for sequences up to 10KB or about 100 lines.  Execution should be dispatched within 100ms between consecutive steps.DemonstrationP-EIC-CTRL-SW-SEQ.2Queries for execution history should return results within 2 seconds for a period of up to one week and 1K entries.  Summary reports shall be generated within 5 seconds.DemonstrationP-EIC-CTRL-SW-SEQ.3Test mode execution should simulate a sequence proportional to non-test mode execution.  Logging of additional diagnostics should complete within 2 seconds[JJ29][NS30]Demonstration
+        Table 4-10:  Subsystem Functional and Performance Requirements for Controls Software Electronic Logbook service
+
+CodeRequirementVerification MethodF-EIC-CTRL-SW-LOGBK.1Electronic logbook shall allow users to create, edit, and delete entries maintaining an audit trailInspectionF-EIC-CTRL-SW-LOGBK.2Entries shall include meta data, support rich text, attachments, and be context awareInspectionF-EIC-CTRL-SW-LOGBK.3Service shall support grouping/threading of entries and provide advanced search capabilities.InspectionF-EIC-CTRL-SW-LOGBK.4Service shall support multiple client types through an API that integrates with controls system toolsInspectionF-EIC-CTRL-SW-LOGBK.5Service shall support user-defined views and filters with personal display preferencesInspectionF-EIC-CTRL-SW-LOGBK.6Service shall require authenticated accessInspectionF-EIC-CTRL-SW-LOGBK.7Service shall provide high availability and scalability[JJ31][NS32]InspectionP-EIC-CTRL-SW-LOGBK.1Entry creation, update, or deletion shall complete within 500ms under normal load (up to 10 concurrent users)DemonstrationP-EIC-CTRL-SW-LOGBK.2Search queries for text, author, or tags across one week of data should return results within 2 seconds for up to 1K entriesDemonstrationP-EIC-CTRL-SW-LOGBK.3API requests (GET/POST for entries or metadata) should respond within 300ms for typical payloads (10KB)DemonstrationP-EIC-CTRL-SW-LOGBK.4Authentication should complete in less than 1 second for valid sessions. Failures < 500 msDemonstrationP-EIC-CTRL-SW-LOGBK.5The service shall support >20 concurrent users and remain available during failovers with maximum delay of 5 secondsDemonstration
+        Table 4-11:  Subsystem Functional and Performance Requirements for Controls Software Gateway service
+
+CodeRequirementVerification MethodF-EIC-CTRL-SW-GW.1Controls shall design and deploy a gateway service to provide read-only access to key machine parameters outside controls networkInspectionF-EIC-CTRL-SW-GW.2Controls shall develop a website to show the EIC operation status outside the controls networkInspectionP-EIC-CTRL-SW-GW.1The website should update displayed status values within 5 seconds of a change to underlying PVs and shall load within 2 seconds for unauthenticated usersDemonstration
+        Table 4-12:  Subsystem Performance Requirements for Controls Software Database service
+
+CodeRequirementVerification MethodF-EIC-CTRL-SW-DB.1Controls system shall implement database services that support read, write, modify, and delete operations on stored valuesInspectionF-EIC-CTRL-SW-DB.2Database shall provide user level access for all aspects of database usage, limiting access based on machine, group, and userInspectionF-EIC-CTRL-SW-DB.3Database encryption should be supported where necessaryInspectionF-EIC-CTRL-SW-DB.4Database service design should account for scalability with consistent developer APIInspectionF-EIC-CTRL-SW-DB.5Database logs, transaction and/or otherwise shall be maintained on a case-by-case basis with justificationInspectionP-EIC-CTRL-SW-DB.1CRUD (Create/Read/Update/Delete) operations on individual entries should complete within 100ms for typical payloads (10KB) under normal system loadDemonstrationP-EIC-CTRL-SW-DB.2Encryption overhead for read/write operations shall not exceed 20% latency impact under normal loadDemonstrationP-EIC-CTRL-SW-DB.3The service shall maintain CRUD operation latency (250ms) for up to 50 concurrent clients or 1K operations/secondDemonstration
+        Table 4-13:  Subsystem Functional and Performance Requirements for Project Support Software
+
+CodeRequirementVerification MethodF-EIC-CTRL-SW-PROJ.1The Controls System shall provide a standard mechanism for asset trackingInspectionF-EIC-CTRL-SW-PROJ.2Asset tracking tools will employ a mechanism for generating, maintaining, and utilizing templates for arbitrary device typesInspectionF-EIC-CTRL-SW-PROJ.3Asset tracking tools will support management of data for discrete devicesInspectionF-EIC-CTRL-SW-PROJ.4Asset tracking tools will support management of data for cablingInspectionF-EIC-CTRL-SW-PROJ.5The Controls System will provide an interface to implement Quality Assurance procedures for acceptance of new equipmentInspectionF-EIC-CTRL-SW-PROJ.6The interface to the system used for acceptance of new equipment will include a mechanism for Non-Conformance ReportingInspectionP-EIC-CTRL-SW-PROJ.1Applying a template to create or update an asset record should complete within 500ms for "typical" templates of up to 50 fields.  Template search/load operations shall return results within 1 secondDemonstration
+
+
+5. APPLICABLE DOCUMENTS
+List applicable documents considered to be part of this document. Applicable documents shall be obtained from the EIC SharePoint Document Center.
+Applicable documents shall be obtained from the EIC SharePoint. 
+
+ID Document Number Document Name 5.1 BNL-221006-2021-FORE EIC Conceptual Design Report   5.2 EIC-SEG-PLN-022 Systems Engineering Management Plan 5.3 EIC-SEG-PLN-016 Requirements Management Plan 5.4 EIC-SEG-PLN-017 Requirements Management Plan for Detector Systems 5.5 EIC-SEG-PLN-020 EIC Interface Management Plan 5.6 EIC-ORG-PLN-010 Electron-Ion Collider Global Requirements 5.7 EIC-SEG-RSI-003General and Functional Requirements for the EIC Electron Storage Ring5.8 EIC-SEG-RSI-002General and Functional Requirements for the EIC Hadron Storage Ring system5.9 EIC-ESH-PLN-007 Integrated Safety Management Plan (ISMP) 
+
+
+6. DETAILED CHANGE LOG
+RevisionDateChange
+7. REFERENCES
+1. doi:10.17226/25171., National Academies of Sciences, Engineering, and Medicine, "An Assessment of U.S.-Based Electron-Ion Collider Science", The National Academies Press, Washington, DC, 2018.   
+2. arXiv:2103.05419, Science Requirements and Detector Concepts for the Electron-Ion Collider: EIC Yellow Report
+[SN1]Include additional acronym
+CRUD - Create/Read/Update/Delete
+[YZ2]I changed the picture
+[SN3]This refers to the use of RESTFul APIs and web applications.  Just want to make sure we're clear on the meaning of "gateway".  
+[JJ4R3]Good point, Seth.  Gateway I think typically refers to CA or PVXS Gateway services from what I've observed within the EPICS community.  Is that your interpretation as well, ZY?
+[YZ5R3]Yes. it's more about controlled access between two controls networks, such as detector controls and accelerator controls, which are on separate networks
+[JJ6]This seems boilerplate... it might be okay if this document is aimed at ASR/DET/IR subprojects, but not EIN and perhaps ELR.
+[SN7]This one concerns me.  We need a clear picture of those interfaces and Controls has not received feedback on potential modeling tools so the interfaces may be delayed.
+[JJ8R7]We should definitely schedule a focused meeting on this subject.
+[SN9]30Hz update rates would most likely be important to graphical displays.  In CAD we buffered updates for performance reasons.  So while the rates may be achievable, the time to display could be throttled but without data loss which I guess is the important point here.
+[YZ10R9]In EPICS, PVs in OPI creates a "monitor" of the PV, it subscribe the PV for updates - and the standard the PV update rate is <= 10 Hz, unless scan is "I/O Intr", then the device could update faster. Update noise can be minimized with Monitor deadband (MDEL). There is also a Archiver deadband (ADEL) for archiving. So I think 30Hz is reasonable, and I think we can demonstrate it with a simulation softIOC to set up a non-standard 30Hz scan rate
+[JJ11R9]I think that the saving grace here is that we're only Demonstrating the performance threshold has been met, rather than systematically verifying that every parameter actually hits that mark (when the values may not even be published that frequently).
+[SN12]I forget if 5-10 seconds is a standard for EPICS (I should look that up) but just want to comment that this value is a bit slower for ADOs - more in the 10-20 second range.  This means that ADO-Bridge connection status could be a bit slower.
+[JJ13R12]Should the requirement be updated to delineate between response time for EIC native and bridge-based status updates?
+[YZ14R12]EPICS notification of disconnect is immediate, but it takes (default) 30 sec to close the tcp connection, see https://epics.anl.gov/base/R3-14/12-docs/CAref.html
+
+Prior to EPICS R3.14.5 an unresponsive server implied an immediate TCP circuit disconnect, immediate resumption of UDP based search requests, and immediate attempts to reconnect. There was concern about excessive levels of additional activity when servers are operated close to the edge of resource limitations. Therefore with version R3.14.5 and greater the CA client library continues to inform client side applications when channels are unresponsive, but does not immediately disconnect the TCP circuit. Instead the CA client library postpones circuit shutdown until receiving indication of circuit disconnect from the IP kernel. This can occur either because a server is restarted or because the IP kernel's internal TCP circuit inactivity keep alive timer has expired after a typically long duration (as is appropriate for IP based systems that need to avoid thrashing during periods of excessive load). The net result is less search and TCP circuit setup and shutdown activity during periods of excessive load.
+[NS15R12]The key is what is meant by "indicated" in the requirement.  If we're talking about indicated to the user I'd be more comfortable with a 5-20 second range that considers all possible levels of connection loss (IOC, ADO, Bridge, ...).  If "indicated" refers to how long for the hardware to recognize there is a disconnect, that could be 5-10 seconds.  The difference is (for example) that while ADO communication interruption is detected quickly via tcp status, it does not immediately report a disconnection until there is a failure on a second attempt to reconnect.  This avoids "blips" in connection status to the user.
+[JJ16R12]I like the discussion, and the value of 5-10.
+[NS17R12]I'd like to push back again on this - 5-10 second for display to the user might be unrealistic.  There are protections in software that prevent false positives and might wait for two successive disconnect messages this would lead to a 20-30 second response to the user - this includes statuses on alarms.  I'm referring to the ADO protocol and not epics.  I'd be more comfortable with indicating "within 20 seconds" rather than 5-10.
+[NS18]Why are these two very different requirements included as a single requirement?  Data retrieval vs alarm acknowledgement don't seem related to me
+[YZ19R18]you are right. Should be separate. Also alarm "acknowledgment" or "notification"? "acknowledgement" means someone take an action, that can be > 1 sec
+[NS20R18]It should certainly be notification and I'd still suggest we indicate within a second rather than less than a second
+[NS21R18]I'm confused though - how does the alarm piece here differ from P-EIC-CTRL-SW-ALRM.1  - maybe we should just remove it in this requirement.
+[YZ22R18]maybe this is not notification, but "acknowledgement response" - meaning the time between "press the acknowledge button" and "the alarm server register the alarm state as "acknowledged" (so other clients can see the alarm state)". May need Kunal for clarification.
+[NS23]This must be an EPICS spec - for the RHIC controls system it was closer to 1 second.  The AlarmDisplay update rates were set to 1 second so even if an alarm was received within milliseconds, the display would not render it until the next second.
+[JJ24R23]I suspect that this is EPICS standard.  FWIW, I think that other facilities typically aim for 10-30Hz PV value updates, and alarms are essentially a subset of those cases though perhaps we shouldn't hold them to the same level of performance (ie. 250ms sounds like a reasonable middle-ground).
+[25R23]I will back off my argument - spoke with Kunal who suggested IOC alarm response times are faster than 250ms (more like 10Hz) and that OPI screens can certainly keep up with that rate so 250ms is reasonable.  This is just not how operator displays in RHIC worked.  
+[SN26]99.9% accuracy means 9 hours of downtime per year or 2 minutes per day.  This is reasonable from a software perspective.  Network reliability should be considered separate from this requirement
+[JJ27]Isn't this too vague?  How would we verify this?
+[JJ28R27]This is a functional requirement, so I'd suggest that we change it to "a set" instead, and make sure that we have a clear performance requirement associated with it.
+[JJ29]Should these performance requirements be split up into one per entry?  It seems like most of them mix two separate items since they're related to one another.
+[NS30R29]I don't think so.  This is referring to additional diagnostics for test mode.  I'd argue that they are tightly connected.  Maybe we reword like "Test mode execution should simulate a sequence proportional to non-test mode execution providing additional diagnostic logging generated within 2 seconds"
+[JJ31]I know why we expect this, but how would we meet the requirement through inspection?
+[NS32R31]How do you demonstrate high availability?  Scalability is an inspection by showing that we have redundant systems in place
+
+
+The only official copy of this document is the one online in the SharePoint Document Center. Before using a printed copy, 
+verify that it is current by checking the printed document’s Revision History log with that of the online version.
+Electron-Ion Collider, Brookhaven National Laboratory & Thomas Jefferson National Accelerator FacilityDoc No.  EIC-SEG-RSI-158Author: Zhijian YinEffective Date: October 28, 2025Review Frequency: 5 yearsRequirements, Specifications, and Interfaces: Controls Software Functional and Performance Requirements DocumentRevision: 00
+
+
+
+Page 35 of 35
+
+The only official copy of this document is the one online in the SharePoint Document Center. Before using a printed copy, 
+verify that it is current by checking the printed document’s Revision History log with that of the online version.
+Electron-Ion Collider, Brookhaven National Laboratory & Thomas Jefferson National Accelerator FacilityDoc No.  TBDAuthor: Zhijian YinEffective Date: October 06, 2025Review Frequency: 5 yearsRequirements, Specifications, and Interfaces: Controls Software (Controls Software) Performance Requirement DocumentRevision: 00
+
+
+
