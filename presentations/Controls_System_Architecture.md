@@ -353,41 +353,139 @@ References:
 - Phoebus tools and services decision record: [rod/EIC-ROD-Phoebus-Tools-and-Services.md](rod/EIC-ROD-Phoebus-Tools-and-Services.md)
 - Phoebus ecosystem paper (extracted): [rod/raw_resources/_extracted/MOCR002.txt](rod/raw_resources/_extracted/MOCR002.txt)
 
-## Slide 17: Operator Tools Strategy (Phoebus + Web)
+## Slide 17: Middle-Layer Services - Individual Roles
 
 Slide overview:
-Operator tooling strategy with Phoebus as the primary platform and web tools as complementary interfaces.
+What each service does and why it matters for EIC operations.
 
 Slide 17:
-- Primary operator platform: Phoebus
-	- Integrated workflow across displays, alarms, trends, logbook, and save/restore
-	- Context sharing reduces manual re-entry and improves operator efficiency
-	- One consistent user experience across EPICS-native and ADO-integrated paths
-- Core tools to highlight:
-	- Display Builder for OPI/HMI runtime and engineering views
-	- Data Browser for historical trends and correlation analysis
-	- Alarm UI plus Olog integration for response and documentation workflows
-	- Save/Restore and PV utilities for controlled operations and diagnostics
-- Complementary web tools:
-	- Browser-based service access for status, dashboards, and operational visibility
-	- Lightweight access model for stakeholders who do not need full desktop clients
-	- API-aligned tooling that reuses the same middle-layer service contracts
+- **Archiver**: EPICS Archiver Appliance stores time-series PV data at configurable rates and provides fast historical queries. Supports post-event analysis and correlation with live values in Data Browser.
+- **Alarm**: Evaluates alarm thresholds in real-time, notifies operators, maintains alarm history, and supports configuration rollback. Enables both immediate response and retrospective tuning of alarm quality.
+- **ChannelFinder**: Metadata and discovery service for PV catalogs, tags, and properties. Enables operator search and application-level data discovery organized by subsystem or device type.
+- **Olog (Online Logbook)**: Structured operator and operations logging with automatic context capture (PV names, alarm states, timestamps). Provides auditable records for commissioning and troubleshooting.
+- **Save/Restore**: Captures, versions, and restores PV snapshots that reproduce known good states. Supports repeatable operations and controlled recovery from incident or configuration changes.
+- **PVA Gateway**: Enables EPICS-domain inter-network connectivity with controlled PV exposure across network boundaries. Supports scalable client access patterns without overwhelming IOC resources.
 
 Notes:
-1. Keep the message centered on workflow consistency and operational efficiency.
-2. Position web tooling as additive, not a replacement for primary operator workflows.
-3. Emphasize that both desktop and web clients consume the same service architecture.
+1. Descriptions are sourced from the Phoebus ROD and ecosystem papers.
+2. Each service has a focused, well-defined role and can be scaled independently.
+3. These services work together to enable the consistent operator workflows shown in Slide 18.
+
+## Slide 18: Phoebus Operator Toolkit - Strategic Benefits
+
+Slide overview:
+Why a unified operator platform matters: workflow efficiency, consistency, and scalability.
+
+Slide 18:
+- **Integrated workflow** across displays, alarms, trends, logbook, and save/restore
+	- Operators navigate seamlessly between tools without manual re-entry of PV names or loss of context
+	- Example workflow: alarm investigation → historical data retrieval → device displays → logbook documentation, all within one environment
+- **Context sharing** reduces operator burden and improves efficiency
+	- Selection and adapter services automatically propagate context: PV names, values, timestamps, alarm states, archive sources, OPI screen locations
+	- Selecting an alarm opens related displays and trends; PV searches integrate with Data Browser without manual re-entry
+- **Unified platform** simplifies operations and reduces support complexity
+	- Single integrated desktop environment reduces training overhead and support burden
+	- Consistent data models and shared core modules across all applications enable seamless workflows
+	- Modular architecture and SPI-based extensibility allow sites to add tools and protocols without disrupting core stability
+- **Scalability through modular services and independent deployment**
+	- Each tool and service scales independently; failures are isolated within affected service
+	- Web and mobile clients complement desktop Phoebus for broader stakeholder reach
+	- REST APIs and extensible architecture enable custom integrations and site-specific applications
+
+Notes:
+1. This is the strategic rationale: efficiency, consistency, and sustainability drive the Phoebus investment.
+2. Transition to the next slides to show concrete implementations (applications, architecture, web tools).
 
 References:
+- Phoebus ecosystem paper: [rod/raw_resources/_extracted/MOCR002.txt](rod/raw_resources/_extracted/MOCR002.txt)
 - Phoebus tools and services decision record: [rod/EIC-ROD-Phoebus-Tools-and-Services.md](rod/EIC-ROD-Phoebus-Tools-and-Services.md)
-- Phoebus ecosystem paper (extracted): [rod/raw_resources/_extracted/MOCR002.txt](rod/raw_resources/_extracted/MOCR002.txt)
 
-## Slide 18: CI/CD, Governance, and Infrastructure as Code
+## Slide 19: Phoebus Applications - Integrated Operator Toolkit
+
+Slide overview:
+User-facing applications within Phoebus that form a cohesive operator environment.
+
+Slide 19:
+- **Display Builder**: OPI/HMI editor and runtime with alarm awareness, units, and precision. Supports legacy display migration (EDM, MEDM, BOY auto-conversion) and web-based runtime execution.
+- **Data Browser**: Trending across multiple archive providers (Archiver Appliance, RDB, TimescaleDB). Enables correlation analysis with live PV values in unified plotting environment.
+- **Alarm UI**: Real-time alarm monitoring with high-level overviews, alarm tables, hierarchical trees, and voice annunciator. Ensures critical conditions are surfaced and managed efficiently.
+- **Olog (Logbook UI)**: Structured operator logging with automatic PV/alarm/timestamp context capture. Integrated within Phoebus for seamless workflow documentation.
+- **PV Utilities**: Probe for detailed introspection, PV Table for monitoring and save/restore groups, PV Tree for record linkages. Support diagnostics and day-to-day operations.
+- **ChannelFinder Client**: Fast, case-insensitive PV discovery with metadata search (IOC host, record type, status). Hierarchical views improve navigability of flat EPICS namespace.
+- **Save/Restore UI**: Snapshot capture, versioning, and restoration with merge/scale capabilities. Enables reproducible operations and rapid recovery from configuration changes.
+
+Notes:
+1. These applications are tightly integrated; context (PV names, values, alarms, archive sources) flows seamlessly between tools.
+2. Operators move fluidly from alarm investigation → historical trends → device displays → logbook without re-entry.
+3. Emphasize the consistent, unified user experience across all workflows.
+
+References:
+- Phoebus applications and ecosystem integration: [rod/raw_resources/_extracted/MOCR002.txt](rod/raw_resources/_extracted/MOCR002.txt)
+- Phoebus tools and services decision record: [rod/EIC-ROD-Phoebus-Tools-and-Services.md](rod/EIC-ROD-Phoebus-Tools-and-Services.md)
+
+## Slide 20: Phoebus Architecture - Modular Foundation
+
+Slide overview:
+Core technical architecture that enables the integrated toolkit and supports independent service deployment.
+
+Slide 20:
+- **Core modules** (protocol-agnostic foundation):
+	- **CorePV / Data-source layer**: Centralizes protocol interactions (CA, PVA, simulators, vendor systems via SPI). Reuses connections and encapsulates reconnection logic; reduces network load.
+	- **VTypes / Value model**: Canonical immutable value representations carrying raw value, timestamp, alarm state, units, and display ranges. Serializable for REST/WebSocket interoperability.
+	- **Selection and Adapter framework**: Enables context propagation across applications. Selecting an alarm opens a probe, or launches Data Browser view with historical data—all without manual PV re-entry.
+	- **Formula pipelines**: Configurable value processing and transformation for calculations and derived signals.
+	- **Job scheduler & Logging**: Controlled background execution and structured diagnostics for responsiveness and troubleshooting.
+	- **Security module**: Centralized credential management and secure resource access.
+- **Core-UI modules** (shared interface behaviors):
+	- Docking layouts, workspaces, menus, toolbars, and context integration via SPI
+	- Logbook SPI for backend-agnostic logging (applications remain independent of logbook implementation)
+- **Service provider interface (SPI)**: Extensibility mechanism allowing sites to contribute protocols, services, applications, and UI extensions without tight coupling or core modification.
+
+Notes:
+1. This architecture is why Phoebus can evolve sustainably: extensions plug in via SPI, and applications stay focused on business logic.
+2. Core libraries are shared across desktop applications and middle-layer services, ensuring consistent data models and reduced duplication.
+3. The modular design supports containerized deployment and modern CI/CD practices.
+
+References:
+- Phoebus framework architecture and SPI: [rod/raw_resources/_extracted/MOCR002.txt](rod/raw_resources/_extracted/MOCR002.txt)
+
+## Slide 21: Web Tools and Complementary Access
+
+Slide overview:
+Browser-based interfaces and lightweight access paths for operational visibility and service integration.
+
+Slide 21:
+- **Phoebus ecosystem web capabilities**:
+	- **Olog web client** (HTML/JavaScript): Operator logs and search accessible from any browser. Integrates with smartphone clients for mobile facility-wide access.
+	- **Display Builder Web Runtime**: OPI/HMI screens executable in web browsers; same ".bob" files used in desktop Display Builder.
+	- **Service REST APIs**: Archiver, Alarm, ChannelFinder, Save/Restore expose REST interfaces enabling web dashboard integration and custom clients.
+	- **Multi-platform design**: Seamless context sharing between Phoebus desktop, web UIs, and mobile clients for consistent workflows.
+- **EIC-specific web tools** (leveraging Phoebus service APIs):
+	- **pvinfo**: Command-line and web PV metadata and connection status lookup.
+	- **pvws**: WebSocket-based PV value streaming for real-time custom web dashboards.
+	- **dbwr**: Web-based archiver query tool for historical trend visualization.
+	- **etraveller**: Lightweight commissioning logbook with context tagging.
+	- **cdb**: Configuration database interface for system parameter management.
+- **Strategic role of web and mobile access**:
+	- Extends operator reach beyond desktop environments to stakeholders, dashboards, and mobile workflows.
+	- All web clients consume the same middle-layer service APIs as desktop Phoebus, ensuring consistent data and operations.
+	- Web and mobile tools are complementary to primary operator workflows, not replacements.
+
+Notes:
+1. Web tools extend operational reach without requiring desktop Phoebus deployment on every workstation.
+2. Emphasize that the same middle-layer services (Archiver, Alarm, Olog, ChannelFinder) power both desktop and web clients.
+3. Mention that web tools follow containerized, modern deployment patterns aligned with EIC CI/CD infrastructure.
+
+References:
+- Phoebus ecosystem paper (Olog web, multi-platform access): [rod/raw_resources/_extracted/MOCR002.txt](rod/raw_resources/_extracted/MOCR002.txt)
+- Phoebus tools and services decision record: [rod/EIC-ROD-Phoebus-Tools-and-Services.md](rod/EIC-ROD-Phoebus-Tools-and-Services.md)
+
+## Slide 22: CI/CD, Governance, and Infrastructure as Code
 
 Slide overview:
 How source control, automation pipelines, and infrastructure-as-code practices support delivery quality and operational repeatability.
 
-Slide 18:
+Slide 22:
 - CI/CD purpose for controls architecture:
 	- Standardize delivery workflows across infrastructure, controls software, and operations tooling
 	- Reduce integration risk through automated validation and repeatable deployment steps
@@ -398,19 +496,19 @@ Slide 18:
 	- Infrastructure as code as the default operating model for environment setup and updates
 
 Notes:
-1. Keep this slide at strategy level.
+1. Keep this slide at strategy level; implementation details are broken out in the following CI/CD slides.
 2. Emphasize that CI/CD is part of architecture maturity, not only software process.
 
 References:
 - GitHub platform decision record: [rod/EIC-ROD-GitHub-Platform.md](rod/EIC-ROD-GitHub-Platform.md)
 - Phoebus tools and services decision record: [rod/EIC-ROD-Phoebus-Tools-and-Services.md](rod/EIC-ROD-Phoebus-Tools-and-Services.md)
 
-## Slide 19: Delivery Toolchain and QA/QC Controls
+## Slide 23: GitHub Platform and Automation Stack
 
 Slide overview:
-How GitHub, Actions, Ansible/AWX, and pipeline gates work together as the delivery backbone.
+How GitHub, GitHub Actions, Ansible, and AWX work together as the delivery backbone.
 
-Slide 19:
+Slide 23:
 - GitHub as source control platform:
 	- Full history and traceability of architecture, code, configuration, and operations assets
 	- Structured collaboration via pull requests, reviews, and issue tracking
@@ -423,71 +521,64 @@ Slide 19:
 	- Ansible playbooks define desired state for systems and services
 	- AWX provides managed execution, scheduling, credential handling, and run visibility
 	- Consistent, repeatable rollouts across multiple environments
-- QA/QC and pipeline domains:
-	- Code review plus automated gates before merge and release promotion
-	- Rapid, repeatable dev/test environment setup through versioned automation
-	- Pipelines cover infrastructure, IOCs, services, tools, and configuration resources
+- Infrastructure as code principles:
+	- Version-controlled infrastructure definitions and configuration policies
+	- Reviewable, auditable changes to platform and service topology
+	- Drift reduction through repeatable automation runs
 
 Notes:
-1. Keep the emphasis on end-to-end controls delivery, not isolated tooling features.
+1. Focus on the end-to-end toolchain, not isolated tools.
 2. Highlight repeatability, auditability, and lower manual error rates.
 
 References:
 - GitHub platform decision record: [rod/EIC-ROD-GitHub-Platform.md](rod/EIC-ROD-GitHub-Platform.md)
 
-## Slide 20: Middle-Layer Services Deep Dive
+## Slide 24: QA/QC Through Code Review and Pipeline Gates
 
 Slide overview:
-Where each middle-layer service fits, and why this layer is critical for EIC operations.
+How QA/QC is embedded into code review and automated gates before changes reach operations.
 
-Slide 20:
-- Service responsibilities:
-	- Archiver: high-volume time-series persistence and retrieval
-	- Alarm stack: evaluation, notifications, history, and configuration rollback
-	- ChannelFinder: PV metadata catalog and discovery
-	- Olog: structured operator logging with context capture
-	- Save/Restore: snapshot capture and controlled restoration workflows
-	- PVA Gateway: controlled cross-network PV exposure and client scaling
-- Why this layer matters:
-	- Keeps IOC/device control paths focused on real-time control
-	- Provides scalable operational capabilities independent of device-facing logic
-	- Creates consistent service contracts used by both desktop and web clients
-- Operational impact:
-	- Better alarm quality tuning and post-event analysis
-	- Faster fault diagnosis through shared context across services
-	- More repeatable recovery with versioned snapshots and metadata
+Slide 24:
+- QA/QC control points:
+	- Pull request templates and review checklists enforce design and safety expectations
+	- Mandatory reviewers and approval gates before merge
+	- Automated checks for syntax, policy conformance, and deployment readiness
+- Pipeline quality gates:
+	- Pre-merge validation for infrastructure, controls apps, and service configurations
+	- Post-merge integration checks in controlled environments
+	- Release promotion only after gate success and artifact traceability
+- Dev/test environment enablement:
+	- Rapid environment setup from versioned automation definitions
+	- Reproducible test conditions across team members and subsystems
+	- Faster defect isolation and higher confidence before production rollout
 
 Notes:
-1. Keep this practical and service-oriented rather than abstract architecture language.
-2. Emphasize that middle-layer services are the operational backbone above EPICS IOCs.
+1. Emphasize QA/QC as continuous controls, not only final-stage inspection.
+2. Tie quality outcomes directly to reduced commissioning and operations risk.
 
-References:
-- Phoebus tools and services decision record: [rod/EIC-ROD-Phoebus-Tools-and-Services.md](rod/EIC-ROD-Phoebus-Tools-and-Services.md)
-- Phoebus ecosystem paper (extracted): [rod/raw_resources/_extracted/MOCR002.txt](rod/raw_resources/_extracted/MOCR002.txt)
-
-## Slide 21: Phoebus Toolkit Workflows and User Experience
+## Slide 25: CI/CD Pipelines by Domain
 
 Slide overview:
-How Phoebus tools support day-to-day operator workflows with shared context and consistent interaction patterns.
+CI/CD pipeline scope by domain: infrastructure, IOCs, services, tools, and resources.
 
-Slide 21:
-- Core toolkit workflow:
-	- Alarm UI -> Data Browser -> Display Builder -> Olog entry, all with preserved context
-	- Save/Restore integrated for controlled state changes and recovery
-	- PV utilities (Probe, PV Table, PV Tree) support fast diagnostics
-- User-experience benefits:
-	- Less context switching and less manual data re-entry
-	- Faster transition from alarm detection to root-cause investigation
-	- Consistent behavior across EPICS-native and ADO-integrated operations
-- Deployment model:
-	- Curated Phoebus products per site/role with controlled extension policy
-	- Shared service APIs enable desktop and web clients to behave consistently
-	- Versioned tool configurations support reproducibility and supportability
+Slide 25:
+- Infrastructure pipelines:
+	- VM provisioning and base image configuration
+	- Network and policy artifacts (including firewall and routing policy updates)
+	- Environment bootstrap and lifecycle operations
+- IOC and controls application pipelines:
+	- Build, package, and deploy IOC software and associated configuration
+	- Validate compatibility with protocol and service dependencies
+	- Stage deployments with rollback-aware promotion controls
+- Service pipelines:
+	- Deploy and update archiver, alarm, database, and HTTP service components
+	- Apply configuration changes through versioned automation
+	- Verify service health and interface compatibility post-deployment
+- Tools and resource pipelines:
+	- Phoebus product packaging and distribution updates
+	- OPI screens, display assets, and configuration management artifacts
+	- Metadata and operational resource synchronization across environments
 
 Notes:
-1. Keep this slide operator-centric and workflow-focused.
-2. Highlight measurable outcomes: faster response, less operator burden, and better consistency.
-
-References:
-- Phoebus tools and services decision record: [rod/EIC-ROD-Phoebus-Tools-and-Services.md](rod/EIC-ROD-Phoebus-Tools-and-Services.md)
-- Phoebus ecosystem paper (extracted): [rod/raw_resources/_extracted/MOCR002.txt](rod/raw_resources/_extracted/MOCR002.txt)
+1. Keep domain boundaries explicit to clarify ownership and pipeline responsibility.
+2. Use this slide as the operational view of how CI/CD supports the full controls stack.
