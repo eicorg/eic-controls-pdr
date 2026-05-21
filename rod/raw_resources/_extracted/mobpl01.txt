@@ -1,0 +1,381 @@
+ 
+EPICS 7 PROVIDES MAJOR ENHANCEMENTS TO THE EPICS TOOLKIT  
+L.R. Dalesio, M.A. Davidsaver, M.R. Kraimer, Osprey DCS LLC, Ocean City, USA 
+S.M. Hartman, K.-U. Kasemir, ORNL, Oak Ridge, Tennessee, USA 
+A.N. Johnson, G. Shen, ANL, Argonne, Illinois, USA 
+H. Junkes, FHI, Berlin, Germany 
+ T. Korhonen, ESS, Lund, Sweden  
+R. Lange, ITER Organization, St. Paul lez Durance, France 
+K. Shroff, BNL, Upton, Long Island, New York, USA 
+ 
+Abstract 
+The release of EPICS 7 marks a major enhancement to 
+the EPICS [1] toolkit. EPICS 7 combines the proven 
+functionality, reliability and capability of EPICS V3 with 
+the powerful EPICS V4[2] extensions enabling high-
+performance network transfers of structured data. The 
+code bases have been merged and reorganized. EPICS 7 
+provides a new platform for control system development, 
+suitable for data acquisition and high-level services. This 
+paper presents the current state of the EPICS 7 release, 
+including the pvAccess network protocol, normative data 
+types, and language bindings, along with descriptions of 
+new client and service applications.   
+INTRODUCTION 
+EPICS 7 provides support for Data Acquisition, 
+Experiment Control, and Data Analysis with new data 
+representation and mechanisms in the protocol and data 
+representation while preserving the robust, high 
+performance, and easily extendible capabilities that are 
+expected a control system. EPICS 7 is the merge of 
+EPICS 3 and EPICS 4. The release includes both 
+communication mechanisms running seamlessly, side by 
+side. The new capabilities are provided by the EPICS 4 
+communication improvements in pvAccess and pvData, 
+the next generation communication protocol and data 
+representation. The new protocol provides structured data 
+support and a remote procedure call (RPC) . that support 
+the integration of all data into microservices: including 
+real time data from I/O Controllers (IOCs), processed data 
+from data aggregation, and configuration data required for 
+plant integration. The most significant improvement is 
+that pvData provides the ability to define arbitrary data 
+structures for more complex data sets and pvAccess is 
+designed to transport those structures in the most efficient 
+manner. The new EPICS 7 release enables the 
+development of services on all real time, configuration, 
+and aggregated data. 
+NO CHANGES REQUIRED TO USE  
+EPICS 7 
+All the features of EPICS V3 work as is. The IOC 
+process database, device support and drivers are used by 
+both pvAccess/pvData and Channel Access/DBRTypes 
+[3] seamlessly. Control System Studio (CS Studio) [4][5] , 
+Archive Appliance, run both pvAccess and Channel 
+Access protocols. The IOC severs all data over both 
+pvAccess and Channel Access. The pvAccess services 
+provides the improved metadata for multidimensional 
+arrays. All IOC data provides better support for time 
+stamps and alarm information.  
+NEW FEATURES OF EPICS 7 
+The new capabilities overcome limitations of EPICS 
+V3 that give EPICS users the ability to develop 
+applications that can provide data through a network 
+service and access data from any service on the control 
+network. The communication mechanisms are provided to 
+support a service oriented architecture for real time data , 
+aggregation data, and configuration database backends. In 
+conjunction with EPICS 7, services are available for real 
+time data from the IOC and areaDetector, configuration 
+data from a Directory Service and save set service 
+(MASAR), and aggregated data from the Data Index 
+Service. Complex control is supported with the new 
+ability to communicate with devices (groups of PVs on an 
+IOC) in an always-consistent, transaction type way. The 
+new capabilities extend the scope of EPICS V3 from 
+instrumentation and control (I&C) to data acquisition, 
+image processing, data analysis, configuration 
+management, data management and beyond. 
+STRUCTURED DATA 
+EPICS 7 can do everything EPICS V3 can do but 
+better.  It can construct pvData structures used in EPICS 
+V3 as DBR types. For example , the equivalent of a 
+DBR_TIME_DOUBLE would be the NTScalar structure 
+in Figure 1. The improvements include:  
+Figure 1: pvData equivalent of DBR_TIME_double. 
+16th Int. Conf. on Accelerator and Large Experimental Control Systems ICALEPCS2017, Barcelona, Spain JACoW Publishing
+ISBN: 978-3-95450-193-9 doi:10.18429/JACoW-ICALEPCS2017-MOBPL01
+MOBPL01
+22
+ Content from this work may be used under the terms of the CC BY 3.0 licence ( © 2017). Any distribution of this work must maintain attribution to the author(s), title of the work, publisher, and DOI.
+Software Technology Evolution
+
+ 
+A user tag that could be used for pulse ID and a string 
+message on the alarm state. The data representation and 
+transportation work together to only send those parts of 
+the structure that have changed. In Figure 2, the fields that 
+have changed are in bold, and are all that is sent. 
+ 
+Figure 2: pvAccess send only changed fields. 
+ 
+The RPC type services can use structures that are 
+different for every call and different for put (request) and 
+get (response). The pvData representation can encode 
+complex data types like the table pictured in Figure 3.   
+  
+Figure 3: A pvData representation of NTTable. 
+ 
+These new mechanisms enable developers to create 
+Representational State Transfer (REST) style services. 
+STATUS OF EPICS 7 
+The Build System of EPICS 7, builds both EPICS 3 and 
+pvAccess into the single EPICS 7 release. Both pvAccess 
+and pvData run alongside of Channel Access and 
+DBR_types, either can be used. New Normative Types 
+(NT) are used to represent commonly used data structures 
+to support the development of client applications. Some 
+of the new NTypes include: Tables, N-Dimensional 
+Arrays, Heterogeneous Arrays, and Statistical Samples. 
+Services pvAccess provides improved metadata for the 
+IOC Database. There are REST style services over 
+pvAccess that connection to Relational DB and No SQL 
+Database Services. There is a Gateway Alpha Release that 
+demonstrates the ability to pass all Version 3 types as 
+well as area detector data, Field Programmable Gate 
+Array (FPGA) buffers, and tables through a share d 
+connection into the control network, limiting the impact 
+of clients connected outside of the control network. The 
+new network and data representation layers can replace 
+and in most cases, improve existing functionality with one 
+exception, pvAccess Database Links. This is expected to 
+be complete in (2018 Q2). An Access Security plugin is 
+defined, but there is not an implementation in use now . 
+New data aggregation libraries for the pvAccess library 
+are designed and planned for Java Client API in (2018 
+Q2). 
+Data Aggregation is planned for the C++ Client AP but 
+is not yet scheduled. The new capabilities provided in 
+EPICS 7 enable the development of services for complex 
+monitoring and control applications in the current release. 
+SERVICES 
+In EPICS V3, the primary service was the IOC. No 
+other dynamic service is in widespread use in the EPICS 
+collaboration. EPICS 7 provides the ability to develop 
+services for real time, aggregated, or configuration data. 
+The IOC service works the same as always for all scalar 
+values and their metadata. The new connection to the IOC 
+database, QSRV, adds the axis information to the 
+metadata for vector values, such as the value field of the 
+Waveform Record. The data acquisition and image 
+manipulation library, areaDetector, [6] now has a 
+pvAccess plugin that serves area detector images and has 
+been demonstrated to run through areaDetector, pvAccess 
+server and client, to the CSS viewer. An Image size 
+(1692*1352) at 33 Hz. [7] Figure 4 shows the image on 
+the left through pvAccess and the image on the right 
+through pvAccess.  
+ 
+Figure 4: CSS display an image from V3 and pvAccess. 
+ 
+The server for pvAccess requires much less CPU time 
+than Channel Access to serve the images of this size and 
+this rate as it makes use of smart pointers throughout the 
+pipeline. It also requires less CPU to display the images at 
+this rate as the NTNDArray is very like the Vimage. The 
+CPU load for these is shown in Figure 5. 
+ 
+Figure 5: Server and CSS CPU usage. 
+ 
+The first pvAccess REST style service is the Directory 
+Service. This service collects record name and property 
+information and provides the data as a NTTable. 
+16th Int. Conf. on Accelerator and Large Experimental Control Systems ICALEPCS2017, Barcelona, Spain JACoW Publishing
+ISBN: 978-3-95450-193-9 doi:10.18429/JACoW-ICALEPCS2017-MOBPL01
+Software Technology Evolution
+MOBPL01
+23
+Content from this work may be used under the terms of the CC BY 3.0 licence ( © 2017). Any distribution of this work must maintain attribution to the author(s), title of the work, publisher, and DOI.
+
+ 
+ 
+ 
+Figure 6: PV properties from ChannelFinder in CSS. 
+ 
+The data also includes runtime parameters such as IP 
+address and connection stat us as shown in Figure 6. This 
+service is used by physics application to map EPICS 
+Process Variables (PVs) to physics device names. The 
+physics view of the physics devices relates to how 
+elements affect the beam at certain location in the beam 
+transport. This was captured in a relationship view by 
+Lingyun Yang at NSLS II and is shown in figure 7. 
+ 
+ 
+Figure 7: Corrector properties labelled on the left. 
+ 
+There are typically over 1 million PVs in a user facility 
+such as NSLS II. As this is a service, CSS can also use the 
+same query to access the correctors and display their 
+value and readback to display them in a table widget. It 
+can also be used to display all beam position monitors’ x 
+and y position as a table or an orbit as shown in Figures 8 
+and 9. 
+ 
+Figure 8: CSS uses directory service. 
+ 
+ 
+Figures 9:  CSS uses directory service. 
+Any application can use this set of properties to create 
+an ordered view with the order of the properties, such as 
+geography or device, along with the value of a property 
+such as the physical position along a trajectory such as the 
+z axis of an accelerator beamline. CSS has a tool that 
+allows users to create the hierarchical view using the tags 
+and features in the Directory Service as shown in figure 
+10. The Directory Service has proven very versatile and 
+useful in many other applications. Many of the physics 
+applications that were developed by Dr. Yang at NSLS II, 
+used this service and others as reported at the ICLAPECS 
+2013 [8]. 
+Figure 10:  CSS orders properties in directory service. 
+  
+Figure 11:  MASAR Uses Save Set Service   
+In addition to the Directory Service, the Save Set 
+Service and Data Index Service have been developed to 
+support physics applications. The Save Set Service 
+manages snapshots of setpoints. The MASAR 
+applications (one shown in Figure 11) use the Directory 
+Service to build up Save Set configurations. They use the 
+Save Set Service to store, retrieve, and annotate sets of 
+data that are stored there. MASAR was one of the primary 
+16th Int. Conf. on Accelerator and Large Experimental Control Systems ICALEPCS2017, Barcelona, Spain JACoW Publishing
+ISBN: 978-3-95450-193-9 doi:10.18429/JACoW-ICALEPCS2017-MOBPL01
+MOBPL01
+24
+ Content from this work may be used under the terms of the CC BY 3.0 licence ( © 2017). Any distribution of this work must maintain attribution to the author(s), title of the work, publisher, and DOI.
+Software Technology Evolution
+
+ 
+tools used for machine commissioning at NSLS II with 
+over 1200 sets of setpoints stored as shown in Figure 12. 
+ 
+ 
+Figure 12: MASAR (Save/Restore) Use at NSLS II. 
+ 
+The Data Index Service, stores properties such as 
+configuration data, user, comments, along with 
+independent variables that are taken in real-time, that are 
+used to locate a data set. This service uses Elastic Search 
+to locate the proper data set in under 100 msecs given 
+over 1 million data sets with over 120 dynamic values 
+each. This service could be used to index Fast Machine 
+Protection trip data, Beam Synchronous Acquisition data, 
+or Detector Data from X-ray beamline experiments. 
+ 
+ 
+Figure 13: Service Use By CS-Studio 
+ 
+These are a few examples of services that have been 
+developed. Other services are planned for Time Series 
+Archived data, snapshot data managed as HDF5 or XML 
+files, Electronic Log Book, and Data Aggregation Service 
+such as hierarchical alarm views. EPICS 7 provides a way 
+for facilities to develop applications that use a robust suite 
+of services as illustrated in Figure 13. It also enables the 
+developers to create new micro-services that can be 
+shared by many applications at their facility. The EPICS 7 
+Architecture provides interconnectivity between services 
+and applications that allow reuse of robust services. 
+ 
+CURRENT USE OF EPICS 7 
+EPICS 7 is being released 4 th quarter of 2017. The sites 
+listed here are making use of pvAccess and pvData from 
+EPICS 4. These features will be seamlessly provided in 
+the EPICS 7 release due out soon. ESS plans to deploy it 
+for their entire facility. NSLS II, FRIB, and RAON have 
+the Directory Service, Save Set Service and Data Index 
+Service installed and running. The SNS experimental 
+beam lines are upgrading to EPICS 7 and use the 
+areaDetector service. LSLC I and LCLS II at SLAC are 
+using the middle layer services for their physics 
+environment. FHI has modified the Archive Appliance to 
+save pvData structures. Diamond and NSLS II transmit 
+areaDetector arrays between pvAccess servers and clients 
+and attain 90% loading on a 10 Gbps link. As EPICS 7 
+will include pvAccess in the build system, these features 
+will be readily available to any facility that downloads 
+release. 
+FUTURE DIRECTION 
+EPICS 7 enables the development of services from real-
+time sources, aggregators, and static databases. A surve y 
+of the large applications that are built around a distributed 
+control system give insight into the potential services that 
+would be useful for facilities. For physics applications: 
+Matlab Middle Layer Toolkit, XAL, and SDDS all share 
+one common attribute, the large configuration that assigns 
+physics names to EPICS PV names. Applications for 
+experiment control such as, SPEC, Malcolm, BlueSky, 
+and BluIce, all include data aggregation, file 
+writing/retrieval, and mapping of variable names to 
+detector and trajectories. Monitoring systems such as 
+Nagios and Zabbix, point to the need to have new 
+applications register and report availability of services 
+and resources. Relational database applications like 
+IRMIS and CCDB have been developed to map device 
+instances to serial numbers and run time variables. These 
+data stores can be integrated through the pvAccess 
+protocol and their data transmitted by pvData arbitrary 
+structure support (and most applications in Normative 
+Types). Small, robust, high performance services can 
+transform the way applications are written into small 
+lightweight applications that use services that are proven 
+at multiple facilities. 
+CONCLUSION 
+ EPICS 7 provides mechanisms to make all data 
+available as services. Data types used for generic services 
+are provide as a set of normative types. These 
+mechanisms and data types were used to integrate a set of 
+services to integrate real time data, aggregated data, and 
+configuration data. EPICS 7 is in use for physics 
+applications and DAQ at multiple sites. The EPICS 7 
+release makes it possible for services to be developed by 
+facilities throughout the community to provide an agile 
+and high-performance environment for automation, data 
+acquisition and data analysis. 
+ACKNOWLEDGEMENT 
+The EPICS 7 development has been performed by 
+many dedicated engineers in the community. Among 
+them are: Matej Sekoranyja (Cosylab), Marty Kraimer 
+(Osprey DCS), Michael Davidsaver (Osprey DCS), Ralph 
+16th Int. Conf. on Accelerator and Large Experimental Control Systems ICALEPCS2017, Barcelona, Spain JACoW Publishing
+ISBN: 978-3-95450-193-9 doi:10.18429/JACoW-ICALEPCS2017-MOBPL01
+Software Technology Evolution
+MOBPL01
+25
+Content from this work may be used under the terms of the CC BY 3.0 licence ( © 2017). Any distribution of this work must maintain attribution to the author(s), title of the work, publisher, and DOI.
+
+ 
+Lange (ITER), Andrew Johnson (APS), Timo Korhonen 
+(ESS), Heinz Junkes (FHI), Patrick Marschalik (FHI), 
+Murali Shankar(SLAC), Bruno Martins(FRIB), Kunal 
+Shroff(BNL), Arman Arkilic(BNL), Michael Dalesio 
+(Osprey DCS), Anton Metzger (Independent), Greg 
+White(SLAC), David Hickin (Formerly DLS), Guobao 
+Shen (APS), Sinesa Veseli (APS), Bob Dalesio (Osprey 
+DCS), Steve Hartman (ORNL). 
+ 
+REFERENCES 
+[1] Matthias Clausen, L Dalesio, "EPICS - Experimental 
+Physics and Industrial Control System", International 
+Committee for Future Accelerators, Beam Dynamics 
+Newsletter 47, pp. 56-66. Dec. 2008  
+[2] T. Korhonen, L.R. Dalesio, N. Malitsky, et al., "EPICS V4 
+Progress Report", in Proceedings of ICALEPCS 2013, San 
+Francisco, CA, USA, TUCOCB04 
+[3] J.O. Hill, "Channel Access: A Software Bus for the 
+LAACS", ICALEPCS'89, Vancouver, Canada 1989. 
+[4] M.R. Clausen, et al., "Control System Studio - Integrated 
+Operating, Configuration and Development", in 
+Proceedings of ICALEPCS 2009, Kobe, Japan, THC002 
+[5] J.D. Purcell, D.J.Armstrong, K.-U.Kasemir, et al., "CSS - 
+We Didn't Invent It, We Made It Better", in Proceedings 
+of ICALEPCS 2009, Kobe, Japan, TUP010 
+[6] Bruno Martins, reported at the areaDetector workshop, 
+connected to ICLAPECS 2017. Information at: 
+http://cars9.uchicago.edu/software/epics/NDP
+luginPva.html 
+[7] Bruno Martins and Kunal Shroff reported at the 
+areaDetector workshop, connected to ICLAPECS 2017. 
+Information and links to the source code can be found at: 
+http://cars.uchicago.edu/software/epics/NDPl
+uginPva.html 
+[8] L. Yang, J. Choi, Y. Hidaka, et al., "The Design of NSLS-
+II High Level Physics Applications", in Proceedings of 
+ICALEPCS 2013, San Francisco, CA, USA, TUPPC130 
+16th Int. Conf. on Accelerator and Large Experimental Control Systems ICALEPCS2017, Barcelona, Spain JACoW Publishing
+ISBN: 978-3-95450-193-9 doi:10.18429/JACoW-ICALEPCS2017-MOBPL01
+MOBPL01
+26
+ Content from this work may be used under the terms of the CC BY 3.0 licence ( © 2017). Any distribution of this work must maintain attribution to the author(s), title of the work, publisher, and DOI.
+Software Technology Evolution
