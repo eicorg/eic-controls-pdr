@@ -98,7 +98,7 @@ References:
 - Thin talk ecosystem visual source: [presentations/examples/thin_MOCR002_talk.pptx](examples/thin_MOCR002_talk.pptx)
 - Ecosystem text basis: [rod/raw_resources/_extracted/MOCR002.txt](../rod/raw_resources/_extracted/MOCR002.txt)
 
-## Slide 6: How EPICS Fits Our Requirements
+## Slide 6: How EPICS Supports Our Requirements
 
 Charge questions addressed: CQ2, CQ3, CQ8
 
@@ -106,21 +106,21 @@ Slide overview:
 How EPICS maps to the functional and performance requirements, including high-scale operation.
 
 Slide 6:
-- **Functional fit:**
+- **Functional support:**
 	- **Distributed control model supports heterogeneous subsystems and interfaces**
 	- **PVA-first data model supports structured data exchange and service integration**
 	- **CA compatibility preserves legacy interoperability during transition**
-- **Global collaboration fit:**
+- **Global collaboration support:**
 	- **EPICS maintains a large, global device-support ecosystem across Base, IOC modules, and extensions**
 	- **Hardware and soft-support module catalogs are community-maintained and continuously expanded**
 	- **Expertise is distributed across major labs and facilities, reducing single-site dependency risk**
-- **Performance and scale fit:**
+- **Performance and scale support:**
 	- **EPICS IOC record processing supports standard periodic scan classes (10, 5, 2, 1, 0.5, 0.2, 0.1 seconds), i.e., up to 10 Hz in default periodic mode**
 	- **Faster update behavior can be configured with non-standard scan rates or `I/O Intr` event-driven processing when device support and platform timing allow**
 	- **EIC performance targets are explicit in the requirements: alarm threshold evaluation at >=10 Hz per monitored signal (`P-EIC-CTRL-SW-ALRM.3`) and OPI update support up to 30 Hz (`P-EIC-CTRL-SW-OPI.3`) via demonstration**
 	- **Architecture is designed for staged growth toward large-scale deployment (target planning up to ~20M PVs)**
 	- **Modular architecture supports horizontal scaling across IOCs, services, and client workloads**
-- **Reliability and operations fit:**
+- **Reliability and operations support:**
 	- **Distributed IOC and service architecture reduces single-point concentration risk when deployed with redundancy**
 	- **Vibrant collaboration around tools and services improves maintainability and long-term support**
 
@@ -346,7 +346,7 @@ Slide 15:
 	- **Supports RPC-style interactions for service-oriented control workflows**
 - **Operational and integration benefits:**
 	- **Normative Types provide standard semantics for generic client behavior**
-	- **Better fit for middle-layer services, aggregated data, and modern tooling**
+	- **Better support for middle-layer services, aggregated data, and modern tooling**
 	- **Enables atomic/consistent grouped updates where required**
 - **Practical EIC implication:**
 	- **PVA-first for new systems, with CA retained where compatibility is required**
@@ -422,7 +422,7 @@ Why a unified operator platform matters: workflow efficiency, consistency, and s
 Slide 18:
 - **Integrated workflow across displays, alarms, trends, logbook, and save/restore**
 	- **Operators navigate seamlessly between tools without manual re-entry of PV names or loss of context**
-	- **Example workflow: alarm investigation â†’ historical data retrieval â†’ device displays â†’ logbook documentation, all within one environment**
+	- **Example workflow: alarm investigation -> historical data retrieval -> device displays -> logbook documentation, all within one environment**
 - **Context sharing reduces operator burden and improves efficiency**
 	- **Selection and adapter services automatically propagate context: PV names, values, timestamps, alarm states, archive sources, OPI screen locations**
 	- **Selecting an alarm opens related displays and trends; PV searches integrate with Data Browser without manual re-entry**
@@ -457,7 +457,7 @@ Slide 19:
 
 Notes:
 1. These applications are tightly integrated; context (PV names, values, alarms, archive sources) flows seamlessly between tools.
-2. Operators move fluidly from alarm investigation â†’ historical trends â†’ device displays â†’ logbook without re-entry.
+2. Operators move fluidly from alarm investigation -> historical trends -> device displays -> logbook without re-entry.
 3. Emphasize the consistent, unified user experience across all workflows.
 
 References:

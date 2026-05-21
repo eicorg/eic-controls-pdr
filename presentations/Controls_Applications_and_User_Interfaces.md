@@ -136,7 +136,7 @@ Slide 7:
 - **Thin talk anchors:**
 	- **Display Builder editor**
 	- **Display Builder runtime**
-- **EIC operator-interface fit:**
+- **EIC operator-interface support:**
 	- **Reusable widgets and parameterized displays**
 	- **Live process data with metadata, alarm awareness, units, and precision**
 	- **Version-controlled `.bob` screen assets for consistent operations**
