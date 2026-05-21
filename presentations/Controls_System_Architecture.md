@@ -41,18 +41,16 @@ Slide 2:
 Charge questions addressed: CQ8 (overall maturity roadmap)
 
 Slide overview:
-Quick roadmap of the discussion: architecture, requirements fit, migration strategy, and delivery readiness.
 
 Slide 3:
 - Scope
-- Review context and charge-question framing
-- Scope and architecture boundaries
-- EPICS foundation and requirements fit
-- ADO and EPICS coexistence strategy
-- Network and infrastructure architecture
-- Middle-layer services and tools
-- CI/CD, governance, and implementation readiness
-- Open decisions and discussion
+- high-level architecture
+- EPICS
+- ADO, dual-system coexistence, tradeoffs, and decision matrix
+- Network architecture, subnet strategy, and buildout plan
+- EPICS IOC continuity and pvAccess protocol value
+- Middle-layer services, Phoebus toolkit, architecture, and web access
+- CI/CD governance, automation stack, QA/QC gates, and domain pipelines
 
 Notes:
 1. The outline is intentionally sequenced from strategic framing to technical architecture, then execution readiness.
@@ -79,6 +77,7 @@ Slide overview:
 Present a single high-level diagram of the EIC controls system architecture and explain the major layers.
 
 Slide 5:
+![EIC controls ecosystem context diagram](examples/images/MOCR002_f1.png)
 - Diagram title: EIC Controls System Architecture (High-Level)
 - Diagram layers:
 	- Operator and application layer (Phoebus tools, web tools, HLAs)
@@ -94,6 +93,10 @@ Notes:
 1. This is the anchor diagram for the rest of the talk; later slides zoom into each layer.
 2. The key message is architectural coherence: multiple subsystems, one operational experience.
 3. Coexistence is intentional in this phase, with transition path toward EPICS-first operations.
+
+References:
+- Thin talk ecosystem visual source: [presentations/examples/thin_MOCR002_talk.pptx](examples/thin_MOCR002_talk.pptx)
+- Ecosystem text basis: [rod/raw_resources/_extracted/MOCR002.txt](../rod/raw_resources/_extracted/MOCR002.txt)
 
 ## Slide 6: How EPICS Fits Our Requirements
 
