@@ -1,5 +1,7 @@
 ## Slide 1: Controls System Architecture
 
+Charge questions addressed: CQ8 (design maturity readiness framing)
+
 Slide overview:
 Establish the review context, scope intent, and expected outcome of the presentation for the committee.
 
@@ -19,20 +21,24 @@ Detailed references appear in the technical slides where they are used.
 
 ## Slide 2: Charge Questions
 
+Charge questions addressed: CQ1-CQ8 (definition and scope of all charge questions)
+
 Slide overview:
 Frame the review criteria and clarify which questions are addressed in this presentation phase versus later phases.
 
 Slide 2:
-- Have committee recommendations from the Preliminary Design Review been addressed adequately?
-- Are the system requirements sufficiently defined, understood, and documented for this phase of the design?
-- Do the designs meet the requirements? (scope for later phase)
-- Are the interfaces sufficiently defined, understood, and documented for this phase of the design?
-- Are the analysis, simulations, drawings, specifications, and work plans sufficient for this phase of the design?
-- Are the plans to address ES&H and quality sufficient for this phase of the design?
-- Have technical risks been identified and are mitigation plans adequate for this phase of the design? (scope for later phase)
-- Is the overall design maturity sufficient to proceed with the final design phase?
+- CQ1: Have committee recommendations from the Preliminary Design Review been addressed adequately?
+- CQ2: Are the system requirements sufficiently defined, understood, and documented for this phase of the design?
+- CQ3: Do the designs meet the requirements? (scope for later phase)
+- CQ4: Are the interfaces sufficiently defined, understood, and documented for this phase of the design?
+- CQ5: Are the analysis, simulations, drawings, specifications, and work plans sufficient for this phase of the design?
+- CQ6: Are the plans to address ES&H and quality sufficient for this phase of the design?
+- CQ7: Have technical risks been identified and are mitigation plans adequate for this phase of the design? (scope for later phase)
+- CQ8: Is the overall design maturity sufficient to proceed with the final design phase?
 
 ## Slide 3: Outline of the Talk
+
+Charge questions addressed: CQ8 (overall maturity roadmap)
 
 Slide overview:
 Quick roadmap of the discussion: architecture, requirements fit, migration strategy, and delivery readiness.
@@ -53,6 +59,8 @@ Notes:
 
 ## Slide 4: Scope
 
+Charge questions addressed: CQ2, CQ4, CQ5, CQ8
+
 Slide overview:
 What this presentation covers at the architecture level.
 
@@ -64,6 +72,8 @@ Slide 4:
 - CI/CD and governance model
 
 ## Slide 5: High-Level EIC Controls Architecture
+
+Charge questions addressed: CQ2, CQ4, CQ8
 
 Slide overview:
 Present a single high-level diagram of the EIC controls system architecture and explain the major layers.
@@ -86,6 +96,8 @@ Notes:
 3. Coexistence is intentional in this phase, with transition path toward EPICS-first operations.
 
 ## Slide 6: How EPICS Fits Our Requirements
+
+Charge questions addressed: CQ2, CQ3, CQ8
 
 Slide overview:
 How EPICS maps to the functional and performance requirements, including high-scale operation.
@@ -121,6 +133,8 @@ References:
 
 ## Slide 7: ADO Control System - Role and Context
 
+Charge questions addressed: CQ2, CQ4
+
 Slide overview:
 Introduce ADO as the legacy controls framework and define its functional role at a high level.
 
@@ -138,6 +152,8 @@ Notes:
 2. The coexistence rationale and deployment status are covered in Slide 8.
 
 ## Slide 8: Dual-System Support and Current Deployment Status
+
+Charge questions addressed: CQ1, CQ4, CQ7, CQ8
 
 Slide overview:
 Why ADO and EPICS need to run in parallel in the near term, and what that looks like today.
@@ -162,6 +178,8 @@ Notes:
 
 ## Slide 9: Two-Control-System Architecture Diagram
 
+Charge questions addressed: CQ4, CQ5
+
 Slide overview:
 Show the ADO and EPICS control paths side by side and identify where they converge for operations, services, and user interfaces.
 
@@ -183,6 +201,8 @@ Notes:
 3. The user experience target is protocol-transparent operations even while backend systems differ.
 
 ## Slide 10: Coexistence Strategies and Tradeoffs
+
+Charge questions addressed: CQ7, CQ8
 
 Slide overview:
 Compare the three integration strategies for simultaneous ADO and EPICS operation, focusing on user transparency, performance, and scalability.
@@ -213,6 +233,8 @@ Notes:
 
 ## Slide 11: Strategy Decision Matrix and Recommended Boundaries
 
+Charge questions addressed: CQ1, CQ7, CQ8
+
 Slide overview:
 Decision matrix and selected multi-path strategy to maintain a uniform user experience.
 
@@ -231,6 +253,8 @@ Notes:
 2. The key message is not one-path replacement, but an ordered multi-path architecture with operational consistency.
 
 ## Slide 12: Network Architecture and Subnet Strategy
+
+Charge questions addressed: CQ4, CQ6, CQ7
 
 Slide overview:
 Network architecture needed for distributed ADO and EPICS operation with secure, scalable service connectivity.
@@ -258,6 +282,8 @@ Notes:
 
 ## Slide 13: Subnet Buildout Plan (Controls, Instrumentation, Data)
 
+Charge questions addressed: CQ5, CQ6, CQ7
+
 Slide overview:
 Placeholder for deeper network architecture and subnet implementation details.
 
@@ -272,6 +298,8 @@ Notes:
 2. Expand once network architecture decisions are finalized.
 
 ## Slide 14: EPICS and IOC Architecture Fundamentals
+
+Charge questions addressed: CQ2, CQ3
 
 Slide overview:
 Role of EPICS IOCs in the controls stack, and why EPICS 7 allows gradual modernization without disruptive rewrites.
@@ -299,6 +327,8 @@ References:
 
 ## Slide 15: pvAccess Protocol Value for EIC
 
+Charge questions addressed: CQ2, CQ3, CQ4
+
 Slide overview:
 Why pvAccess is the preferred protocol path for new EIC workflows, especially for structured data and service integration.
 
@@ -325,6 +355,8 @@ References:
 - EPICS 7 five-year status paper (extracted): [rod/raw_resources/_extracted/th1bco01.txt](../rod/raw_resources/_extracted/th1bco01.txt)
 
 ## Slide 16: Middle-Layer Services - Technical Benefits
+
+Charge questions addressed: CQ2, CQ3, CQ8
 
 Slide overview:
 Phoebus middle-layer services baseline and architecture benefits from the EIC Phoebus ROD.
@@ -355,6 +387,8 @@ References:
 
 ## Slide 17: Middle-Layer Services - Individual Roles
 
+Charge questions addressed: CQ4, CQ5
+
 Slide overview:
 What each service does and why it matters for EIC operations.
 
@@ -372,6 +406,8 @@ Notes:
 3. These services work together to enable the consistent operator workflows shown in Slide 18.
 
 ## Slide 18: Phoebus Operator Toolkit - Strategic Benefits
+
+Charge questions addressed: CQ1, CQ8
 
 Slide overview:
 Why a unified operator platform matters: workflow efficiency, consistency, and scalability.
@@ -398,6 +434,8 @@ References:
 
 ## Slide 19: Phoebus Applications - Integrated Operator Toolkit
 
+Charge questions addressed: CQ3, CQ4, CQ5
+
 Slide overview:
 User-facing applications within Phoebus that form a cohesive operator environment.
 
@@ -420,6 +458,8 @@ References:
 - Phoebus tools and services decision record: [rod/EIC-ROD-Phoebus-Tools-and-Services.md](../rod/EIC-ROD-Phoebus-Tools-and-Services.md)
 
 ## Slide 20: Phoebus Architecture - Modular Foundation
+
+Charge questions addressed: CQ5, CQ8
 
 Slide overview:
 Core technical architecture that enables the integrated toolkit and supports independent service deployment.
@@ -446,6 +486,8 @@ References:
 - Phoebus framework architecture and SPI: [rod/raw_resources/_extracted/MOCR002.txt](../rod/raw_resources/_extracted/MOCR002.txt)
 
 ## Slide 21: Web Tools and Complementary Access
+
+Charge questions addressed: CQ4, CQ5
 
 Slide overview:
 Browser-based interfaces and lightweight access paths for operational visibility and service integration.
@@ -478,6 +520,8 @@ References:
 
 ## Slide 22: CI/CD, Governance, and Infrastructure as Code
 
+Charge questions addressed: CQ5, CQ6, CQ8
+
 Slide overview:
 How source control, automation pipelines, and infrastructure-as-code practices support delivery quality and operational repeatability.
 
@@ -500,6 +544,8 @@ References:
 - Phoebus tools and services decision record: [rod/EIC-ROD-Phoebus-Tools-and-Services.md](../rod/EIC-ROD-Phoebus-Tools-and-Services.md)
 
 ## Slide 23: GitHub Platform and Automation Stack
+
+Charge questions addressed: CQ5, CQ6
 
 Slide overview:
 How GitHub, GitHub Actions, Ansible, and AWX work together as the delivery backbone.
@@ -531,6 +577,8 @@ References:
 
 ## Slide 24: QA/QC Through Code Review and Pipeline Gates
 
+Charge questions addressed: CQ6, CQ7
+
 Slide overview:
 How QA/QC is embedded into code review and automated gates before changes reach operations.
 
@@ -553,6 +601,8 @@ Notes:
 2. Tie quality outcomes directly to reduced commissioning and operations risk.
 
 ## Slide 25: CI/CD Pipelines by Domain
+
+Charge questions addressed: CQ5, CQ6, CQ7
 
 Slide overview:
 CI/CD pipeline scope by domain: infrastructure, IOCs, services, tools, and resources.
