@@ -116,8 +116,8 @@ Notes:
 
 References:
 - EPICS overview: https://epics-controls.org/about-epics/
-- EPICS 7 enhancements (extracted): [rod/raw_resources/_extracted/mobpl01.txt](rod/raw_resources/_extracted/mobpl01.txt)
-- EPICS 7 status and roadmap (extracted): [rod/raw_resources/_extracted/th1bco01.txt](rod/raw_resources/_extracted/th1bco01.txt)
+- EPICS 7 enhancements (extracted): [rod/raw_resources/_extracted/mobpl01.txt](../rod/raw_resources/_extracted/mobpl01.txt)
+- EPICS 7 status and roadmap (extracted): [rod/raw_resources/_extracted/th1bco01.txt](../rod/raw_resources/_extracted/th1bco01.txt)
 
 ## Slide 7: ADO Control System - Role and Context
 
@@ -294,8 +294,8 @@ Notes:
 2. Reinforce that modernization is additive: new capabilities are introduced without breaking legacy control paths.
 
 References:
-- EPICS 7 enhancements paper (extracted): [rod/raw_resources/_extracted/mobpl01.txt](rod/raw_resources/_extracted/mobpl01.txt)
-- EPICS 7 five-year status paper (extracted): [rod/raw_resources/_extracted/th1bco01.txt](rod/raw_resources/_extracted/th1bco01.txt)
+- EPICS 7 enhancements paper (extracted): [rod/raw_resources/_extracted/mobpl01.txt](../rod/raw_resources/_extracted/mobpl01.txt)
+- EPICS 7 five-year status paper (extracted): [rod/raw_resources/_extracted/th1bco01.txt](../rod/raw_resources/_extracted/th1bco01.txt)
 
 ## Slide 15: pvAccess Protocol Value for EIC
 
@@ -321,8 +321,8 @@ Notes:
 2. Position PVA as capability expansion, not a disruption to existing operations.
 
 References:
-- EPICS 7 enhancements paper (extracted): [rod/raw_resources/_extracted/mobpl01.txt](rod/raw_resources/_extracted/mobpl01.txt)
-- EPICS 7 five-year status paper (extracted): [rod/raw_resources/_extracted/th1bco01.txt](rod/raw_resources/_extracted/th1bco01.txt)
+- EPICS 7 enhancements paper (extracted): [rod/raw_resources/_extracted/mobpl01.txt](../rod/raw_resources/_extracted/mobpl01.txt)
+- EPICS 7 five-year status paper (extracted): [rod/raw_resources/_extracted/th1bco01.txt](../rod/raw_resources/_extracted/th1bco01.txt)
 
 ## Slide 16: Middle-Layer Services - Technical Benefits
 
@@ -350,8 +350,8 @@ Notes:
 3. Highlight service ownership, version pinning, and readiness checks as maintainability controls.
 
 References:
-- Phoebus tools and services decision record: [rod/EIC-ROD-Phoebus-Tools-and-Services.md](rod/EIC-ROD-Phoebus-Tools-and-Services.md)
-- Phoebus ecosystem paper (extracted): [rod/raw_resources/_extracted/MOCR002.txt](rod/raw_resources/_extracted/MOCR002.txt)
+- Phoebus tools and services decision record: [rod/EIC-ROD-Phoebus-Tools-and-Services.md](../rod/EIC-ROD-Phoebus-Tools-and-Services.md)
+- Phoebus ecosystem paper (extracted): [rod/raw_resources/_extracted/MOCR002.txt](../rod/raw_resources/_extracted/MOCR002.txt)
 
 ## Slide 17: Middle-Layer Services - Individual Roles
 
@@ -387,18 +387,14 @@ Slide 18:
 	- Single integrated desktop environment reduces training overhead and support burden
 	- Consistent data models and shared core modules across all applications enable seamless workflows
 	- Modular architecture and SPI-based extensibility allow sites to add tools and protocols without disrupting core stability
-- **Scalability through modular services and independent deployment**
-	- Each tool and service scales independently; failures are isolated within affected service
-	- Web and mobile clients complement desktop Phoebus for broader stakeholder reach
-	- REST APIs and extensible architecture enable custom integrations and site-specific applications
 
 Notes:
 1. This is the strategic rationale: efficiency, consistency, and sustainability drive the Phoebus investment.
 2. Transition to the next slides to show concrete implementations (applications, architecture, web tools).
 
 References:
-- Phoebus ecosystem paper: [rod/raw_resources/_extracted/MOCR002.txt](rod/raw_resources/_extracted/MOCR002.txt)
-- Phoebus tools and services decision record: [rod/EIC-ROD-Phoebus-Tools-and-Services.md](rod/EIC-ROD-Phoebus-Tools-and-Services.md)
+- Phoebus ecosystem paper: [rod/raw_resources/_extracted/MOCR002.txt](../rod/raw_resources/_extracted/MOCR002.txt)
+- Phoebus tools and services decision record: [rod/EIC-ROD-Phoebus-Tools-and-Services.md](../rod/EIC-ROD-Phoebus-Tools-and-Services.md)
 
 ## Slide 19: Phoebus Applications - Integrated Operator Toolkit
 
@@ -420,8 +416,8 @@ Notes:
 3. Emphasize the consistent, unified user experience across all workflows.
 
 References:
-- Phoebus applications and ecosystem integration: [rod/raw_resources/_extracted/MOCR002.txt](rod/raw_resources/_extracted/MOCR002.txt)
-- Phoebus tools and services decision record: [rod/EIC-ROD-Phoebus-Tools-and-Services.md](rod/EIC-ROD-Phoebus-Tools-and-Services.md)
+- Phoebus applications and ecosystem integration: [rod/raw_resources/_extracted/MOCR002.txt](../rod/raw_resources/_extracted/MOCR002.txt)
+- Phoebus tools and services decision record: [rod/EIC-ROD-Phoebus-Tools-and-Services.md](../rod/EIC-ROD-Phoebus-Tools-and-Services.md)
 
 ## Slide 20: Phoebus Architecture - Modular Foundation
 
@@ -447,7 +443,7 @@ Notes:
 3. The modular design supports containerized deployment and modern CI/CD practices.
 
 References:
-- Phoebus framework architecture and SPI: [rod/raw_resources/_extracted/MOCR002.txt](rod/raw_resources/_extracted/MOCR002.txt)
+- Phoebus framework architecture and SPI: [rod/raw_resources/_extracted/MOCR002.txt](../rod/raw_resources/_extracted/MOCR002.txt)
 
 ## Slide 21: Web Tools and Complementary Access
 
@@ -477,8 +473,8 @@ Notes:
 3. Mention that web tools follow containerized, modern deployment patterns aligned with EIC CI/CD infrastructure.
 
 References:
-- Phoebus ecosystem paper (Olog web, multi-platform access): [rod/raw_resources/_extracted/MOCR002.txt](rod/raw_resources/_extracted/MOCR002.txt)
-- Phoebus tools and services decision record: [rod/EIC-ROD-Phoebus-Tools-and-Services.md](rod/EIC-ROD-Phoebus-Tools-and-Services.md)
+- Phoebus ecosystem paper (Olog web, multi-platform access): [rod/raw_resources/_extracted/MOCR002.txt](../rod/raw_resources/_extracted/MOCR002.txt)
+- Phoebus tools and services decision record: [rod/EIC-ROD-Phoebus-Tools-and-Services.md](../rod/EIC-ROD-Phoebus-Tools-and-Services.md)
 
 ## Slide 22: CI/CD, Governance, and Infrastructure as Code
 
@@ -500,8 +496,8 @@ Notes:
 2. Emphasize that CI/CD is part of architecture maturity, not only software process.
 
 References:
-- GitHub platform decision record: [rod/EIC-ROD-GitHub-Platform.md](rod/EIC-ROD-GitHub-Platform.md)
-- Phoebus tools and services decision record: [rod/EIC-ROD-Phoebus-Tools-and-Services.md](rod/EIC-ROD-Phoebus-Tools-and-Services.md)
+- GitHub platform decision record: [rod/EIC-ROD-GitHub-Platform.md](../rod/EIC-ROD-GitHub-Platform.md)
+- Phoebus tools and services decision record: [rod/EIC-ROD-Phoebus-Tools-and-Services.md](../rod/EIC-ROD-Phoebus-Tools-and-Services.md)
 
 ## Slide 23: GitHub Platform and Automation Stack
 
@@ -531,7 +527,7 @@ Notes:
 2. Highlight repeatability, auditability, and lower manual error rates.
 
 References:
-- GitHub platform decision record: [rod/EIC-ROD-GitHub-Platform.md](rod/EIC-ROD-GitHub-Platform.md)
+- GitHub platform decision record: [rod/EIC-ROD-GitHub-Platform.md](../rod/EIC-ROD-GitHub-Platform.md)
 
 ## Slide 24: QA/QC Through Code Review and Pipeline Gates
 
