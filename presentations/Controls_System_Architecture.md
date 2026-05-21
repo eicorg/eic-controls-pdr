@@ -115,7 +115,9 @@ Slide 6:
 	- Hardware and soft-support module catalogs are community-maintained and continuously expanded
 	- Expertise is distributed across major labs and facilities, reducing single-site dependency risk
 - Performance and scale fit:
-	- Supports high-rate monitoring and control workflows across large PV populations
+	- EPICS IOC record processing supports standard periodic scan classes (10, 5, 2, 1, 0.5, 0.2, 0.1 seconds), i.e., up to 10 Hz in default periodic mode
+	- Faster update behavior can be configured with non-standard scan rates or `I/O Intr` event-driven processing when device support and platform timing allow
+	- EIC performance targets are explicit in the requirements: alarm threshold evaluation at >=10 Hz per monitored signal (`P-EIC-CTRL-SW-ALRM.3`) and OPI update support up to 30 Hz (`P-EIC-CTRL-SW-OPI.3`) via demonstration
 	- Architecture is designed for staged growth toward large-scale deployment (target planning up to ~20M PVs)
 	- Modular architecture supports horizontal scaling across IOCs, services, and client workloads
 - Reliability and operations fit:
@@ -125,12 +127,14 @@ Slide 6:
 Notes:
 1. This slide should connect requirement intent to architecture capability, not claim full verification closure.
 2. Use representative requirement metrics in speaker narration to show feasibility.
-3. Call out that EPICS uses client/server plus publish/subscribe protocols designed for high-bandwidth soft real-time applications across hundreds of computers.
+3. Call out that EPICS uses client/server plus publish/subscribe protocols; achieved update rates depend on IOC CPU, OS scheduling (Linux/RTEMS/vxWorks), network conditions, and client rendering limits.
 4. Emphasize that scale is addressed through modular architecture, horizontal expansion, and phased deployment validation.
 5. Keep the ~20M PV statement explicitly labeled as a program planning target, not a formal requirement line item.
+6. Treat 30 Hz as a demonstrated capability target for selected use cases, not a blanket default for all displays/signals.
 
 References:
 - EPICS overview: https://epics-controls.org/about-epics/
+- Controls software requirements authority: [supporting-docs/EIC-SEG-RSI-158-Control.Software-Performance.Requirements.Document.txt](../supporting-docs/EIC-SEG-RSI-158-Control.Software-Performance.Requirements.Document.txt)
 - EPICS 7 enhancements (extracted): [rod/raw_resources/_extracted/mobpl01.txt](../rod/raw_resources/_extracted/mobpl01.txt)
 - EPICS 7 status and roadmap (extracted): [rod/raw_resources/_extracted/th1bco01.txt](../rod/raw_resources/_extracted/th1bco01.txt)
 
