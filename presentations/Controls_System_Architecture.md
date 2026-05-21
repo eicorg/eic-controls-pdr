@@ -1,4 +1,4 @@
-## Slide 1: Controls System Architecture
+﻿## Slide 1: Controls System Architecture
 
 Charge questions addressed: CQ8 (design maturity readiness framing)
 
@@ -6,11 +6,11 @@ Slide overview:
 Establish the review context, scope intent, and expected outcome of the presentation for the committee.
 
 Slide 1:
-- Title: Controls System Architecture
-- Subtitle: EIC Controls PDR Architecture Review
-- Presenter block: team, date, review body
-- Purpose statement:
-	Present the baseline controls architecture, legacy coexistence strategy, and delivery model readiness for final design progression.
+- **Title: Controls System Architecture**
+- **Subtitle: EIC Controls PDR Architecture Review**
+- **Presenter block: team, date, review body**
+- **Purpose statement:**
+	**Present the baseline controls architecture, legacy coexistence strategy, and delivery model readiness for final design progression.**
 
 Notes:
 1. This talk addresses architecture maturity for the current review phase, not full final-design closure.
@@ -27,14 +27,14 @@ Slide overview:
 Frame the review criteria and clarify which questions are addressed in this presentation phase versus later phases.
 
 Slide 2:
-- CQ1: Have committee recommendations from the Preliminary Design Review been addressed adequately?
-- CQ2: Are the system requirements sufficiently defined, understood, and documented for this phase of the design?
-- CQ3: Do the designs meet the requirements? (scope for later phase)
-- CQ4: Are the interfaces sufficiently defined, understood, and documented for this phase of the design?
-- CQ5: Are the analysis, simulations, drawings, specifications, and work plans sufficient for this phase of the design?
-- CQ6: Are the plans to address ES&H and quality sufficient for this phase of the design?
-- CQ7: Have technical risks been identified and are mitigation plans adequate for this phase of the design? (scope for later phase)
-- CQ8: Is the overall design maturity sufficient to proceed with the final design phase?
+- **CQ1: Have committee recommendations from the Preliminary Design Review been addressed adequately?**
+- **CQ2: Are the system requirements sufficiently defined, understood, and documented for this phase of the design?**
+- **CQ3: Do the designs meet the requirements? (scope for later phase)**
+- **CQ4: Are the interfaces sufficiently defined, understood, and documented for this phase of the design?**
+- **CQ5: Are the analysis, simulations, drawings, specifications, and work plans sufficient for this phase of the design?**
+- **CQ6: Are the plans to address ES&H and quality sufficient for this phase of the design?**
+- **CQ7: Have technical risks been identified and are mitigation plans adequate for this phase of the design? (scope for later phase)**
+- **CQ8: Is the overall design maturity sufficient to proceed with the final design phase?**
 
 ## Slide 3: Outline of the Talk
 
@@ -43,14 +43,14 @@ Charge questions addressed: CQ8 (overall maturity roadmap)
 Slide overview:
 
 Slide 3:
-- Scope
-- high-level architecture
-- EPICS
-- ADO, dual-system coexistence, tradeoffs, and decision matrix
-- Network architecture, subnet strategy, and buildout plan
-- EPICS IOC continuity and pvAccess protocol value
-- Middle-layer services, Phoebus toolkit, architecture, and web access
-- CI/CD governance, automation stack, QA/QC gates, and domain pipelines
+- **Scope**
+- **high-level architecture**
+- **EPICS**
+- **ADO, dual-system coexistence, tradeoffs, and decision matrix**
+- **Network architecture, subnet strategy, and buildout plan**
+- **EPICS IOC continuity and pvAccess protocol value**
+- **Middle-layer services, Phoebus toolkit, architecture, and web access**
+- **CI/CD governance, automation stack, QA/QC gates, and domain pipelines**
 
 Notes:
 1. The outline is intentionally sequenced from strategic framing to technical architecture, then execution readiness.
@@ -63,11 +63,11 @@ Slide overview:
 What this presentation covers at the architecture level.
 
 Slide 4:
-- Controls system architecture baseline (EPICS 7, PVA-first)
-- Coexistence strategy for EPICS and legacy ADO systems
-- Middle-layer services and operator tools
-- Network and infrastructure architecture
-- CI/CD and governance model
+- **Controls system architecture baseline (EPICS 7, PVA-first)**
+- **Coexistence strategy for EPICS and legacy ADO systems**
+- **Middle-layer services and operator tools**
+- **Network and infrastructure architecture**
+- **CI/CD and governance model**
 
 ## Slide 5: High-Level EIC Controls Architecture
 
@@ -78,16 +78,16 @@ Present a single high-level diagram of the EIC controls system architecture and 
 
 Slide 5:
 ![EIC controls ecosystem context diagram](examples/images/MOCR002_f1.png)
-- Diagram title: EIC Controls System Architecture (High-Level)
-- Diagram layers:
-	- Operator and application layer (Phoebus tools, web tools, HLAs)
-	- Middle-layer services (Archiver, Alarm, Olog, ChannelFinder, Save/Restore, Gateway)
-	- Control system layer (EPICS 7 with PVA-first, CA compatibility)
-	- Legacy integration layer (ADO servers, ADO2EPICS bridge)
-	- Infrastructure layer (network zones, compute, storage, CI/CD platform)
-- Interface emphasis:
-	- User-facing workflows are uniform across EPICS-native and ADO-backed systems
-	- Service APIs and protocol boundaries are explicit
+- **Diagram title: EIC Controls System Architecture (High-Level)**
+- **Diagram layers:**
+	- **Operator and application layer (Phoebus tools, web tools, HLAs)**
+	- **Middle-layer services (Archiver, Alarm, Olog, ChannelFinder, Save/Restore, Gateway)**
+	- **Control system layer (EPICS 7 with PVA-first, CA compatibility)**
+	- **Legacy integration layer (ADO servers, ADO2EPICS bridge)**
+	- **Infrastructure layer (network zones, compute, storage, CI/CD platform)**
+- **Interface emphasis:**
+	- **User-facing workflows are uniform across EPICS-native and ADO-backed systems**
+	- **Service APIs and protocol boundaries are explicit**
 
 Notes:
 1. This is the anchor diagram for the rest of the talk; later slides zoom into each layer.
@@ -106,23 +106,23 @@ Slide overview:
 How EPICS maps to the functional and performance requirements, including high-scale operation.
 
 Slide 6:
-- Functional fit:
-	- Distributed control model supports heterogeneous subsystems and interfaces
-	- PVA-first data model supports structured data exchange and service integration
-	- CA compatibility preserves legacy interoperability during transition
-- Global collaboration fit:
-	- EPICS maintains a large, global device-support ecosystem across Base, IOC modules, and extensions
-	- Hardware and soft-support module catalogs are community-maintained and continuously expanded
-	- Expertise is distributed across major labs and facilities, reducing single-site dependency risk
-- Performance and scale fit:
-	- EPICS IOC record processing supports standard periodic scan classes (10, 5, 2, 1, 0.5, 0.2, 0.1 seconds), i.e., up to 10 Hz in default periodic mode
-	- Faster update behavior can be configured with non-standard scan rates or `I/O Intr` event-driven processing when device support and platform timing allow
-	- EIC performance targets are explicit in the requirements: alarm threshold evaluation at >=10 Hz per monitored signal (`P-EIC-CTRL-SW-ALRM.3`) and OPI update support up to 30 Hz (`P-EIC-CTRL-SW-OPI.3`) via demonstration
-	- Architecture is designed for staged growth toward large-scale deployment (target planning up to ~20M PVs)
-	- Modular architecture supports horizontal scaling across IOCs, services, and client workloads
-- Reliability and operations fit:
-	- Distributed IOC and service architecture reduces single-point concentration risk when deployed with redundancy
-	- Vibrant collaboration around tools and services improves maintainability and long-term support
+- **Functional fit:**
+	- **Distributed control model supports heterogeneous subsystems and interfaces**
+	- **PVA-first data model supports structured data exchange and service integration**
+	- **CA compatibility preserves legacy interoperability during transition**
+- **Global collaboration fit:**
+	- **EPICS maintains a large, global device-support ecosystem across Base, IOC modules, and extensions**
+	- **Hardware and soft-support module catalogs are community-maintained and continuously expanded**
+	- **Expertise is distributed across major labs and facilities, reducing single-site dependency risk**
+- **Performance and scale fit:**
+	- **EPICS IOC record processing supports standard periodic scan classes (10, 5, 2, 1, 0.5, 0.2, 0.1 seconds), i.e., up to 10 Hz in default periodic mode**
+	- **Faster update behavior can be configured with non-standard scan rates or `I/O Intr` event-driven processing when device support and platform timing allow**
+	- **EIC performance targets are explicit in the requirements: alarm threshold evaluation at >=10 Hz per monitored signal (`P-EIC-CTRL-SW-ALRM.3`) and OPI update support up to 30 Hz (`P-EIC-CTRL-SW-OPI.3`) via demonstration**
+	- **Architecture is designed for staged growth toward large-scale deployment (target planning up to ~20M PVs)**
+	- **Modular architecture supports horizontal scaling across IOCs, services, and client workloads**
+- **Reliability and operations fit:**
+	- **Distributed IOC and service architecture reduces single-point concentration risk when deployed with redundancy**
+	- **Vibrant collaboration around tools and services improves maintainability and long-term support**
 
 Notes:
 1. This slide should connect requirement intent to architecture capability, not claim full verification closure.
@@ -146,13 +146,13 @@ Slide overview:
 Introduce ADO as the legacy controls framework and define its functional role at a high level.
 
 Slide 7:
-- What ADO is:
-	- Legacy RHIC controls framework used by existing injector and subsystem deployments
-	- Operationally mature in current environments with established device integrations
-- What ADO currently provides:
-	- Proven operational workflows for legacy subsystems
-	- Existing device interfaces and controls logic used in present operations
-	- Baseline operational knowledge for migration planning
+- **What ADO is:**
+	- **Legacy RHIC controls framework used by existing injector and subsystem deployments**
+	- **Operationally mature in current environments with established device integrations**
+- **What ADO currently provides:**
+	- **Proven operational workflows for legacy subsystems**
+	- **Existing device interfaces and controls logic used in present operations**
+	- **Baseline operational knowledge for migration planning**
 
 Notes:
 1. Use this as a pure system primer; leave transition strategy for the next slides.
@@ -166,18 +166,18 @@ Slide overview:
 Why ADO and EPICS need to run in parallel in the near term, and what that looks like today.
 
 Slide 8:
-- Why dual-system support is required:
-	- Existing injector and legacy subsystems still depend on ADO control paths
-	- New EIC developments are aligned to EPICS 7 with PVA-first architecture
-	- Program schedule and commissioning constraints require phased migration, not a single cutover
-- Current deployment status narrative:
-	- ADO remains operational in established environments and supports active operations
-	- EPICS infrastructure and service layers are expanding for EIC-aligned systems
-	- Integration work is focused on making system boundaries transparent to operators
-- What this means for this review phase:
-	- Architecture must explicitly support coexistence and controlled transition
-	- Performance, reliability, and interface behavior must be validated in mixed-mode operation
-	- Migration progress will be tracked with subsystem-by-subsystem milestones
+- **Why dual-system support is required:**
+	- **Existing injector and legacy subsystems still depend on ADO control paths**
+	- **New EIC developments are aligned to EPICS 7 with PVA-first architecture**
+	- **Program schedule and commissioning constraints require phased migration, not a single cutover**
+- **Current deployment status narrative:**
+	- **ADO remains operational in established environments and supports active operations**
+	- **EPICS infrastructure and service layers are expanding for EIC-aligned systems**
+	- **Integration work is focused on making system boundaries transparent to operators**
+- **What this means for this review phase:**
+	- **Architecture must explicitly support coexistence and controlled transition**
+	- **Performance, reliability, and interface behavior must be validated in mixed-mode operation**
+	- **Migration progress will be tracked with subsystem-by-subsystem milestones**
 
 Notes:
 1. Keep this slide factual and status-oriented; avoid committing to dates that are not approved.
@@ -191,16 +191,16 @@ Slide overview:
 Show the ADO and EPICS control paths side by side and identify where they converge for operations, services, and user interfaces.
 
 Slide 9:
-- Diagram : Dual Controls Architecture (ADO + EPICS)
-- Diagram content:
-	- ADO domain: legacy devices, ADO services, existing operational clients
-	- EPICS domain: IOC/PVA services, modern middleware, new subsystem integrations
-	- Integration layer: ADO server path, ADO2EPICS bridge, shared service/API access points
-	- Unified operations layer: Phoebus tools and web interfaces abstract protocol differences
-- Diagram callouts:
-	- Clear protocol boundaries and translation points
-	- Data/command flow from device layer to operator tools
-	- Alarming, archiving, and logbook paths in mixed-mode operation
+- **Diagram : Dual Controls Architecture (ADO + EPICS)**
+- **Diagram content:**
+	- **ADO domain: legacy devices, ADO services, existing operational clients**
+	- **EPICS domain: IOC/PVA services, modern middleware, new subsystem integrations**
+	- **Integration layer: ADO server path, ADO2EPICS bridge, shared service/API access points**
+	- **Unified operations layer: Phoebus tools and web interfaces abstract protocol differences**
+- **Diagram callouts:**
+	- **Clear protocol boundaries and translation points**
+	- **Data/command flow from device layer to operator tools**
+	- **Alarming, archiving, and logbook paths in mixed-mode operation**
 
 Notes:
 1. This slide serves as the architectural map for dual-system operations.
@@ -215,24 +215,24 @@ Slide overview:
 Compare the three integration strategies for simultaneous ADO and EPICS operation, focusing on user transparency, performance, and scalability.
 
 Slide 10:
-- Strategy 1: ADO server access path
-	- Best for preserving existing ADO-native behavior with minimal disruption
-	- Lower migration effort initially, but limited long-term convergence benefits
-	- Useful for stable legacy segments during early transition
-- Strategy 2: ADO2EPICS bridge
-	- Exposes ADO-controlled devices as EPICS PVs for unified tooling
-	- Strong path for operator transparency and EPICS-aligned workflows
-	- Requires careful performance validation of translation and alarm propagation paths
-- Strategy 3: Phoebus and service datasource plugin (new ADO protocol client)
-	- Enables tool-level unification with protocol-aware data access
-	- Flexible for mixed environments and incremental adoption
-	- Adds client/service complexity that must be managed consistently across tools
-- Comparison criteria for this phase:
-	- User experience uniformity
-	- Performance impact and latency overhead
-	- Scalability under mixed operational load
-	- Implementation and maintenance complexity
-	- Migration alignment toward EPICS-first end state
+- **Strategy 1: ADO server access path**
+	- **Best for preserving existing ADO-native behavior with minimal disruption**
+	- **Lower migration effort initially, but limited long-term convergence benefits**
+	- **Useful for stable legacy segments during early transition**
+- **Strategy 2: ADO2EPICS bridge**
+	- **Exposes ADO-controlled devices as EPICS PVs for unified tooling**
+	- **Strong path for operator transparency and EPICS-aligned workflows**
+	- **Requires careful performance validation of translation and alarm propagation paths**
+- **Strategy 3: Phoebus and service datasource plugin (new ADO protocol client)**
+	- **Enables tool-level unification with protocol-aware data access**
+	- **Flexible for mixed environments and incremental adoption**
+	- **Adds client/service complexity that must be managed consistently across tools**
+- **Comparison criteria for this phase:**
+	- **User experience uniformity**
+	- **Performance impact and latency overhead**
+	- **Scalability under mixed operational load**
+	- **Implementation and maintenance complexity**
+	- **Migration alignment toward EPICS-first end state**
 
 Notes:
 1. No single strategy is best everywhere; deployment can combine approaches by subsystem and risk profile.
@@ -246,14 +246,14 @@ Slide overview:
 Decision matrix and selected multi-path strategy to maintain a uniform user experience.
 
 Slide 11:
-- Decision outcome:
-	- We will use all three solutions in parallel, with clear priority and usage intent.
-- Matrix ranking and role:
-	- 1) ADO server path (preferred): distributed and scalable primary approach for near-term coexistence.
-	- 2) ADO2EPICS bridge (secondary): most seamless migration path because it requires no changes to ADOs or ADO Managers; planned for horizontally scalable clustered deployment.
-	- 3) Phoebus datasource client (insurance path): additional mechanism to preserve a uniform user experience when needed.
-- Governance intent:
-	- Use the matrix to choose per subsystem, while keeping one operator-facing workflow across all back-end paths.
+- **Decision outcome:**
+	- **We will use all three solutions in parallel, with clear priority and usage intent.**
+- **Matrix ranking and role:**
+	- **1) ADO server path (preferred): distributed and scalable primary approach for near-term coexistence.**
+	- **2) ADO2EPICS bridge (secondary): most seamless migration path because it requires no changes to ADOs or ADO Managers; planned for horizontally scalable clustered deployment.**
+	- **3) Phoebus datasource client (insurance path): additional mechanism to preserve a uniform user experience when needed.**
+- **Governance intent:**
+	- **Use the matrix to choose per subsystem, while keeping one operator-facing workflow across all back-end paths.**
 
 Notes:
 1. Keep this slide decision-focused; avoid repeating the full comparison from Slide 10.
@@ -267,20 +267,20 @@ Slide overview:
 Network architecture needed for distributed ADO and EPICS operation with secure, scalable service connectivity.
 
 Slide 12:
-- Network architecture goals:
-	- Clear segmentation across controls, instrumentation, and data services
-	- Scalable connectivity for distributed and clustered components
-- Subnet model:
-	- Controls subnet: IOC, ADO Manager, gateway, and command/control traffic
-	- Instrumentation subnet: device-facing acquisition and timing-sensitive interfaces
-	- Data/services subnet:
-- Integration and security :
-	- Controlled cross-subnet access through gateways and service endpoints
-	- Monitoring and observability at subnet and service boundaries
-- Coexistence deployment implications:
-	- ADO server and bridge clusters placed for low-latency access to legacy domains
-	- EPICS/PVA services scaled horizontally on service networks
-	- Operator tools consume unified interfaces without direct dependency on backend protocol location
+- **Network architecture goals:**
+	- **Clear segmentation across controls, instrumentation, and data services**
+	- **Scalable connectivity for distributed and clustered components**
+- **Subnet model:**
+	- **Controls subnet: IOC, ADO Manager, gateway, and command/control traffic**
+	- **Instrumentation subnet: device-facing acquisition and timing-sensitive interfaces**
+	- **Data/services subnet:**
+- **Integration and security :**
+	- **Controlled cross-subnet access through gateways and service endpoints**
+	- **Monitoring and observability at subnet and service boundaries**
+- **Coexistence deployment implications:**
+	- **ADO server and bridge clusters placed for low-latency access to legacy domains**
+	- **EPICS/PVA services scaled horizontally on service networks**
+	- **Operator tools consume unified interfaces without direct dependency on backend protocol location**
 
 Notes:
 1. Keep this slide at architecture level; detailed firewall rules and VLAN assignments belong in implementation design packages.
@@ -295,10 +295,10 @@ Slide overview:
 Placeholder for deeper network architecture and subnet implementation details.
 
 Slide 13:
-- Placeholder:
-	- Add detailed topology and subnet boundaries
-	- Add routing, firewall, and gateway policy model
-	- Add capacity, latency, and failover design targets
+- **Placeholder:**
+	- **Add detailed topology and subnet boundaries**
+	- **Add routing, firewall, and gateway policy model**
+	- **Add capacity, latency, and failover design targets**
 
 Notes:
 1. This slide is intentionally a placeholder for deeper network design content.
@@ -312,17 +312,17 @@ Slide overview:
 Role of EPICS IOCs in the controls stack, and why EPICS 7 allows gradual modernization without disruptive rewrites.
 
 Slide 14:
-- IOC role in architecture:
-	- IOCs remain the real-time interface to hardware, device logic, and process database records
-	- IOC data can be served over both Channel Access and pvAccess during transition
-- EPICS 7 continuity advantages:
-	- Non-intrusive migration path: existing IOC process database and device support remain usable
-	- CA and PVA coexist side-by-side, enabling incremental protocol adoption
-	- Existing tools can continue operations while new services and applications adopt PVA features
-- Why this matters for EIC:
-	- Preserves operational continuity for legacy-integrated systems
-	- Reduces migration risk while enabling new data-centric workflows
-	- Aligns with phased coexistence strategy already adopted in this deck
+- **IOC role in architecture:**
+	- **IOCs remain the real-time interface to hardware, device logic, and process database records**
+	- **IOC data can be served over both Channel Access and pvAccess during transition**
+- **EPICS 7 continuity advantages:**
+	- **Non-intrusive migration path: existing IOC process database and device support remain usable**
+	- **CA and PVA coexist side-by-side, enabling incremental protocol adoption**
+	- **Existing tools can continue operations while new services and applications adopt PVA features**
+- **Why this matters for EIC:**
+	- **Preserves operational continuity for legacy-integrated systems**
+	- **Reduces migration risk while enabling new data-centric workflows**
+	- **Aligns with phased coexistence strategy already adopted in this deck**
 
 Notes:
 1. Keep this slide focused on IOC continuity and migration safety.
@@ -340,18 +340,18 @@ Slide overview:
 Why pvAccess is the preferred protocol path for new EIC workflows, especially for structured data and service integration.
 
 Slide 15:
-- Protocol capabilities:
-	- Transports structured data types (scalars, arrays, tables, images) with metadata
-	- Efficient subscriptions transfer only changed fields, reducing network load
-	- Supports RPC-style interactions for service-oriented control workflows
-- Operational and integration benefits:
-	- Normative Types provide standard semantics for generic client behavior
-	- Better fit for middle-layer services, aggregated data, and modern tooling
-	- Enables atomic/consistent grouped updates where required
-- Practical EIC implication:
-	- PVA-first for new systems, with CA retained where compatibility is required
-	- Strong foundation for scalable services and high-volume data movement
-	- Consistent with EPICS ROD and the coexistence transition model
+- **Protocol capabilities:**
+	- **Transports structured data types (scalars, arrays, tables, images) with metadata**
+	- **Efficient subscriptions transfer only changed fields, reducing network load**
+	- **Supports RPC-style interactions for service-oriented control workflows**
+- **Operational and integration benefits:**
+	- **Normative Types provide standard semantics for generic client behavior**
+	- **Better fit for middle-layer services, aggregated data, and modern tooling**
+	- **Enables atomic/consistent grouped updates where required**
+- **Practical EIC implication:**
+	- **PVA-first for new systems, with CA retained where compatibility is required**
+	- **Strong foundation for scalable services and high-volume data movement**
+	- **Consistent with EPICS ROD and the coexistence transition model**
 
 Notes:
 1. Keep claims tied to production-proven EPICS 7 outcomes from the extracted papers.
@@ -369,19 +369,19 @@ Slide overview:
 Phoebus middle-layer services baseline and architecture benefits from the EIC Phoebus ROD.
 
 Slide 16:
-- Core services in scope:
-	- Archiver, Alarm, Olog, ChannelFinder, Save/Restore, Gateway
-- ROD-defined middle-layer benefits:
-	- Modular services: each service has a focused, well-defined role and can evolve independently
-	- Flexible interfaces: support command-response and publish-subscribe patterns via standard service APIs
-	- Data abstraction: tools interact with services, not storage internals, preserving user workflow while backends evolve
-	- Optimized data handling: purpose-built stores per domain (time-series, alarms, snapshots, metadata)
-	- Interoperable by design: consistent service contracts across tools and client environments
-	- Scalable and maintainable: deploy and scale services independently based on facility demand
-- Operational benefits:
-	- Context-sharing workflows across alarm, trend, display, and logbook tasks
-	- Faster diagnosis with integrated alarm history, archive access, and metadata discovery
-	- Controlled recovery through save/restore snapshots and versioned configuration behavior
+- **Core services in scope:**
+	- **Archiver, Alarm, Olog, ChannelFinder, Save/Restore, Gateway**
+- **ROD-defined middle-layer benefits:**
+	- **Modular services: each service has a focused, well-defined role and can evolve independently**
+	- **Flexible interfaces: support command-response and publish-subscribe patterns via standard service APIs**
+	- **Data abstraction: tools interact with services, not storage internals, preserving user workflow while backends evolve**
+	- **Optimized data handling: purpose-built stores per domain (time-series, alarms, snapshots, metadata)**
+	- **Interoperable by design: consistent service contracts across tools and client environments**
+	- **Scalable and maintainable: deploy and scale services independently based on facility demand**
+- **Operational benefits:**
+	- **Context-sharing workflows across alarm, trend, display, and logbook tasks**
+	- **Faster diagnosis with integrated alarm history, archive access, and metadata discovery**
+	- **Controlled recovery through save/restore snapshots and versioned configuration behavior**
 
 Notes:
 1. Keep the framing architecture-focused: services complement IOCs rather than replacing real-time device control.
@@ -400,12 +400,12 @@ Slide overview:
 What each service does and why it matters for EIC operations.
 
 Slide 17:
-- **Archiver**: EPICS Archiver Appliance stores time-series PV data at configurable rates and provides fast historical queries. Supports post-event analysis and correlation with live values in Data Browser.
-- **Alarm**: Evaluates alarm thresholds in real-time, notifies operators, maintains alarm history, and supports configuration rollback. Enables both immediate response and retrospective tuning of alarm quality.
-- **ChannelFinder**: Metadata and discovery service for PV catalogs, tags, and properties. Enables operator search and application-level data discovery organized by subsystem or device type.
-- **Olog (Online Logbook)**: Structured operator and operations logging with automatic context capture (PV names, alarm states, timestamps). Provides auditable records for commissioning and troubleshooting.
-- **Save/Restore**: Captures, versions, and restores PV snapshots that reproduce known good states. Supports repeatable operations and controlled recovery from incident or configuration changes.
-- **PVA Gateway**: Enables EPICS-domain inter-network connectivity with controlled PV exposure across network boundaries. Supports scalable client access patterns without overwhelming IOC resources.
+- **Archiver: EPICS Archiver Appliance stores time-series PV data at configurable rates and provides fast historical queries. Supports post-event analysis and correlation with live values in Data Browser.**
+- **Alarm: Evaluates alarm thresholds in real-time, notifies operators, maintains alarm history, and supports configuration rollback. Enables both immediate response and retrospective tuning of alarm quality.**
+- **ChannelFinder: Metadata and discovery service for PV catalogs, tags, and properties. Enables operator search and application-level data discovery organized by subsystem or device type.**
+- **Olog (Online Logbook): Structured operator and operations logging with automatic context capture (PV names, alarm states, timestamps). Provides auditable records for commissioning and troubleshooting.**
+- **Save/Restore: Captures, versions, and restores PV snapshots that reproduce known good states. Supports repeatable operations and controlled recovery from incident or configuration changes.**
+- **PVA Gateway: Enables EPICS-domain inter-network connectivity with controlled PV exposure across network boundaries. Supports scalable client access patterns without overwhelming IOC resources.**
 
 Notes:
 1. Descriptions are sourced from the Phoebus ROD and ecosystem papers.
@@ -420,16 +420,16 @@ Slide overview:
 Why a unified operator platform matters: workflow efficiency, consistency, and scalability.
 
 Slide 18:
-- **Integrated workflow** across displays, alarms, trends, logbook, and save/restore
-	- Operators navigate seamlessly between tools without manual re-entry of PV names or loss of context
-	- Example workflow: alarm investigation → historical data retrieval → device displays → logbook documentation, all within one environment
-- **Context sharing** reduces operator burden and improves efficiency
-	- Selection and adapter services automatically propagate context: PV names, values, timestamps, alarm states, archive sources, OPI screen locations
-	- Selecting an alarm opens related displays and trends; PV searches integrate with Data Browser without manual re-entry
-- **Unified platform** simplifies operations and reduces support complexity
-	- Single integrated desktop environment reduces training overhead and support burden
-	- Consistent data models and shared core modules across all applications enable seamless workflows
-	- Modular architecture and SPI-based extensibility allow sites to add tools and protocols without disrupting core stability
+- **Integrated workflow across displays, alarms, trends, logbook, and save/restore**
+	- **Operators navigate seamlessly between tools without manual re-entry of PV names or loss of context**
+	- **Example workflow: alarm investigation â†’ historical data retrieval â†’ device displays â†’ logbook documentation, all within one environment**
+- **Context sharing reduces operator burden and improves efficiency**
+	- **Selection and adapter services automatically propagate context: PV names, values, timestamps, alarm states, archive sources, OPI screen locations**
+	- **Selecting an alarm opens related displays and trends; PV searches integrate with Data Browser without manual re-entry**
+- **Unified platform simplifies operations and reduces support complexity**
+	- **Single integrated desktop environment reduces training overhead and support burden**
+	- **Consistent data models and shared core modules across all applications enable seamless workflows**
+	- **Modular architecture and SPI-based extensibility allow sites to add tools and protocols without disrupting core stability**
 
 Notes:
 1. This is the strategic rationale: efficiency, consistency, and sustainability drive the Phoebus investment.
@@ -447,17 +447,17 @@ Slide overview:
 User-facing applications within Phoebus that form a cohesive operator environment.
 
 Slide 19:
-- **Display Builder**: OPI/HMI editor and runtime with alarm awareness, units, and precision. Supports legacy display migration (EDM, MEDM, BOY auto-conversion) and web-based runtime execution.
-- **Data Browser**: Trending across multiple archive providers (Archiver Appliance, RDB, TimescaleDB). Enables correlation analysis with live PV values in unified plotting environment.
-- **Alarm UI**: Real-time alarm monitoring with high-level overviews, alarm tables, hierarchical trees, and voice annunciator. Ensures critical conditions are surfaced and managed efficiently.
-- **Olog (Logbook UI)**: Structured operator logging with automatic PV/alarm/timestamp context capture. Integrated within Phoebus for seamless workflow documentation.
-- **PV Utilities**: Probe for detailed introspection, PV Table for monitoring and save/restore groups, PV Tree for record linkages. Support diagnostics and day-to-day operations.
-- **ChannelFinder Client**: Fast, case-insensitive PV discovery with metadata search (IOC host, record type, status). Hierarchical views improve navigability of flat EPICS namespace.
-- **Save/Restore UI**: Snapshot capture, versioning, and restoration with merge/scale capabilities. Enables reproducible operations and rapid recovery from configuration changes.
+- **Display Builder: OPI/HMI editor and runtime with alarm awareness, units, and precision. Supports legacy display migration (EDM, MEDM, BOY auto-conversion) and web-based runtime execution.**
+- **Data Browser: Trending across multiple archive providers (Archiver Appliance, RDB, TimescaleDB). Enables correlation analysis with live PV values in unified plotting environment.**
+- **Alarm UI: Real-time alarm monitoring with high-level overviews, alarm tables, hierarchical trees, and voice annunciator. Ensures critical conditions are surfaced and managed efficiently.**
+- **Olog (Logbook UI): Structured operator logging with automatic PV/alarm/timestamp context capture. Integrated within Phoebus for seamless workflow documentation.**
+- **PV Utilities: Probe for detailed introspection, PV Table for monitoring and save/restore groups, PV Tree for record linkages. Support diagnostics and day-to-day operations.**
+- **ChannelFinder Client: Fast, case-insensitive PV discovery with metadata search (IOC host, record type, status). Hierarchical views improve navigability of flat EPICS namespace.**
+- **Save/Restore UI: Snapshot capture, versioning, and restoration with merge/scale capabilities. Enables reproducible operations and rapid recovery from configuration changes.**
 
 Notes:
 1. These applications are tightly integrated; context (PV names, values, alarms, archive sources) flows seamlessly between tools.
-2. Operators move fluidly from alarm investigation → historical trends → device displays → logbook without re-entry.
+2. Operators move fluidly from alarm investigation â†’ historical trends â†’ device displays â†’ logbook without re-entry.
 3. Emphasize the consistent, unified user experience across all workflows.
 
 References:
@@ -472,17 +472,17 @@ Slide overview:
 Core technical architecture that enables the integrated toolkit and supports independent service deployment.
 
 Slide 20:
-- **Core modules** (protocol-agnostic foundation):
-	- **CorePV / Data-source layer**: Centralizes protocol interactions (CA, PVA, simulators, vendor systems via SPI). Reuses connections and encapsulates reconnection logic; reduces network load.
-	- **VTypes / Value model**: Canonical immutable value representations carrying raw value, timestamp, alarm state, units, and display ranges. Serializable for REST/WebSocket interoperability.
-	- **Selection and Adapter framework**: Enables context propagation across applications. Selecting an alarm opens a probe, or launches Data Browser view with historical data—all without manual PV re-entry.
-	- **Formula pipelines**: Configurable value processing and transformation for calculations and derived signals.
-	- **Job scheduler & Logging**: Controlled background execution and structured diagnostics for responsiveness and troubleshooting.
-	- **Security module**: Centralized credential management and secure resource access.
-- **Core-UI modules** (shared interface behaviors):
-	- Docking layouts, workspaces, menus, toolbars, and context integration via SPI
-	- Logbook SPI for backend-agnostic logging (applications remain independent of logbook implementation)
-- **Service provider interface (SPI)**: Extensibility mechanism allowing sites to contribute protocols, services, applications, and UI extensions without tight coupling or core modification.
+- **Core modules (protocol-agnostic foundation):**
+	- **CorePV / Data-source layer: Centralizes protocol interactions (CA, PVA, simulators, vendor systems via SPI). Reuses connections and encapsulates reconnection logic; reduces network load.**
+	- **VTypes / Value model: Canonical immutable value representations carrying raw value, timestamp, alarm state, units, and display ranges. Serializable for REST/WebSocket interoperability.**
+	- **Selection and Adapter framework: Enables context propagation across applications. Selecting an alarm opens a probe, or launches Data Browser view with historical data—all without manual PV re-entry.**
+	- **Formula pipelines: Configurable value processing and transformation for calculations and derived signals.**
+	- **Job scheduler & Logging: Controlled background execution and structured diagnostics for responsiveness and troubleshooting.**
+	- **Security module: Centralized credential management and secure resource access.**
+- **Core-UI modules (shared interface behaviors):**
+	- **Docking layouts, workspaces, menus, toolbars, and context integration via SPI**
+	- **Logbook SPI for backend-agnostic logging (applications remain independent of logbook implementation)**
+- **Service provider interface (SPI): Extensibility mechanism allowing sites to contribute protocols, services, applications, and UI extensions without tight coupling or core modification.**
 
 Notes:
 1. This architecture is why Phoebus can evolve sustainably: extensions plug in via SPI, and applications stay focused on business logic.
@@ -500,21 +500,21 @@ Slide overview:
 Browser-based interfaces and lightweight access paths for operational visibility and service integration.
 
 Slide 21:
-- **Phoebus ecosystem web capabilities**:
-	- **Olog web client** (HTML/JavaScript): Operator logs and search accessible from any browser. Integrates with smartphone clients for mobile facility-wide access.
-	- **Display Builder Web Runtime**: OPI/HMI screens executable in web browsers; same ".bob" files used in desktop Display Builder.
-	- **Service REST APIs**: Archiver, Alarm, ChannelFinder, Save/Restore expose REST interfaces enabling web dashboard integration and custom clients.
-	- **Multi-platform design**: Seamless context sharing between Phoebus desktop, web UIs, and mobile clients for consistent workflows.
-- **EIC-specific web tools** (leveraging Phoebus service APIs):
-	- **pvinfo**: Command-line and web PV metadata and connection status lookup.
-	- **pvws**: WebSocket-based PV value streaming for real-time custom web dashboards.
-	- **dbwr**: Web-based archiver query tool for historical trend visualization.
-	- **etraveller**: Lightweight commissioning logbook with context tagging.
-	- **cdb**: Configuration database interface for system parameter management.
-- **Strategic role of web and mobile access**:
-	- Extends operator reach beyond desktop environments to stakeholders, dashboards, and mobile workflows.
-	- All web clients consume the same middle-layer service APIs as desktop Phoebus, ensuring consistent data and operations.
-	- Web and mobile tools are complementary to primary operator workflows, not replacements.
+- **Phoebus ecosystem web capabilities:**
+	- **Olog web client (HTML/JavaScript): Operator logs and search accessible from any browser. Integrates with smartphone clients for mobile facility-wide access.**
+	- **Display Builder Web Runtime: OPI/HMI screens executable in web browsers; same ".bob" files used in desktop Display Builder.**
+	- **Service REST APIs: Archiver, Alarm, ChannelFinder, Save/Restore expose REST interfaces enabling web dashboard integration and custom clients.**
+	- **Multi-platform design: Seamless context sharing between Phoebus desktop, web UIs, and mobile clients for consistent workflows.**
+- **EIC-specific web tools (leveraging Phoebus service APIs):**
+	- **pvinfo: Command-line and web PV metadata and connection status lookup.**
+	- **pvws: WebSocket-based PV value streaming for real-time custom web dashboards.**
+	- **dbwr: Web-based archiver query tool for historical trend visualization.**
+	- **etraveller: Lightweight commissioning logbook with context tagging.**
+	- **cdb: Configuration database interface for system parameter management.**
+- **Strategic role of web and mobile access:**
+	- **Extends operator reach beyond desktop environments to stakeholders, dashboards, and mobile workflows.**
+	- **All web clients consume the same middle-layer service APIs as desktop Phoebus, ensuring consistent data and operations.**
+	- **Web and mobile tools are complementary to primary operator workflows, not replacements.**
 
 Notes:
 1. Web tools extend operational reach without requiring desktop Phoebus deployment on every workstation.
@@ -533,14 +533,14 @@ Slide overview:
 How source control, automation pipelines, and infrastructure-as-code practices support delivery quality and operational repeatability.
 
 Slide 22:
-- CI/CD purpose for controls architecture:
-	- Standardize delivery workflows across infrastructure, controls software, and operations tooling
-	- Reduce integration risk through automated validation and repeatable deployment steps
-	- Improve traceability from design change to deployed system state
-- Industry-aligned workflow model:
-	- Git-based change control with pull request approvals and protected branches
-	- Pipeline-first validation before integration and release
-	- Infrastructure as code as the default operating model for environment setup and updates
+- **CI/CD purpose for controls architecture:**
+	- **Standardize delivery workflows across infrastructure, controls software, and operations tooling**
+	- **Reduce integration risk through automated validation and repeatable deployment steps**
+	- **Improve traceability from design change to deployed system state**
+- **Industry-aligned workflow model:**
+	- **Git-based change control with pull request approvals and protected branches**
+	- **Pipeline-first validation before integration and release**
+	- **Infrastructure as code as the default operating model for environment setup and updates**
 
 Notes:
 1. Keep this slide at strategy level; implementation details are broken out in the following CI/CD slides.
@@ -558,22 +558,22 @@ Slide overview:
 How GitHub, GitHub Actions, Ansible, and AWX work together as the delivery backbone.
 
 Slide 23:
-- GitHub as source control platform:
-	- Full history and traceability of architecture, code, configuration, and operations assets
-	- Structured collaboration via pull requests, reviews, and issue tracking
-	- Branch protection and CODEOWNERS enforce controlled change paths
-- GitHub Actions for CI/CD orchestration:
-	- Automated build, test, packaging, and deployment workflows
-	- Reusable workflows reduce duplication and enforce common standards
-	- Environment-aware pipelines for development, test, and production readiness
-- Ansible and AWX for operational automation:
-	- Ansible playbooks define desired state for systems and services
-	- AWX provides managed execution, scheduling, credential handling, and run visibility
-	- Consistent, repeatable rollouts across multiple environments
-- Infrastructure as code principles:
-	- Version-controlled infrastructure definitions and configuration policies
-	- Reviewable, auditable changes to platform and service topology
-	- Drift reduction through repeatable automation runs
+- **GitHub as source control platform:**
+	- **Full history and traceability of architecture, code, configuration, and operations assets**
+	- **Structured collaboration via pull requests, reviews, and issue tracking**
+	- **Branch protection and CODEOWNERS enforce controlled change paths**
+- **GitHub Actions for CI/CD orchestration:**
+	- **Automated build, test, packaging, and deployment workflows**
+	- **Reusable workflows reduce duplication and enforce common standards**
+	- **Environment-aware pipelines for development, test, and production readiness**
+- **Ansible and AWX for operational automation:**
+	- **Ansible playbooks define desired state for systems and services**
+	- **AWX provides managed execution, scheduling, credential handling, and run visibility**
+	- **Consistent, repeatable rollouts across multiple environments**
+- **Infrastructure as code principles:**
+	- **Version-controlled infrastructure definitions and configuration policies**
+	- **Reviewable, auditable changes to platform and service topology**
+	- **Drift reduction through repeatable automation runs**
 
 Notes:
 1. Focus on the end-to-end toolchain, not isolated tools.
@@ -590,18 +590,18 @@ Slide overview:
 How QA/QC is embedded into code review and automated gates before changes reach operations.
 
 Slide 24:
-- QA/QC control points:
-	- Pull request templates and review checklists enforce design and safety expectations
-	- Mandatory reviewers and approval gates before merge
-	- Automated checks for syntax, policy conformance, and deployment readiness
-- Pipeline quality gates:
-	- Pre-merge validation for infrastructure, controls apps, and service configurations
-	- Post-merge integration checks in controlled environments
-	- Release promotion only after gate success and artifact traceability
-- Dev/test environment enablement:
-	- Rapid environment setup from versioned automation definitions
-	- Reproducible test conditions across team members and subsystems
-	- Faster defect isolation and higher confidence before production rollout
+- **QA/QC control points:**
+	- **Pull request templates and review checklists enforce design and safety expectations**
+	- **Mandatory reviewers and approval gates before merge**
+	- **Automated checks for syntax, policy conformance, and deployment readiness**
+- **Pipeline quality gates:**
+	- **Pre-merge validation for infrastructure, controls apps, and service configurations**
+	- **Post-merge integration checks in controlled environments**
+	- **Release promotion only after gate success and artifact traceability**
+- **Dev/test environment enablement:**
+	- **Rapid environment setup from versioned automation definitions**
+	- **Reproducible test conditions across team members and subsystems**
+	- **Faster defect isolation and higher confidence before production rollout**
 
 Notes:
 1. Emphasize QA/QC as continuous controls, not only final-stage inspection.
@@ -615,22 +615,22 @@ Slide overview:
 CI/CD pipeline scope by domain: infrastructure, IOCs, services, tools, and resources.
 
 Slide 25:
-- Infrastructure pipelines:
-	- VM provisioning and base image configuration
-	- Network and policy artifacts (including firewall and routing policy updates)
-	- Environment bootstrap and lifecycle operations
-- IOC and controls application pipelines:
-	- Build, package, and deploy IOC software and associated configuration
-	- Validate compatibility with protocol and service dependencies
-	- Stage deployments with rollback-aware promotion controls
-- Service pipelines:
-	- Deploy and update archiver, alarm, database, and HTTP service components
-	- Apply configuration changes through versioned automation
-	- Verify service health and interface compatibility post-deployment
-- Tools and resource pipelines:
-	- Phoebus product packaging and distribution updates
-	- OPI screens, display assets, and configuration management artifacts
-	- Metadata and operational resource synchronization across environments
+- **Infrastructure pipelines:**
+	- **VM provisioning and base image configuration**
+	- **Network and policy artifacts (including firewall and routing policy updates)**
+	- **Environment bootstrap and lifecycle operations**
+- **IOC and controls application pipelines:**
+	- **Build, package, and deploy IOC software and associated configuration**
+	- **Validate compatibility with protocol and service dependencies**
+	- **Stage deployments with rollback-aware promotion controls**
+- **Service pipelines:**
+	- **Deploy and update archiver, alarm, database, and HTTP service components**
+	- **Apply configuration changes through versioned automation**
+	- **Verify service health and interface compatibility post-deployment**
+- **Tools and resource pipelines:**
+	- **Phoebus product packaging and distribution updates**
+	- **OPI screens, display assets, and configuration management artifacts**
+	- **Metadata and operational resource synchronization across environments**
 
 Notes:
 1. Keep domain boundaries explicit to clarify ownership and pipeline responsibility.
