@@ -1,0 +1,254 @@
+﻿Source: C:\git\eic\eic-controls-pdr\presentations\examples\thin_MOCR002_talk.pptx
+Slide count: 30
+
+--- Slide 1 ---
+Phoebus Tools and Services
+Kunal Shroff – NSLS2
+Kay Kasemir – SNS
+Georg Weiss – ESS
+Ivan Finch - ISIS
+Tynan Ford – ALS
+Ralph Lange – ITER
+
+--- Slide 2 ---
+Phoebus /
+CS-Studio Collaboration
+Multiple sites participating in the development of one or more of the EPICS services
+(NSLS2, SNS, ESS, FRIB, ALS, ITER, DLS, ISIS, CEA, NSRCC, KEK, FZB, DESY, CSNS, LNLS, ROAN, JLAB,…)
+
+--- Slide 3 ---
+Phoebus in the EPICS Controls Ecosystem
+Operator-facing toolkit for integrated workflows
+A group of middle layer micro services
+A Framework for building tools and services
+
+--- Slide 4 ---
+CS-Studio & Phoebus
+EPICS Service
+Archiver, ChannelFinder
+Save Restore, Olog,
+Alarm
+…
+EPICS Tools
+Phoebus
+CS-Studio
+
+--- Slide 5 ---
+Display Builder
+runtime
+editor
+
+--- Slide 6 ---
+[No extractable text]
+
+--- Slide 7 ---
+Phoebus on the web
+Help support remote operations by bringing OPI screens to the web
+.bob files converted to web runtime OPI’s
+
+--- Slide 8 ---
+Converted screens…but better
+ALS Phoebusgen
+autogen.py
+phoebusgen
+
+--- Slide 9 ---
+Data Browser
+Accessing the PV's History
+
+--- Slide 10 ---
+Phoebus Applications
+Alarm UI
+– hierarchical alarm trees, active alarm tables, annunciator; alarm awareness built into all tools
+Logbook
+– integrated operator logs with context capture; backend-agnostic (Olog, elog, …)
+Save & Restore
+– snapshot/restore groups of PVs; supports scaling/merging snapshots
+Channel Finder Clients
+– fast PV search enriched with metadata (IOC host, record type, tags)
+PV Utilities
+–
+Probe
+: detailed PV introspection
+PV Table
+: monitor/save groups of PVs
+PV Tree
+: visualize EPICS record linkages
+
+--- Slide 11 ---
+EPICS Service
+Archiver, ChannelFinder
+Save Restore, Olog,
+Alarm
+…
+EPICS Tools
+Phoebus
+CS-Studio
+Phoebus Middle Layer Services
+
+--- Slide 12 ---
+Phoebus Services
+Modular microservices extend the EPICS control system
+Designed for scalability, resilience, and maintainability
+Support modern practices: CI/CD, containerization, observability
+Built on common libraries (VTypes, CorePV) for consistent data models
+Standardized Spring Boot services + a few specialized high-throughput services
+
+--- Slide 13 ---
+Phoebus Services (Alarms & Discovery)
+Alarm Server
+– monitors configured PVs, generates events
+Alarm Logger
+– records alarm history and operator actions
+Alarm Configuration Manager
+– versioned alarm configuration history
+Together: resilient alarm ecosystem supporting real-time ops + long-term optimization
+ChannelFinder
+– searchable PV directory with metadata (IOC, record type, tags)
+
+--- Slide 14 ---
+Phoebus Services (Persistence & Logging)
+Save & Restore
+– capture and recover system snapshots; stored in Elasticsearch; REST API for integration
+Phoebus Olog
+– operator logbook; Elastic + MongoDB; accessible via Phoebus client, web, and mobile apps
+Archiver Engine
+– integrates with RDB backends (Postgres + TimescaleDB); straightforward deployment
+
+--- Slide 15 ---
+Under the hood
+EPICS Service
+Archiver, ChannelFinder
+Save Restore, Olog,
+Alarm
+…
+EPICS Tools
+Phoebus
+CS-Studio
+
+--- Slide 16 ---
+Architecture
+Modular framework 🡪 built on
+Java + JavaFX
+(no Eclipse RCP)
+Core modules
+: PV access, VTypes, adapters, logging, jobs
+Core-UI modules
+: docking, menus, selection services
+Applications
+: operator-facing tools (Display Builder, Data Browser, etc.)
+Services
+: alarm, save/restore, archiving, logbook, …
+
+--- Slide 17 ---
+Architecture (details)
+Jobs & scheduling – run tasks off the UI thread for responsiveness
+Connection management – pooled, reusable PV and REST clients
+VTypes – canonical value model
+Protocol-agnostic, not tied to memory layout
+Immutable and safe to share
+Formula functions – efficient, thread-safe data processing pipelines
+Selection services – share user-selected data cleanly across applications
+Adapter services – enable runtime integration between loosely coupled apps
+Preferences & layouts
+
+--- Slide 18 ---
+Extensibility
+Extensible via Java SPI (Service Provider Interface)
+New data sources & protocols (CA, PVA, MQTT, Tango, …)
+Clients for middle-layer services (Olog, elog, …)
+New applications & file handlers
+UI extensions (menus, toolbars, context menus)
+
+--- Slide 19 ---
+Site Specific Products
+The extensible and modular nature of the Phoebus framework allows for developers to assemble their own products.
+Include site specific
+Applications
+Adapters
+Datasources
+Configurations
+Branding
+Address the needs of a particular organization or workflow.
+
+--- Slide 20 ---
+Collaboration
+EPICS Service
+Archiver, ChannelFinder
+Save Restore, Olog,
+Alarm
+…
+EPICS Tools
+Phoebus
+CS-Studio
+
+--- Slide 21 ---
+Phoebus Collaboration
+
+--- Slide 22 ---
+Phoebus Collaboration
+Phoebus
+~300 PR’s
+~100 Issue
+ChannelFinder
+Phoebus-Olog
+
+--- Slide 23 ---
+How to contribute
+GitHub Issues
+Monthly meetings on the 2
+nd
+Wednesday of each month.
+Participate in codeathon / documentathon
+Location to be announced soon
+
+--- Slide 24 ---
+Useful links
+http://phoebus.org
+Fork us on github
+https://github.com/ControlSystemStudio
+ChannelFinder
+http://channelfinder.github.io/
+Olog
+https://github.com/Olog
+SaveRestore, Alarm Services, Scan Server
+https://github.com/ControlSystemStudio/phoebus/tree/master/services
+
+--- Slide 25 ---
+Questions
+
+--- Slide 26 ---
+Alarm
+Phoebus Alarm clients
+Alarm Tree
+Alarm Table
+Alarm Panel
+Alarm History
+
+--- Slide 27 ---
+Save Restore
+
+--- Slide 28 ---
+Logbook
+Supported for multiple logbook services
+Olog
+Phoebus Olog
+SNS logbook
+elog
+
+--- Slide 29 ---
+VTypes: Type definitions
+Java interfaces for values
+Not tied to protocol or implementation  (i.e. we can read them from databases, epics protocol, file, …)
+Not tied to memory representation (i.e. they can come directly from the network buffer, can be lazily calculated, …)
+Immutable
+It’s the “just give me some value from somewhere that is safe to read”
+
+--- Slide 30 ---
+Formula Functions
+An efficient way to support data processing
+No Scripts & Rules
+Data processing happening off the UI thread
+Thread safe access to data
+Connection management
+
