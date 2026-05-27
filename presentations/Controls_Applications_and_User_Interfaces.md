@@ -1,6 +1,6 @@
 ﻿## Slide 1: Controls Applications and User Interfaces
 
-Charge questions addressed: CQ8 (design maturity readiness framing)
+Charge questions addressed: CQ7 (design maturity readiness framing)
 
 Slide overview:
 Establish review context for applications and user interfaces, using the thin MOCR002 talk flow adapted for EIC PDR.
@@ -21,24 +21,23 @@ Detailed references appear in technical slides where they are used.
 
 ## Slide 2: Charge Questions
 
-Charge questions addressed: CQ1-CQ8 (definition and scope of all charge questions)
+Charge questions addressed: CQ1-CQ7 (definition and scope of all charge questions)
 
 Slide overview:
 Frame review criteria and what this applications/UI talk addresses in the current phase.
 
 Slide 2:
-- **CQ1: Have committee recommendations from the Preliminary Design Review been addressed adequately?**
-- **CQ2: Are the system requirements sufficiently defined, understood, and documented for this phase of the design?**
-- **CQ3: Do the designs meet the requirements? (scope for later phase)**
-- **CQ4: Are the interfaces sufficiently defined, understood, and documented for this phase of the design?**
-- **CQ5: Are the analysis, simulations, drawings, specifications, and work plans sufficient for this phase of the design?**
-- **CQ6: Are the plans to address ES&H and quality sufficient for this phase of the design?**
-- **CQ7: Have technical risks been identified and are mitigation plans adequate for this phase of the design? (scope for later phase)**
-- **CQ8: Is the overall design maturity sufficient to proceed with the final design phase?**
+- **CQ1: Are the system requirements sufficiently defined, understood, and documented for this phase of the design?**
+- **CQ2: Do the designs meet the requirements?**
+- **CQ3: Are the interfaces sufficiently defined, understood and documented for this phase of the design?**
+- **CQ4: Are the design analysis, simulations, drawings and specifications, and work plans, sufficient for this phase of the design?**
+- **CQ5: Have technical risks been identified and are mitigation plans adequate for this phase of the design?**
+- **CQ6: Are plans to address ES&H and Quality sufficient for this phase of the design?**
+- **CQ7: Is the overall design maturity sufficient to proceed with the final design phase?**
 
 ## Slide 3: Outline of the Talk
 
-Charge questions addressed: CQ8 (overall maturity roadmap)
+Charge questions addressed: CQ7 (overall maturity roadmap)
 
 Slide overview:
 
@@ -59,7 +58,7 @@ Notes:
 
 ## Slide 4: Scope
 
-Charge questions addressed: CQ2, CQ4, CQ5, CQ8
+Charge questions addressed: CQ1, CQ3, CQ4, CQ7
 
 Slide overview:
 Define what is in and out of scope for this presentation, and where the source talk has been condensed.
@@ -78,7 +77,7 @@ Slide 4:
 
 ## Slide 5: Phoebus in the EPICS Controls Ecosystem
 
-Charge questions addressed: CQ2, CQ4, CQ8
+Charge questions addressed: CQ1, CQ3, CQ7
 
 Slide overview:
 Position Phoebus using the source talk’s core three-part message: toolkit, services, and framework.
@@ -102,7 +101,7 @@ References:
 
 ## Slide 6: Display Builder Strategy
 
-Charge questions addressed: CQ3, CQ4, CQ5
+Charge questions addressed: CQ2, CQ3, CQ4
 
 Slide overview:
 How Display Builder supports reusable synoptic UI development and runtime use, using the source talk’s editor/runtime split.
@@ -125,7 +124,7 @@ References:
 
 ## Slide 7: Web Runtime and Remote Operations
 
-Charge questions addressed: CQ4, CQ5, CQ6
+Charge questions addressed: CQ3, CQ4, CQ6
 
 Slide overview:
 Show how web access complements desktop operations and supports remote access, matching the source deck’s web-runtime slides.
@@ -148,7 +147,7 @@ Notes:
 
 ## Slide 8: Data Browser Workflow
 
-Charge questions addressed: CQ3, CQ4, CQ7
+Charge questions addressed: CQ2, CQ3, CQ5
 
 Slide overview:
 Trend and history access as a core operator diagnostic capability, with the source deck’s emphasis on archive backends and unified plotting.
@@ -167,7 +166,7 @@ Notes:
 
 ## Slide 9: Alarm UI Workflow
 
-Charge questions addressed: CQ3, CQ4, CQ7
+Charge questions addressed: CQ2, CQ3, CQ5
 
 Slide overview:
 Show alarm monitoring and response workflow as a first-class operator function before the broader applications portfolio.
@@ -190,7 +189,7 @@ References:
 
 ## Slide 10: Applications Portfolio (User Workflow View)
 
-Charge questions addressed: CQ3, CQ4, CQ5
+Charge questions addressed: CQ2, CQ3, CQ4
 
 Slide overview:
 Consolidated application view matching the source deck’s application slide content and terminology.
@@ -218,7 +217,7 @@ References:
 
 ## Slide 11: Application Stack Diagram
 
-Charge questions addressed: CQ4, CQ5, CQ8
+Charge questions addressed: CQ3, CQ4, CQ7
 
 Slide overview:
 Visualize applications and shared platform foundation, aligning with the source deck’s application/service stack diagram.
@@ -238,7 +237,7 @@ Notes:
 
 ## Slide 12: Architecture Fundamentals for UI Behavior
 
-Charge questions addressed: CQ2, CQ5, CQ8
+Charge questions addressed: CQ1, CQ4, CQ7
 
 Slide overview:
 Summarize the architecture points from the thin talk that matter directly to user-facing behavior, while keeping the source’s service model in view.
@@ -265,7 +264,7 @@ References:
 
 ## Slide 13: Extensibility and SPI Model
 
-Charge questions addressed: CQ5, CQ8
+Charge questions addressed: CQ4, CQ7
 
 Slide overview:
 Explain how SPI supports controlled evolution of tools and integrations, using the source deck’s application, data-source, and UI extension examples.
@@ -288,7 +287,7 @@ References:
 
 ## Slide 14: Site-Specific Product Strategy for EIC
 
-Charge questions addressed: CQ1, CQ5, CQ8
+Charge questions addressed: CQ4, CQ7
 
 Slide overview:
 Apply the thin-talk product model to EIC delivery planning.
@@ -308,7 +307,7 @@ Notes:
 
 ## Slide 15: Collaboration and Contribution Model
 
-Charge questions addressed: CQ1, CQ6, CQ8
+Charge questions addressed: CQ6, CQ7
 
 Slide overview:
 Show the sustainability model based on active multi-site collaboration, as presented in the source deck’s collaboration slides.
@@ -330,7 +329,7 @@ Notes:
 
 ## Slide 16: Readiness, Risks, and Open Questions
 
-Charge questions addressed: CQ7, CQ8
+Charge questions addressed: CQ5, CQ7
 
 Slide overview:
 Summarize what is ready now and what remains before final-design closure, while preserving the source deck’s concluding discussion posture.
@@ -353,7 +352,7 @@ Notes:
 
 ## Slide 17: References
 
-Charge questions addressed: CQ2, CQ5
+Charge questions addressed: CQ1, CQ4
 
 Slide overview:
 Consolidated references for all claims used in this presentation, including the source deck and extracted paper text.
@@ -371,7 +370,7 @@ Notes:
 
 ## Appendix Slide A1: Alarm and Discovery Services (Optional)
 
-Charge questions addressed: CQ4, CQ7
+Charge questions addressed: CQ3, CQ5
 
 Slide overview:
 Optional detail slide for the alarm and discovery backend capabilities that the source deck keeps for service-depth discussion.
@@ -383,7 +382,7 @@ Slide A1:
 
 ## Appendix Slide A2: Persistence and Logging Services (Optional)
 
-Charge questions addressed: CQ4, CQ5
+Charge questions addressed: CQ3, CQ4
 
 Slide overview:
 Optional detail slide for save/restore, logbook, and archive internals.
@@ -396,7 +395,7 @@ Slide A2:
 
 ## Appendix Slide A3: VTypes: Type Definitions (Optional)
 
-Charge questions addressed: CQ5
+Charge questions addressed: CQ4
 
 Slide overview:
 Optional detail slide for the source deck’s VTypes discussion.
@@ -409,7 +408,7 @@ Slide A3:
 
 ## Appendix Slide A4: Formula Functions and Threading (Optional)
 
-Charge questions addressed: CQ5
+Charge questions addressed: CQ4
 
 Slide overview:
 Optional detail slide for the source deck’s formula pipeline and threading model.
@@ -426,7 +425,7 @@ Notes:
 
 ## Appendix Slide A5: Collaboration Links (Optional)
 
-Charge questions addressed: CQ5
+Charge questions addressed: CQ4
 
 Slide overview:
 Optional practical links from the source talk for participation and support.
