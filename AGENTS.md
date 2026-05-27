@@ -7,7 +7,7 @@
 
 ## Big Picture Architecture
 - `rod/EIC-ROD-EPICS-Control-System.md` defines the controls baseline: EPICS 7 with **pvAccess (PVA) first** for new systems.
-- Legacy ADO systems are transitional and exposed through `ADO2EPICS` / pvAccess ADO server bridges; CA is compatibility-only.
+- Legacy ADO systems are transitional and exposed through `AdoEpicsBridge` (p4p-based ADO-to-EPICS bridge, primary for FEC) and `AdoPvaSrv` (server-side pvAccess ADO implementation); CA is compatibility-only.
 - `rod/EIC-ROD-Phoebus-Tools-and-Services.md` defines the operator/middle layer: Phoebus tools + microservices (Archiver, Alarm, Olog, ChannelFinder, Save/Restore, PVA Gateway).
 - `rod/EIC-ROD-GitHub-Platform.md` defines delivery/governance: GitHub as SCM, PR review, branch protections, CODEOWNERS, reusable Actions, tagged releases.
 
@@ -42,7 +42,7 @@
 - Ingest this document early when preparing any presentation content.
 
 ## Integration Boundaries To Respect
-- EPICS ROD: system-control protocol and migration boundary (PVA default, CA compatibility, ADO bridge only for legacy).
+- EPICS ROD: system-control protocol and migration boundary (PVA default, CA compatibility, AdoEpicsBridge / AdoPvaSrv only for legacy ADO systems).
 - Phoebus ROD: operator UX and middle-layer service boundary on top of EPICS.
 - GitHub Platform ROD: repo governance, CI/CD, release evidence, and collaboration boundary.
 - Keep new decision text aligned with these boundaries unless the task is explicitly to supersede them.

@@ -83,7 +83,7 @@ Slide 5:
 	- **Operator and application layer (Phoebus tools, web tools, HLAs)**
 	- **Middle-layer services (Archiver, Alarm, Olog, ChannelFinder, Save/Restore, Gateway)**
 	- **Control system layer (EPICS 7 with PVA-first, CA compatibility)**
-	- **Legacy integration layer (ADO servers, ADO2EPICS bridge)**
+	- **Legacy integration layer (AdoPvaSrv, AdoEpicsBridge)**
 	- **Infrastructure layer (network zones, compute, storage, CI/CD platform)**
 - **Interface emphasis:**
 	- **User-facing workflows are uniform across EPICS-native and ADO-backed systems**
@@ -195,7 +195,7 @@ Slide 9:
 - **Diagram content:**
 	- **ADO domain: legacy devices, ADO services, existing operational clients**
 	- **EPICS domain: IOC/PVA services, modern middleware, new subsystem integrations**
-	- **Integration layer: ADO server path, ADO2EPICS bridge, shared service/API access points**
+	- **Integration layer: AdoPvaSrv path, AdoEpicsBridge, shared service/API access points**
 	- **Unified operations layer: Phoebus tools and web interfaces abstract protocol differences**
 - **Diagram callouts:**
 	- **Clear protocol boundaries and translation points**
@@ -207,23 +207,24 @@ Notes:
 2. Emphasize that coexistence is engineered, not accidental, and includes explicit integration contracts.
 3. The user experience target is protocol-transparent operations even while backend systems differ.
 
-## Slide 10: Coexistence Strategies and Tradeoffs
+## Slide 10: Coexistence Strategies
 
 Charge questions addressed: CQ7, CQ8
 
 Slide overview:
-Compare the three integration strategies for simultaneous ADO and EPICS operation, focusing on user transparency, performance, and scalability.
+Compare the three integration strategies for simultaneous ADO and EPICS operation and present the selected decision matrix for deployment boundaries.
 
 Slide 10:
-- **Strategy 1: ADO server access path**
+- **Strategy 1: AdoPvaSrv access path**
 	- **Best for preserving existing ADO-native behavior with minimal disruption**
 	- **Lower migration effort initially, but limited long-term convergence benefits**
 	- **Useful for stable legacy segments during early transition**
-- **Strategy 2: ADO2EPICS bridge**
+- **Strategy 2: AdoEpicsBridge**
 	- **Exposes ADO-controlled devices as EPICS PVs for unified tooling**
+	- **p4p-based bridge between ADO and EPICS (pvAccess); primarily used for FEC**
 	- **Strong path for operator transparency and EPICS-aligned workflows**
 	- **Requires careful performance validation of translation and alarm propagation paths**
-- **Strategy 3: Phoebus and service datasource plugin (new ADO protocol client)**
+- **Strategy 3: Phoebus and service datasource plugin (Ado Datasource: ADO protocol client in core-pv)**
 	- **Enables tool-level unification with protocol-aware data access**
 	- **Flexible for mixed environments and incremental adoption**
 	- **Adds client/service complexity that must be managed consistently across tools**
@@ -233,40 +234,27 @@ Slide 10:
 	- **Scalability under mixed operational load**
 	- **Implementation and maintenance complexity**
 	- **Migration alignment toward EPICS-first end state**
+- **Decision outcome:**
+	- **Use all three solutions in parallel, with clear priority and usage intent.**
+- **Matrix ranking and role:**
+	- **1) AdoPvaSrv (preferred): distributed and scalable primary approach for near-term coexistence.**
+	- **2) AdoEpicsBridge (secondary): most seamless migration path because it requires no changes to ADOs or ADO Managers; planned for horizontally scalable clustered deployment.**
+	- **3) Ado Datasource (insurance path): additional mechanism to preserve a uniform user experience when needed.**
+- **Governance intent:**
+	- **Use the matrix to choose per subsystem, while keeping one operator-facing workflow across all back-end paths.**
 
 Notes:
 1. No single strategy is best everywhere; deployment can combine approaches by subsystem and risk profile.
 2. The recommendation should prioritize operator transparency and measured performance under real load.
 
-## Slide 11: Strategy Decision Matrix and Recommended Boundaries
-
-Charge questions addressed: CQ1, CQ7, CQ8
-
-Slide overview:
-Decision matrix and selected multi-path strategy to maintain a uniform user experience.
-
-Slide 11:
-- **Decision outcome:**
-	- **We will use all three solutions in parallel, with clear priority and usage intent.**
-- **Matrix ranking and role:**
-	- **1) ADO server path (preferred): distributed and scalable primary approach for near-term coexistence.**
-	- **2) ADO2EPICS bridge (secondary): most seamless migration path because it requires no changes to ADOs or ADO Managers; planned for horizontally scalable clustered deployment.**
-	- **3) Phoebus datasource client (insurance path): additional mechanism to preserve a uniform user experience when needed.**
-- **Governance intent:**
-	- **Use the matrix to choose per subsystem, while keeping one operator-facing workflow across all back-end paths.**
-
-Notes:
-1. Keep this slide decision-focused; avoid repeating the full comparison from Slide 10.
-2. The key message is not one-path replacement, but an ordered multi-path architecture with operational consistency.
-
-## Slide 12: Network Architecture and Subnet Strategy
+## Slide 11: Network Architecture and Subnet Strategy
 
 Charge questions addressed: CQ4, CQ6, CQ7
 
 Slide overview:
 Network architecture needed for distributed ADO and EPICS operation with secure, scalable service connectivity.
 
-Slide 12:
+Slide 11:
 - **Network architecture goals:**
 	- **Clear segmentation across controls, instrumentation, and data services**
 	- **Scalable connectivity for distributed and clustered components**
@@ -287,14 +275,14 @@ Notes:
 2. Emphasize that network segmentation is an enabler for reliability, security, and operational scalability.
 3. Highlight that distributed placement choices should be validated with mixed-mode load testing.
 
-## Slide 13: Subnet Buildout Plan (Controls, Instrumentation, Data)
+## Slide 12: Subnet Buildout Plan (Controls, Instrumentation, Data)
 
 Charge questions addressed: CQ5, CQ6, CQ7
 
 Slide overview:
 Placeholder for deeper network architecture and subnet implementation details.
 
-Slide 13:
+Slide 12:
 - **Placeholder:**
 	- **Add detailed topology and subnet boundaries**
 	- **Add routing, firewall, and gateway policy model**
@@ -304,14 +292,14 @@ Notes:
 1. This slide is intentionally a placeholder for deeper network design content.
 2. Expand once network architecture decisions are finalized.
 
-## Slide 14: EPICS and IOC Architecture Fundamentals
+## Slide 13: EPICS and IOC Architecture Fundamentals
 
 Charge questions addressed: CQ2, CQ3
 
 Slide overview:
 Role of EPICS IOCs in the controls stack, and why EPICS 7 allows gradual modernization without disruptive rewrites.
 
-Slide 14:
+Slide 13:
 - **IOC role in architecture:**
 	- **IOCs remain the real-time interface to hardware, device logic, and process database records**
 	- **IOC data can be served over both Channel Access and pvAccess during transition**
@@ -332,14 +320,14 @@ References:
 - EPICS 7 enhancements paper (extracted): [rod/raw_resources/_extracted/mobpl01.txt](../rod/raw_resources/_extracted/mobpl01.txt)
 - EPICS 7 five-year status paper (extracted): [rod/raw_resources/_extracted/th1bco01.txt](../rod/raw_resources/_extracted/th1bco01.txt)
 
-## Slide 15: pvAccess Protocol Value for EIC
+## Slide 14: pvAccess Protocol Value for EIC
 
 Charge questions addressed: CQ2, CQ3, CQ4
 
 Slide overview:
 Why pvAccess is the preferred protocol path for new EIC workflows, especially for structured data and service integration.
 
-Slide 15:
+Slide 14:
 - **Protocol capabilities:**
 	- **Transports structured data types (scalars, arrays, tables, images) with metadata**
 	- **Efficient subscriptions transfer only changed fields, reducing network load**
@@ -361,14 +349,14 @@ References:
 - EPICS 7 enhancements paper (extracted): [rod/raw_resources/_extracted/mobpl01.txt](../rod/raw_resources/_extracted/mobpl01.txt)
 - EPICS 7 five-year status paper (extracted): [rod/raw_resources/_extracted/th1bco01.txt](../rod/raw_resources/_extracted/th1bco01.txt)
 
-## Slide 16: Middle-Layer Services - Technical Benefits
+## Slide 15: Middle-Layer Services - Technical Benefits
 
 Charge questions addressed: CQ2, CQ3, CQ8
 
 Slide overview:
 Phoebus middle-layer services baseline and architecture benefits from the EIC Phoebus ROD.
 
-Slide 16:
+Slide 15:
 - **Core services in scope:**
 	- **Archiver, Alarm, Olog, ChannelFinder, Save/Restore, Gateway**
 - **ROD-defined middle-layer benefits:**
@@ -392,14 +380,14 @@ References:
 - Phoebus tools and services decision record: [rod/EIC-ROD-Phoebus-Tools-and-Services.md](../rod/EIC-ROD-Phoebus-Tools-and-Services.md)
 - Phoebus ecosystem paper (extracted): [rod/raw_resources/_extracted/MOCR002.txt](../rod/raw_resources/_extracted/MOCR002.txt)
 
-## Slide 17: Middle-Layer Services - Individual Roles
+## Slide 16: Middle-Layer Services - Individual Roles
 
 Charge questions addressed: CQ4, CQ5
 
 Slide overview:
 What each service does and why it matters for EIC operations.
 
-Slide 17:
+Slide 16:
 - **Archiver: EPICS Archiver Appliance stores time-series PV data at configurable rates and provides fast historical queries. Supports post-event analysis and correlation with live values in Data Browser.**
 - **Alarm: Evaluates alarm thresholds in real-time, notifies operators, maintains alarm history, and supports configuration rollback. Enables both immediate response and retrospective tuning of alarm quality.**
 - **ChannelFinder: Metadata and discovery service for PV catalogs, tags, and properties. Enables operator search and application-level data discovery organized by subsystem or device type.**
@@ -410,16 +398,16 @@ Slide 17:
 Notes:
 1. Descriptions are sourced from the Phoebus ROD and ecosystem papers.
 2. Each service has a focused, well-defined role and can be scaled independently.
-3. These services work together to enable the consistent operator workflows shown in Slide 18.
+3. These services work together to enable the consistent operator workflows shown in Slide 17.
 
-## Slide 18: Phoebus Operator Toolkit - Strategic Benefits
+## Slide 17: Phoebus Operator Toolkit - Strategic Benefits
 
 Charge questions addressed: CQ1, CQ8
 
 Slide overview:
 Why a unified operator platform matters: workflow efficiency, consistency, and scalability.
 
-Slide 18:
+Slide 17:
 - **Integrated workflow across displays, alarms, trends, logbook, and save/restore**
 	- **Operators navigate seamlessly between tools without manual re-entry of PV names or loss of context**
 	- **Example workflow: alarm investigation -> historical data retrieval -> device displays -> logbook documentation, all within one environment**
@@ -439,14 +427,14 @@ References:
 - Phoebus ecosystem paper: [rod/raw_resources/_extracted/MOCR002.txt](../rod/raw_resources/_extracted/MOCR002.txt)
 - Phoebus tools and services decision record: [rod/EIC-ROD-Phoebus-Tools-and-Services.md](../rod/EIC-ROD-Phoebus-Tools-and-Services.md)
 
-## Slide 19: Phoebus Applications - Integrated Operator Toolkit
+## Slide 18: Phoebus Applications - Integrated Operator Toolkit
 
 Charge questions addressed: CQ3, CQ4, CQ5
 
 Slide overview:
 User-facing applications within Phoebus that form a cohesive operator environment.
 
-Slide 19:
+Slide 18:
 - **Display Builder: OPI/HMI editor and runtime with alarm awareness, units, and precision. Supports legacy display migration (EDM, MEDM, BOY auto-conversion) and web-based runtime execution.**
 - **Data Browser: Trending across multiple archive providers (Archiver Appliance, RDB, TimescaleDB). Enables correlation analysis with live PV values in unified plotting environment.**
 - **Alarm UI: Real-time alarm monitoring with high-level overviews, alarm tables, hierarchical trees, and voice annunciator. Ensures critical conditions are surfaced and managed efficiently.**
@@ -464,16 +452,16 @@ References:
 - Phoebus applications and ecosystem integration: [rod/raw_resources/_extracted/MOCR002.txt](../rod/raw_resources/_extracted/MOCR002.txt)
 - Phoebus tools and services decision record: [rod/EIC-ROD-Phoebus-Tools-and-Services.md](../rod/EIC-ROD-Phoebus-Tools-and-Services.md)
 
-## Slide 20: Phoebus Architecture - Modular Foundation
+## Slide 19: Phoebus Architecture - Modular Foundation
 
 Charge questions addressed: CQ5, CQ8
 
 Slide overview:
 Core technical architecture that enables the integrated toolkit and supports independent service deployment.
 
-Slide 20:
+Slide 19:
 - **Core modules (protocol-agnostic foundation):**
-	- **CorePV / Data-source layer: Centralizes protocol interactions (CA, PVA, simulators, vendor systems via SPI). Reuses connections and encapsulates reconnection logic; reduces network load.**
+	- **CorePV / Data-source layer: Centralizes protocol interactions (CA, PVA, simulators, vendor systems via SPI), including the Ado Datasource (ADO protocol client in core-pv) for ADO-backed systems. Reuses connections and encapsulates reconnection logic; reduces network load.**
 	- **VTypes / Value model: Canonical immutable value representations carrying raw value, timestamp, alarm state, units, and display ranges. Serializable for REST/WebSocket interoperability.**
 	- **Selection and Adapter framework: Enables context propagation across applications. Selecting an alarm opens a probe, or launches Data Browser view with historical data—all without manual PV re-entry.**
 	- **Formula pipelines: Configurable value processing and transformation for calculations and derived signals.**
@@ -492,14 +480,14 @@ Notes:
 References:
 - Phoebus framework architecture and SPI: [rod/raw_resources/_extracted/MOCR002.txt](../rod/raw_resources/_extracted/MOCR002.txt)
 
-## Slide 21: Web Tools and Complementary Access
+## Slide 20: Web Tools and Complementary Access
 
 Charge questions addressed: CQ4, CQ5
 
 Slide overview:
 Browser-based interfaces and lightweight access paths for operational visibility and service integration.
 
-Slide 21:
+Slide 20:
 - **Phoebus ecosystem web capabilities:**
 	- **Olog web client (HTML/JavaScript): Operator logs and search accessible from any browser. Integrates with smartphone clients for mobile facility-wide access.**
 	- **Display Builder Web Runtime: OPI/HMI screens executable in web browsers; same ".bob" files used in desktop Display Builder.**
@@ -525,14 +513,21 @@ References:
 - Phoebus ecosystem paper (Olog web, multi-platform access): [rod/raw_resources/_extracted/MOCR002.txt](../rod/raw_resources/_extracted/MOCR002.txt)
 - Phoebus tools and services decision record: [rod/EIC-ROD-Phoebus-Tools-and-Services.md](../rod/EIC-ROD-Phoebus-Tools-and-Services.md)
 
-## Slide 22: CI/CD, Governance, and Infrastructure as Code
+## Slide 21: CI/CD and Automation Stack
 
 Charge questions addressed: CQ5, CQ6, CQ8
 
 Slide overview:
-How source control, automation pipelines, and infrastructure-as-code practices support delivery quality and operational repeatability.
+Show the end-to-end delivery backbone: governance in GitHub, CI/CD orchestration in Actions, and repeatable operations via Ansible/AWX and infrastructure as code.
 
-Slide 22:
+Slide 21:
+- **CI/CD purpose for controls architecture:** standardize delivery workflows across infrastructure, controls software, and operations tooling; reduce integration risk through automated validation and repeatable deployment steps; improve traceability from design change to deployed system state.
+- **Governance and change control (GitHub):** structured collaboration through pull requests, reviews, and issue tracking; branch protection and CODEOWNERS enforce controlled change paths; full history and traceability across architecture, code, configuration, and operations assets.
+- **Pipeline orchestration (GitHub Actions):** automated build, test, packaging, and deployment workflows; reusable workflows reduce duplication and enforce common standards; environment-aware pipelines support development, test, and production readiness.
+- **Operational automation (Ansible/AWX + IaC):** Ansible playbooks define desired state, AWX provides managed execution and visibility, and infrastructure-as-code keeps environment setup and updates version-controlled, reviewable, auditable, and repeatable.
+
+
+Notes:
 - **CI/CD purpose for controls architecture:**
 	- **Standardize delivery workflows across infrastructure, controls software, and operations tooling**
 	- **Reduce integration risk through automated validation and repeatable deployment steps**
@@ -541,23 +536,6 @@ Slide 22:
 	- **Git-based change control with pull request approvals and protected branches**
 	- **Pipeline-first validation before integration and release**
 	- **Infrastructure as code as the default operating model for environment setup and updates**
-
-Notes:
-1. Keep this slide at strategy level; implementation details are broken out in the following CI/CD slides.
-2. Emphasize that CI/CD is part of architecture maturity, not only software process.
-
-References:
-- GitHub platform decision record: [rod/EIC-ROD-GitHub-Platform.md](../rod/EIC-ROD-GitHub-Platform.md)
-- Phoebus tools and services decision record: [rod/EIC-ROD-Phoebus-Tools-and-Services.md](../rod/EIC-ROD-Phoebus-Tools-and-Services.md)
-
-## Slide 23: GitHub Platform and Automation Stack
-
-Charge questions addressed: CQ5, CQ6
-
-Slide overview:
-How GitHub, GitHub Actions, Ansible, and AWX work together as the delivery backbone.
-
-Slide 23:
 - **GitHub as source control platform:**
 	- **Full history and traceability of architecture, code, configuration, and operations assets**
 	- **Structured collaboration via pull requests, reviews, and issue tracking**
@@ -574,22 +552,21 @@ Slide 23:
 	- **Version-controlled infrastructure definitions and configuration policies**
 	- **Reviewable, auditable changes to platform and service topology**
 	- **Drift reduction through repeatable automation runs**
-
-Notes:
-1. Focus on the end-to-end toolchain, not isolated tools.
-2. Highlight repeatability, auditability, and lower manual error rates.
+2. Emphasize that CI/CD is part of architecture maturity, not only software process.
+3. Focus on the end-to-end toolchain, not isolated tools.
 
 References:
 - GitHub platform decision record: [rod/EIC-ROD-GitHub-Platform.md](../rod/EIC-ROD-GitHub-Platform.md)
+- Phoebus tools and services decision record: [rod/EIC-ROD-Phoebus-Tools-and-Services.md](../rod/EIC-ROD-Phoebus-Tools-and-Services.md)
 
-## Slide 24: QA/QC Through Code Review and Pipeline Gates
+## Slide 22: QA/QC Through Code Review and Pipeline Gates
 
 Charge questions addressed: CQ6, CQ7
 
 Slide overview:
 How QA/QC is embedded into code review and automated gates before changes reach operations.
 
-Slide 24:
+Slide 22:
 - **QA/QC control points:**
 	- **Pull request templates and review checklists enforce design and safety expectations**
 	- **Mandatory reviewers and approval gates before merge**
@@ -607,14 +584,14 @@ Notes:
 1. Emphasize QA/QC as continuous controls, not only final-stage inspection.
 2. Tie quality outcomes directly to reduced commissioning and operations risk.
 
-## Slide 25: CI/CD Pipelines by Domain
+## Slide 23: CI/CD Pipelines by Domain
 
 Charge questions addressed: CQ5, CQ6, CQ7
 
 Slide overview:
 CI/CD pipeline scope by domain: infrastructure, IOCs, services, tools, and resources.
 
-Slide 25:
+Slide 23:
 - **Infrastructure pipelines:**
 	- **VM provisioning and base image configuration**
 	- **Network and policy artifacts (including firewall and routing policy updates)**

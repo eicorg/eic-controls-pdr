@@ -8,7 +8,7 @@ EIC will use EPICS as its standard control system framework for all new and upgr
 - **pvAccess (PVA) as the primary network protocol** for all new EIC controls communication, with legacy compatibility to ADO via bridge layers,
 - High-level operator and application tooling in the EPICS ecosystem (including Phoebus),
 - Standard EPICS middle-layer service patterns (archiving, alarms, save/restore, logging),
-- Integration of legacy ADO-based subsystems through pvAccess ADO server and ADO2EPICS bridge during the transition period.
+- Integration of legacy ADO-based subsystems through AdoPvaSrv (pvAccess ADO server) and AdoEpicsBridge (p4p-based ADO-to-EPICS bridge, primary for FEC) during the transition period.
 
 This decision establishes EPICS with pvAccess as the primary protocol as the controls architecture foundation for the EIC. All new IOCs, services, and client applications shall be built and configured to use PVA by default.
 
@@ -78,12 +78,12 @@ The existing BNL ADO control system infrastructure will remain operational for R
 
 The primary bridging mechanisms are:
 
-- **ADO2EPICS Bridge / pvAccess ADO Server:** ADO is a BNL-proprietary control system with its own wire protocol; it cannot be bridged to EPICS using EPICS-internal gateways. Integration requires a dedicated ADO-to-EPICS adapter layer. BNL has developed the ADO2EPICS bridge and a pvAccess ADO server for this purpose: these components connect to ADO on one side using the native ADO protocol, and publish the corresponding data as EPICS PVs (accessible over PVA or CA) on the other side. This is the only supported mechanism for exposing ADO-managed devices to EPICS clients during the coexistence period. It is not intended as a permanent integration layer; each ADO subsystem migrated to a native EPICS IOC retires its bridge entry.
+- **AdoEpicsBridge / AdoPvaSrv:** ADO is a BNL-proprietary control system with its own wire protocol; it cannot be bridged to EPICS using EPICS-internal gateways. Integration requires a dedicated ADO-to-EPICS adapter layer. BNL has developed the AdoEpicsBridge (a p4p-based bridge, primary for FEC) and AdoPvaSrv (the pvAccess ADO server, server-side implementation) for this purpose: these components connect to ADO on one side using the native ADO protocol, and publish the corresponding data as EPICS PVs (accessible over PVA or CA) on the other side. This is the only supported mechanism for exposing ADO-managed devices to EPICS clients during the coexistence period. It is not intended as a permanent integration layer; each ADO subsystem migrated to a native EPICS IOC retires its AdoEpicsBridge / AdoPvaSrv entry.
 - **PVA Gateway:** Based on P4P (the Python PVXS binding), the EPICS 7 PVA Gateway is the preferred gateway for new EIC inter-network connections *within the EPICS domain*. It bridges pvAccess traffic across network boundaries and has demonstrated major performance improvements over CA gateways under mixed load conditions — particularly for concurrent connections handling a mix of scalar and multi-megabyte array data — as reported from ESS commissioning in 2023 (Lange et al., ICALEPCS 2023). The PVA Gateway can also bridge IPv4 to IPv6 network segments, aligning with the US government IPv6 transition mandate.
 - **CA Gateway:** The EPICS CA Gateway is an EPICS-internal proxy server that bridges Channel Access traffic across network boundaries *between EPICS CA clients and EPICS IOCs*. It has no capability to interface with ADO. For EIC its role is limited to supporting CA-speaking EPICS client tools that need to reach IOCs on isolated network segments; it is not used for ADO integration.
-- **Phased IOC migration:** New subsystems are commissioned directly on EPICS IOCs with PVA as the primary protocol. Existing ADO subsystems are migrated subsystem by subsystem during scheduled maintenance periods, following a priority order based on operational criticality and subsystem lifecycle stage. As each subsystem migrates, its ADO2EPICS bridge entry is retired.
+- **Phased IOC migration:** New subsystems are commissioned directly on EPICS IOCs with PVA as the primary protocol. Existing ADO subsystems are migrated subsystem by subsystem during scheduled maintenance periods, following a priority order based on operational criticality and subsystem lifecycle stage. As each subsystem migrates, its AdoEpicsBridge / AdoPvaSrv entry is retired.
 
-The coexistence topology therefore has a clear directionality: all new traffic is PVA, legacy ADO devices are exposed to EPICS clients through the dedicated ADO2EPICS bridge layer, and those bridge entries shrink over time as native EPICS IOC migration progresses.
+The coexistence topology therefore has a clear directionality: all new traffic is PVA, legacy ADO devices are exposed to EPICS clients through the dedicated AdoEpicsBridge / AdoPvaSrv layer, and those entries shrink over time as native EPICS IOC migration progresses.
 
 ### Scope and Expected Impact
 
@@ -105,7 +105,7 @@ The coexistence topology therefore has a clear directionality: all new traffic i
 
 | Risk | Severity | Mitigation |
 |------|----------|------------|
-| ADO-to-EPICS bridge complexity increases during simultaneous operations | Medium | Define ADO2EPICS bridge topology and PV naming conventions early; isolate ADO traffic on dedicated network segments; validate bridge performance under expected channel counts before commissioning. Note: the CA Gateway cannot bridge ADO — only the dedicated ADO2EPICS bridge / pvAccess ADO server can interface with the ADO protocol. |
+| ADO-to-EPICS bridge complexity increases during simultaneous operations | Medium | Define AdoEpicsBridge bridge topology and PV naming conventions early; isolate ADO traffic on dedicated network segments; validate bridge performance under expected channel counts before commissioning. Note: the CA Gateway cannot bridge ADO — only the dedicated ADO2EPICS bridge / pvAccess ADO server can interface with the ADO protocol. |
 | Inconsistent PVA/CA protocol usage across teams during transition | Medium | Establish site-wide PVA-default configuration across EPICS clients and services from initial deployment; enforce PVA-first convention in IOC build templates and code review policy. |
 | Initial EPICS 7/PVA onboarding gap for ADO-centric teams | Medium | Provide IOC template baselines, protocol-specific coding standards, and staged subsystem migration rehearsals before operations deployment. |
 | EPICS 7 PVA protocol maturity on specific hardware targets (VMEbus, RTEMS) | Low–Medium | RTEMS 6 support is now under active development by the EPICS Collaboration with APS, Gemini, and Diamond participation; mitigated by using Linux-based IOC hardware for new EIC subsystems where feasible. |
