@@ -80,24 +80,27 @@ Slide 4:
 Charge questions addressed: CQ1, CQ3, CQ7
 
 Slide overview:
-Position Phoebus using the source talk’s core three-part message: toolkit, services, and framework.
-
+Introduce Phoebus using the MOCR002 paper's three-part definition and ecosystem diagram, establishing its role as the operator application and service platform layer for EIC.
 Slide 5:
-- **Primary visual: `presentations/examples/images/MOCR002_f1.png`**
-- **Operator-facing toolkit for integrated workflows**
-- **A group of middle-layer microservices**
-- **A framework for building tools and services**
-- **Selection and adapter services propagate context such as PV names, values, timestamps, alarms, archive sources, log entries, and screen locations**
-- **The same environment supports alarm investigation, data browsing, display navigation, and logbook capture**
-- **One coherent user experience across commissioning and operations domains**
-
+- **Primary visual: presentations/examples/images/MOCR002_f1.png**
+- **Phoebus is simultaneously three things:**
+- **An operator-facing toolkit: Display Builder, Data Browser, Alarm UI, Logbook, Save/Restore, ChannelFinder client, PV utilities**
+- **A group of middle-layer microservices: Archiver Appliance, Alarm Server/Logger, Olog, ChannelFinder, Save/Restore service, PVA Gateway**
+- **A framework for building site-specific tools and services via Java SPI extensibility**
+- **Successor to Control System Studio (CS-Studio): replaces Eclipse RCP with a modular Java and JavaFX architecture — no platform lock-in, cleaner modularity, and modern toolchain support**
+- **Selection and Adapter services propagate context automatically: PV names, values, timestamps, alarm states, archive sources, log entries, and screen locations flow between applications without manual re-entry**
+- **Integrated workflows span the full operator day: alarm detection → trend investigation → display navigation → logbook capture, all within one environment**
+- **Broad multi-lab adoption across the EPICS community (ORNL, BNL, ESS, DESY, FNAL, and others) with active collaboration via monthly meetings, GitHub issues/PRs, and shared codeathon activity**
+- **One coherent user experience for EIC across commissioning, operations, and post-mortem analysis workflows**
 Notes:
-1. Keep wording close to the source talk for familiarity.
-2. Tie every claim to EIC architecture boundaries and requirements document language.
-
+1. Use the MOCR002 three-part definition verbatim as an anchor: toolkit / services / framework. This matches the source talk structure exactly.
+2. Emphasize that the Selection and Adapter framework is what makes Phoebus more than a collection of tools — it is an integrated environment.
+3. Tie multi-lab adoption claim to the collaboration statistics cited in Slide 15.
+4. The ecosystem diagram (MOCR002_f1) visually shows applications, services, and the shared core/core-UI foundation — reference it directly on the slide.
 References:
+- Phoebus ecosystem paper (primary source): [rod/raw_resources/_extracted/MOCR002.txt](../rod/raw_resources/_extracted/MOCR002.txt)
 - Thin talk source: [presentations/examples/thin_MOCR002_talk.pptx](examples/thin_MOCR002_talk.pptx)
-- Ecosystem paper extract: [rod/raw_resources/_extracted/MOCR002.txt](../rod/raw_resources/_extracted/MOCR002.txt)
+- Phoebus tools and services decision record: [rod/EIC-ROD-Phoebus-Tools-and-Services.md](../rod/EIC-ROD-Phoebus-Tools-and-Services.md)
 
 ## Slide 6: Display Builder Strategy
 
