@@ -181,6 +181,7 @@ Slide 9:
 - **Direct transition from alarm context to Data Browser, displays, and logbook actions**
 - **Alarm history supports post-mortem review and alarm-quality tuning**
 - **Supports operator response quality and reduces troubleshooting latency during commissioning and operations**
+- **Also supports configuration and day-to-day management of Alarm Server behavior (alarm hierarchy, limits, and annunciation rules)**
 
 Notes:
 1. Keep this operator-UI focused; service internals remain in appendix slides.
@@ -223,47 +224,41 @@ References:
 Charge questions addressed: CQ3, CQ4, CQ7
 
 Slide overview:
-Visualize applications and shared platform foundation, aligning with the source deck’s application/service stack diagram.
+Bridge from the workflow-level view to the platform view by showing how applications, shared foundation modules, and services fit together.
 
 Slide 11:
 - **Primary visual: `presentations/examples/images/MOCR002_f2.png`**
-- **Diagram highlights:**
-	- **Phoebus applications tier over common core/core-UI**
-	- **Middle-layer services sit alongside the applications tier in the broader ecosystem**
-	- **Shared data/value model and integration patterns**
-	- **Consistent UX behavior enabled by shared framework components**
-	- **Optional callout: map each application box to the workflow step from Slide 10**
+- **Layered model: operator applications at the top, shared core/core-UI in the middle, protocol and service integration below**
+- **Common foundation explains consistent navigation, context handoff, and look-and-feel across tools**
+- **Map workflow steps from Slide 10 (alarm -> trend -> display -> logbook) onto application blocks in the diagram**
+- **Key message: one integrated platform, not a collection of disconnected tools**
 
 Notes:
-1. Keep explanation concise and visual-first.
-2. Reinforce why shared foundation reduces long-term support cost.
+1. Keep this visual-first and use it as the transition into architecture internals.
+2. Focus on how the diagram explains operator workflow continuity and supportability.
 
 ## Slide 12: Architecture Fundamentals for UI Behavior
 
 Charge questions addressed: CQ1, CQ4, CQ7
 
 Slide overview:
-Summarize the architecture points from the thin talk that matter directly to user-facing behavior, while keeping the source’s service model in view.
+Explain the specific architecture mechanisms that drive user-visible behavior: responsiveness, consistent data semantics, and reliable cross-tool context sharing.
 
 Slide 12:
-- **Java and JavaFX modular framework (no Eclipse RCP dependency)**
-- **Core modules for PV access, VTypes, adapters, jobs, logging, and configuration**
-- **Core-UI modules for docking, menus, selection services, and toolbars**
-- **Job scheduling and processing off the UI thread for responsiveness**
-- **Connection management with pooled/reused PV and REST clients**
-- **VTypes as immutable values not tied to protocol memory layout**
-- **Formula-function pipelines for thread-safe data processing**
-- **Product as an assembled distribution of common modules, applications, and service clients**
-- **Modular microservices extending EPICS with scalability, resilience, and maintainability**
-- **Spring Boot baseline for many services, with specialized implementations where needed**
-- **CI/CD, containerization, and observability in the deployment model**
-- **Responsive interfaces, stable data semantics, and predictable cross-application integration**
+- **Modular Java/JavaFX architecture with shared Core and Core-UI services (no Eclipse RCP dependency)**
+- **Selection/adapter services propagate context across tools so operators avoid manual PV re-entry**
+- **Connection management reuses PV and REST clients to reduce overhead and improve stability at scale**
+- **VTypes provide protocol-independent, immutable value semantics for safe cross-application use**
+- **Job scheduling and data processing run off the UI thread to keep displays responsive under load**
+- **Resulting operator outcomes: predictable behavior, faster transitions between tools, and lower cognitive load**
 
 Notes:
-1. Keep this focused on user-visible outcomes rather than implementation detail.
+1. Keep this centered on user-visible behavior rather than service deployment internals.
+2. Use Slide 11 diagram callouts to anchor each architecture point.
 
 References:
 - Thin talk source: [presentations/examples/thin_MOCR002_talk.pptx](examples/thin_MOCR002_talk.pptx)
+- Ecosystem paper extract: [rod/raw_resources/_extracted/MOCR002.txt](../rod/raw_resources/_extracted/MOCR002.txt)
 
 ## Slide 13: Extensibility and SPI Model
 
@@ -348,6 +343,10 @@ Slide 16:
 - **Are boundaries of the application scope acceptable for this phase?**
 - **Which workflows need deeper review before final design?**
 - **Which source talk elements stay in the main body versus appendix for the final slide deck?**
+- **Risk RT-6-007-001: technology evolution may outpace current tooling choices over the project lifecycle**
+- **Mitigation: modular, extensible framework enables targeted upgrades with less disruption to operations**
+- **Mitigation: plugin/configuration-based extension model reduces impact on core applications**
+- **Mitigation: multi-lab collaboration spreads maintenance risk and improves response speed to technology changes**
 
 Notes:
 1. Keep this balanced: clear progress plus explicit open items.
