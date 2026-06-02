@@ -6,11 +6,11 @@ Slide overview:
 Establish review context for applications and user interfaces, using the thin MOCR002 talk flow adapted for EIC PDR.
 
 Slide 1:
-- **Title: Controls Applications and User Interfaces**
-- **Subtitle: EIC Controls PDR Applications and Operator Workflow Review**
-- **Presenter block: team, date, review body**
-- **Purpose statement:**
-	Present the baseline operator toolkit, integrated user workflows, and implementation readiness for controls applications.
+- **Application Layer & Operator Interfaces**
+- **Kunal Shroff**
+- **Software Technical Lead**
+- **Accelerator Controls Global Software, Networking & Computing PDR**
+- **June 15-17, 2026**
 
 Notes:
 1. This outline is adapted from the thin MOCR002 talk and the extracted MOCR002 paper text, with PDR framing added for review traceability.
@@ -43,14 +43,17 @@ Slide overview:
 
 Slide 3:
 - **Scope**
-- **Phoebus in the EPICS controls ecosystem**
-- **Application workflow: Display Builder, web runtime, Data Browser, Alarm UI**
-- **Applications portfolio: Logbook, Save & Restore, ChannelFinder, PV utilities**
-- **Middle-layer services and service/application stack**
-- **Architecture fundamentals and under-the-hood behavior**
-- **Extensibility (SPI) and site-specific product model for EIC**
-- **Collaboration, contribution model, and useful links**
-- **Open questions and appendix service details (only if requested)**
+- **Requirements**
+- **Phoebus**
+- **Phoebus applications**
+- **Display Builder**
+- **Databrowser**
+- **Alarm Applications**
+- **Logging**
+- **Phoebus Architecture**
+- **Risks**
+- **Path Forward**
+- **Summary**
 
 Notes:
 1. Main body focuses on applications and user interfaces.
@@ -64,16 +67,16 @@ Slide overview:
 Define what is in and out of scope for this presentation, and where the source talk has been condensed.
 
 Slide 4:
-- **In scope:**
-	- **Operator-facing applications and user workflow integration**
-	- **Phoebus middle-layer services only at the level needed to explain UI behavior and operator workflows**
-	- **Desktop and web runtime usage patterns**
-	- **Architecture decisions that directly impact UI/application behavior**
-	- **Requirements traceability for operator interface capabilities**
-- **Out of scope for main narrative:**
-	- **Detailed service deployment and operations internals (appendix)**
-	- **Full performance verification closure**
-	- **Final implementation sizing and operational readiness evidence**
+- **User-facing tools for control system operation**
+- **Focus on applications used to monitor, operate, diagnose, and document large-scale control systems**
+- **Phoebus as the primary application environment**
+- **Cover the integrated Phoebus toolkit, including displays, alarms, archiving, logging, PV tools, and save/restore workflows**
+- **Client libraries beyond Phoebus**
+- **Include libraries that bring control system access into other environments and languages**
+- **Integration with analysis and engineering workflows**
+- **Discuss use from Python notebooks, MATLAB applications, scripts, and custom tools**
+- **Common goal**
+- **Provide flexible, connected interfaces for users to interact with the control system in the environment that best fits their task**
 
 ## Slide 5: Phoebus in the EPICS Controls Ecosystem
 
@@ -82,16 +85,9 @@ Charge questions addressed: CQ1, CQ3, CQ7
 Slide overview:
 Introduce Phoebus using the MOCR002 paper's three-part definition and ecosystem diagram, establishing its role as the operator application and service platform layer for EIC.
 Slide 5:
-- **Primary visual: presentations/examples/images/MOCR002_f1.png**
-- **Phoebus is simultaneously three things:**
-- **An operator-facing toolkit: Display Builder, Data Browser, Alarm UI, Logbook, Save/Restore, ChannelFinder client, PV utilities**
-- **A group of middle-layer microservices: Archiver Appliance, Alarm Server/Logger, Olog, ChannelFinder, Save/Restore service, PVA Gateway**
-- **A framework for building site-specific tools and services via Java SPI extensibility**
-- **Successor to Control System Studio (CS-Studio): replaces Eclipse RCP with a modular Java and JavaFX architecture — no platform lock-in, cleaner modularity, and modern toolchain support**
-- **Selection and Adapter services propagate context automatically: PV names, values, timestamps, alarm states, archive sources, log entries, and screen locations flow between applications without manual re-entry**
-- **Integrated workflows span the full operator day: alarm detection → trend investigation → display navigation → logbook capture, all within one environment**
-- **Broad multi-lab adoption across the EPICS community (ORNL, BNL, ESS, DESY, FNAL, and others) with active collaboration via monthly meetings, GitHub issues/PRs, and shared codeathon activity**
-- **One coherent user experience for EIC across commissioning, operations, and post-mortem analysis workflows**
+- **Initial versions of the Performance Requirements Documents (PRDs)**
+- **High Level Applications [EIC-SEG-RSI-158]**
+- **Networking & Computing [EIC-SEG-RSI-XXX]**
 Notes:
 1. Use the MOCR002 three-part definition verbatim as an anchor: toolkit / services / framework. This matches the source talk structure exactly.
 2. Emphasize that the Selection and Adapter framework is what makes Phoebus more than a collection of tools — it is an integrated environment.
@@ -110,13 +106,10 @@ Slide overview:
 How Display Builder supports reusable synoptic UI development and runtime use, using the source talk’s editor/runtime split.
 
 Slide 6:
-- **Display Builder editor and runtime**
-- **Reusable widgets and parameterized displays**
-- **Live process data with metadata, alarm awareness, units, and precision**
-- **Version-controlled `.bob` screen assets for consistent operations**
-- **Advanced customization through properties and scripting**
-- **Auto-conversion from legacy EDM, MEDM, and BOY displays with minimal adjustments**
-- **Supports OPI requirement intent for reusable controls, navigation, and service integration**
+- **Control System Architecture**
+- **Operator and application layer (Phoebus tools, web tools, HLAs)**
+- **Middle-layer services (Archiver, Alarm, Olog, ChannelFinder, Save/Restore, Gateway)**
+- **Control system layer (EPICS 7 with PVA-first, CA compatibility)**
 
 Notes:
 1. Keep this practical and operator-centric.
@@ -133,16 +126,22 @@ Slide overview:
 Show how web access complements desktop operations and supports remote access, matching the source deck’s web-runtime slides.
 
 Slide 7:
-- **Phoebus on the web**
-- **`.bob` files converted to web runtime OPIs**
-- **Converted screens with improved generation workflow for maintainability**
-- **Help support remote operations by bringing OPI screens to the web**
-- **Remote visibility and role-appropriate access outside main control consoles**
-- **Same display assets reused across desktop and web contexts**
-- **Reduced duplication in UI maintenance**
-- **Web runtime is complementary to the desktop toolkit, not a replacement**
-- **Converted-screen tooling stays source-driven so one screen asset serves both runtimes**
-- **`phoebusgen` / `autogen` cited as examples, not a committed toolchain**
+- **Phoebus**
+- **Rich client toolkit for control system applications**
+- **A collection of tools for monitoring, operating, and troubleshooting large-scale control systems**
+- **Provides a unified desktop environment for operators, engineers, and developers**
+- **Integrated application framework**
+- **Combines displays, alarms, archiving, logging, PV tools, and save/restore workflows**
+- **Enables applications to share data and operational context automatically**
+- **Seamless cross-application workflows**
+- **PV names, values, timestamps, alarm states, archive sources, displays, and logbook entries can move from one tool to another**
+- **Operators can move naturally from alarm investigation, to historical data, to device displays, to logbook documentation**
+- **Consistent and extensible user experience**
+- **Shared UI patterns, menus, selections, and context handling reduce operator effort**
+- **Applications interoperate through well-defined interfaces without tight coupling**
+- **Scalable, sustainable, and collaborative platform**
+- **Supports modern Java LTS releases, containerized deployment, CI/CD workflows, and microservice-based infrastructure**
+- **Developed collaboratively by facilities worldwide as an open ecosystem for control system tools**
 
 Notes:
 1. Position web tools as complementary, not replacement for operator desktops.
@@ -156,12 +155,9 @@ Slide overview:
 Trend and history access as a core operator diagnostic capability, with the source deck’s emphasis on archive backends and unified plotting.
 
 Slide 8:
-- **Data Browser for PV history access**
-- **Fast shift from live alarm/event to historical trend context**
-- **Cross-channel correlation for diagnosis and post-mortem analysis**
-- **Workflow continuity with display, alarm, and logbook tools**
-- **Supports multiple archive providers through SPI-based integration, including EPICS Archiver Appliance and RDB / TimescaleDB-backed stores**
-- **Presents live and historical data in one plotting environment**
+- **Display Builder**
+- **editor**
+- **runtime**
 
 Notes:
 1. Connect this slide to operational risk reduction and troubleshooting speed.
@@ -175,13 +171,13 @@ Slide overview:
 Show alarm monitoring and response workflow as a first-class operator function before the broader applications portfolio.
 
 Slide 9:
-- **Alarm UI with hierarchical alarm trees, active alarm tables, and annunciator behavior**
-- **Alarm clients include tree, table, panel, and alarm history views**
-- **Fast detection of new, pending, and acknowledged alarms with severity and timestamp context**
-- **Direct transition from alarm context to Data Browser, displays, and logbook actions**
-- **Alarm history supports post-mortem review and alarm-quality tuning**
-- **Supports operator response quality and reduces troubleshooting latency during commissioning and operations**
-- **Also supports configuration and day-to-day management of Alarm Server behavior (alarm hierarchy, limits, and annunciation rules)**
+- **Display Builder - editor**
+- **WYSIWYG editor**
+- **Large Pallet of widgets**
+- **Control System Aware**
+- **Advanced customization through properties and scripting**
+- **Resuable widgets/groups/screens**
+- **Simple file format**
 
 Notes:
 1. Keep this operator-UI focused; service internals remain in appendix slides.
@@ -199,17 +195,8 @@ Slide overview:
 Consolidated application view matching the source deck’s application slide content and terminology.
 
 Slide 10:
-- **Logbook:**
-	- **Integrated operator logging with context capture**
-	- **Backend-agnostic model (Olog/elog and site-specific variants)**
-- **Save and Restore:**
-	- **Snapshot and restore groups of PVs**
-	- **Supports scaling and merging snapshots where needed**
-- **ChannelFinder clients:**
-	- **Fast PV search with metadata (IOC host, record type, tags)**
-	- **Search is case-insensitive in the source talk’s wording**
-- **PV utilities:**
-	- **Probe, PV Table, PV Tree for operations and diagnostics**
+- **Display Builder - runtime**
+- **Live process data with metadata, alarm awareness, units, and precision**
 
 Notes:
 1. Keep this slide close to the source talk language.
@@ -227,11 +214,9 @@ Slide overview:
 Bridge from the workflow-level view to the platform view by showing how applications, shared foundation modules, and services fit together.
 
 Slide 11:
-- **Primary visual: `presentations/examples/images/MOCR002_f2.png`**
-- **Layered model: operator applications at the top, shared core/core-UI in the middle, protocol and service integration below**
-- **Common foundation explains consistent navigation, context handoff, and look-and-feel across tools**
-- **Map workflow steps from Slide 10 (alarm -> trend -> display -> logbook) onto application blocks in the diagram**
-- **Key message: one integrated platform, not a collection of disconnected tools**
+- **Web Runtime and Remote Operations**
+- **Help support remote operations by bringing OPI screens to the web**
+- **.bob files converted to web runtime OPI's**
 
 Notes:
 1. Keep this visual-first and use it as the transition into architecture internals.
@@ -245,12 +230,7 @@ Slide overview:
 Explain the specific architecture mechanisms that drive user-visible behavior: responsiveness, consistent data semantics, and reliable cross-tool context sharing.
 
 Slide 12:
-- **Modular Java/JavaFX architecture with shared Core and Core-UI services (no Eclipse RCP dependency)**
-- **Selection/adapter services propagate context across tools so operators avoid manual PV re-entry**
-- **Connection management reuses PV and REST clients to reduce overhead and improve stability at scale**
-- **VTypes provide protocol-independent, immutable value semantics for safe cross-application use**
-- **Job scheduling and data processing run off the UI thread to keep displays responsive under load**
-- **Resulting operator outcomes: predictable behavior, faster transitions between tools, and lower cognitive load**
+- **Screen creation**
 
 Notes:
 1. Keep this centered on user-visible behavior rather than service deployment internals.
@@ -268,12 +248,13 @@ Slide overview:
 Explain how SPI supports controlled evolution of tools and integrations, using the source deck’s application, data-source, and UI extension examples.
 
 Slide 13:
-- **Extensible via Java SPI**
-- **New data sources/protocols (CA, PVA, MQTT, Tango), service clients, applications, file handlers, and UI extensions**
-- **Site-specific adaptation without forking core platform**
-- **Lower integration friction for future subsystem and workflow needs**
-- **Cleaner long-term maintainability path**
-- **New functionality added through well-defined contracts instead of ad hoc coupling**
+- **Data Browser**
+- **Presents live and historical data in one plotting environment**
+- **Cross-channel correlation for diagnosis and post-mortem analysis**
+- **Data export and inspection**
+- **Optimized retrieval**
+- **Workflow continuity with display, alarm, and logbook tools**
+- **Supports multiple archive providers**
 
 Notes:
 1. Keep this as architecture governance and evolution argument.
@@ -291,13 +272,10 @@ Slide overview:
 Apply the thin-talk product model to EIC delivery planning.
 
 Slide 14:
-- **Assemble site-specific products from a common framework**
-- **Include site adapters, data sources, configuration, and branding**
-- **Curated distribution per environment role (operations, development, commissioning)**
-- **Common baseline with controlled extensions by subsystem need**
-- **Consistent release and support posture across teams**
-- **Site-specific products assembled from shared framework pieces rather than forks**
-- **Product composition, default preferences, icons, and menus treated as configuration inputs**
+- **Alarm Applications**
+- **Goals**
+- **Support operator response quality and reduces troubleshooting latency during commissioning and operations**
+- **support configuration and management of Alarm Server behavior (alarm hierarchy, limits, and annunciation rules)**
 
 Notes:
 1. Keep this practical for delivery planning discussions.
@@ -311,15 +289,16 @@ Slide overview:
 Show the sustainability model based on active multi-site collaboration, as presented in the source deck’s collaboration slides.
 
 Slide 15:
-- **Multi-site collaboration across labs and facilities**
-- **Contribution through GitHub issues/PRs and recurring meetings**
-- **Collaboration scale signal: sustained PR and issue activity in source talk**
-- **Thin talk cites roughly 300 PRs and 100 issues in Phoebus, with related activity in ChannelFinder and Phoebus-Olog**
-- **Access to broader expertise and shared maintenance burden**
-- **Better resilience against single-site knowledge concentration**
-- **Clear pathway for EIC contributions upstream where appropriate**
-- **Monthly collaboration cadence targets the second Wednesday**
-- **Participation via issues, PRs, and codeathon/documentathon activity**
+- **Alarm Applications**
+- **Alarm clients include**
+- **Tree**
+- **Organized hierarchical view of alarms**
+- **Table**
+- **Fast detection of new, pending, and acknowledged alarms with severity and timestamp context**
+- **Panel**
+- **Annunciator**
+- **Alarm history**
+- **supports post-mortem review and alarm-quality tuning**
 
 Notes:
 1. Keep this concise and evidence-oriented.
@@ -333,20 +312,11 @@ Slide overview:
 Summarize what is ready now and what remains before final-design closure, while preserving the source deck’s concluding discussion posture.
 
 Slide 16:
-- **Application workflow model is coherent and source-backed**
-- **Core application set, middle-layer service model, and architecture direction are defined**
-- **Desktop and web usage patterns are established**
-- **Complete formal performance characterization under representative load**
-- **Finalize subsystem rollout priorities and acceptance evidence**
-- **Close unresolved interface and operational ownership items**
-- **Validate web-runtime and service assumptions against EIC-specific rollout plans**
-- **Are boundaries of the application scope acceptable for this phase?**
-- **Which workflows need deeper review before final design?**
-- **Which source talk elements stay in the main body versus appendix for the final slide deck?**
-- **Risk RT-6-007-001: technology evolution may outpace current tooling choices over the project lifecycle**
-- **Mitigation: modular, extensible framework enables targeted upgrades with less disruption to operations**
-- **Mitigation: plugin/configuration-based extension model reduces impact on core applications**
-- **Mitigation: multi-lab collaboration spreads maintenance risk and improves response speed to technology changes**
+- **Save and Restore**
+- **Save & Restore**
+- **Organized representation of Configurations and Snapshots**
+- **Interface to live, archived, and snapshot data**
+- **Integration with logbook**
 
 Notes:
 1. Keep this balanced: clear progress plus explicit open items.
@@ -360,15 +330,88 @@ Slide overview:
 Consolidated references for all claims used in this presentation, including the source deck and extracted paper text.
 
 Slide 17:
-- **Primary source talk: [presentations/examples/thin_MOCR002_talk.pptx](examples/thin_MOCR002_talk.pptx)**
-- **Phoebus ecosystem paper extract: [rod/raw_resources/_extracted/MOCR002.txt](../rod/raw_resources/_extracted/MOCR002.txt)**
-- **Controls software requirements authority: [supporting-docs/EIC-SEG-RSI-158-Control.Software-Performance.Requirements.Document.txt](../supporting-docs/EIC-SEG-RSI-158-Control.Software-Performance.Requirements.Document.txt)**
-- **EPICS controls baseline decision: [rod/EIC-ROD-EPICS-Control-System.md](../rod/EIC-ROD-EPICS-Control-System.md)**
-- **Phoebus tools/services decision: [rod/EIC-ROD-Phoebus-Tools-and-Services.md](../rod/EIC-ROD-Phoebus-Tools-and-Services.md)**
-- **GitHub governance context: [rod/EIC-ROD-GitHub-Platform.md](../rod/EIC-ROD-GitHub-Platform.md)**
+- **Logbook**
+- **Enable users to create and retrieve log entries which document EIC operations, observations, and events.**
+- **Phoebus clients**
+- **Automatic context capture: Log entries are pre-populated from the active application state.**
+- **Web clients**
+- **Easy access for quick entry and review**
 
 Notes:
 1. Keep all technical statements traceable to these references.
+
+## Slide 18: Applications Portfolio
+
+Slide 18:
+- **Channel Finder Clients - fast PV search enriched with metadata (IOC host, record type, tags)**
+- **PV Utilities**
+	- **Probe: detailed PV introspection**
+	- **PV Table: monitor/save groups of PVs**
+	- **PV Tree: visualize EPICS record linkages**
+
+## Slide 19: Commissioning tools
+
+Slide 19:
+- **Commissioning tools**
+
+## Slide 20: Phoebus Architecture
+
+Slide 20:
+- **Modular framework - built on Java + JavaFX (no Eclipse RCP)**
+- **Core modules: PV access, VTypes, adapters, logging, jobs**
+- **Core-UI modules: docking, menus, selection services**
+- **Applications: operator-facing tools (Display Builder, Data Browser, etc.)**
+- **Jobs & scheduling - run tasks off the UI thread for responsiveness**
+- **Connection management - pooled, reusable PV and REST clients**
+- **VTypes - canonical value model**
+	- **Protocol-agnostic, not tied to memory layout**
+	- **Immutable and safe to share**
+- **Formula functions - efficient, thread-safe data processing pipelines**
+
+## Slide 21: Phoebus Architecture - Extensibility
+
+Slide 21:
+- **Extensible via Java SPI (Service Provider Interface)**
+- **New data sources & protocols (CA, PVA, MQTT, Tango, ...)**
+- **Clients for middle-layer services (Olog, elog, ...)**
+- **New applications**
+- **UI extensions (menus, toolbars, context menus)**
+
+## Slide 22: Phoebus Architecture - eic product
+
+Slide 22:
+- **EIC phoebus product includes site specific**
+- **Applications**
+- **Datasources**
+- **Configurations**
+- **Branding**
+- **Adapters**
+- **Address the needs of a particular organization or workflow.**
+
+## Slide 23: Phoebus Collaboration
+
+Slide 23:
+- **An international collaboration of dozens of research facilites**
+- **Phoebus**
+- **~300 PR's**
+- **~100 Issue**
+
+## Slide 24: Risks
+
+Slide 24:
+- **Risk RT-6-007-001**
+- **Mitigation: modular, extensible framework enables targeted upgrades with minimized disruption**
+- **Mitigation: multi-lab collaboration spreads maintenance risk and improves response speed to technology changes**
+
+## Slide 25: Path forward
+
+Slide 25:
+- **Path forward**
+
+## Slide 26: Summary
+
+Slide 26:
+- **Summary**
 
 ## Appendix Slide A1: Alarm and Discovery Services (Optional)
 
@@ -441,3 +484,5 @@ Slide A5:
 
 Notes:
 1. Keep this appendix slide optional unless contribution/process questions come up live.
+
+
