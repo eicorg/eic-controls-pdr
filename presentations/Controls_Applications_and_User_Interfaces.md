@@ -3,7 +3,7 @@
 Charge questions addressed: CQ7 (design maturity readiness framing)
 
 Slide overview:
-Establish review context for applications and user interfaces, using the thin MOCR002 talk flow adapted for EIC PDR.
+Establish the speaker, session context, and scope for application-layer and operator-interface content.
 
 Slide 1:
 - **Application Layer & Operator Interfaces**
@@ -35,11 +35,12 @@ Slide 2:
 - **CQ6: Are plans to address ES&H and Quality sufficient for this phase of the design?**
 - **CQ7: Is the overall design maturity sufficient to proceed with the final design phase?**
 
-## Slide 3: Outline of the Talk
+## Slide 3: Outline
 
 Charge questions addressed: CQ7 (overall maturity roadmap)
 
 Slide overview:
+Presentation roadmap for scope, requirements, applications, architecture, risks, and path forward.
 
 Slide 3:
 - **Scope**
@@ -78,12 +79,12 @@ Slide 4:
 - **Common goal**
 - **Provide flexible, connected interfaces for users to interact with the control system in the environment that best fits their task**
 
-## Slide 5: Phoebus in the EPICS Controls Ecosystem
+## Slide 5: Requirements
 
 Charge questions addressed: CQ1, CQ3, CQ7
 
 Slide overview:
-Introduce Phoebus using the MOCR002 paper's three-part definition and ecosystem diagram, establishing its role as the operator application and service platform layer for EIC.
+Reference the PRD sources that anchor requirements for this presentation phase.
 Slide 5:
 - **Initial versions of the Performance Requirements Documents (PRDs)**
 - **High Level Applications [EIC-SEG-RSI-158]**
@@ -98,12 +99,12 @@ References:
 - Thin talk source: [presentations/examples/thin_MOCR002_talk.pptx](examples/thin_MOCR002_talk.pptx)
 - Phoebus tools and services decision record: [rod/EIC-ROD-Phoebus-Tools-and-Services.md](../rod/EIC-ROD-Phoebus-Tools-and-Services.md)
 
-## Slide 6: Display Builder Strategy
+## Slide 6: Control System Architecture
 
 Charge questions addressed: CQ2, CQ3, CQ4
 
 Slide overview:
-How Display Builder supports reusable synoptic UI development and runtime use, using the source talk’s editor/runtime split.
+Show the three-layer controls architecture context: operator/applications, middle-layer services, and control system.
 
 Slide 6:
 - **Control System Architecture**
@@ -118,12 +119,12 @@ Notes:
 References:
 - Requirements authority (OPI scope): [supporting-docs/EIC-SEG-RSI-158-Control.Software-Performance.Requirements.Document.txt](../supporting-docs/EIC-SEG-RSI-158-Control.Software-Performance.Requirements.Document.txt)
 
-## Slide 7: Web Runtime and Remote Operations
+## Slide 7: Phoebus
 
 Charge questions addressed: CQ3, CQ4, CQ6
 
 Slide overview:
-Show how web access complements desktop operations and supports remote access, matching the source deck’s web-runtime slides.
+Describe Phoebus as the integrated operator toolkit and application framework.
 
 Slide 7:
 - **Phoebus**
@@ -147,12 +148,12 @@ Notes:
 1. Position web tools as complementary, not replacement for operator desktops.
 2. Keep security boundary details at architecture level in this talk.
 
-## Slide 8: Data Browser Workflow
+## Slide 8: Display Builder
 
 Charge questions addressed: CQ2, CQ3, CQ5
 
 Slide overview:
-Trend and history access as a core operator diagnostic capability, with the source deck’s emphasis on archive backends and unified plotting.
+Introduce Display Builder at a high level (editor and runtime views).
 
 Slide 8:
 - **Display Builder**
@@ -163,12 +164,12 @@ Notes:
 1. Connect this slide to operational risk reduction and troubleshooting speed.
 2. Keep performance claims qualitative unless a verified metric is cited.
 
-## Slide 9: Alarm UI Workflow
+## Slide 9: Display Builder - Editor
 
 Charge questions addressed: CQ2, CQ3, CQ5
 
 Slide overview:
-Show alarm monitoring and response workflow as a first-class operator function before the broader applications portfolio.
+Detail Display Builder editor capabilities and screen authoring features.
 
 Slide 9:
 - **Display Builder - editor**
@@ -187,12 +188,12 @@ References:
 - Thin talk source: [presentations/examples/thin_MOCR002_talk.pptx](examples/thin_MOCR002_talk.pptx)
 - Ecosystem paper extract: [rod/raw_resources/_extracted/MOCR002.txt](../rod/raw_resources/_extracted/MOCR002.txt)
 
-## Slide 10: Applications Portfolio (User Workflow View)
+## Slide 10: Display Builder - Runtime
 
 Charge questions addressed: CQ2, CQ3, CQ4
 
 Slide overview:
-Consolidated application view matching the source deck’s application slide content and terminology.
+Show runtime behavior for live process data with metadata and alarm awareness.
 
 Slide 10:
 - **Display Builder - runtime**
@@ -206,12 +207,12 @@ References:
 - Thin talk source: [presentations/examples/thin_MOCR002_talk.pptx](examples/thin_MOCR002_talk.pptx)
 - Ecosystem details: [rod/raw_resources/_extracted/MOCR002.txt](../rod/raw_resources/_extracted/MOCR002.txt)
 
-## Slide 11: Application Stack Diagram
+## Slide 11: Web Runtime and Remote Operations
 
 Charge questions addressed: CQ3, CQ4, CQ7
 
 Slide overview:
-Bridge from the workflow-level view to the platform view by showing how applications, shared foundation modules, and services fit together.
+Show how OPI screens are brought to web runtime to support remote operations.
 
 Slide 11:
 - **Web Runtime and Remote Operations**
@@ -222,12 +223,12 @@ Notes:
 1. Keep this visual-first and use it as the transition into architecture internals.
 2. Focus on how the diagram explains operator workflow continuity and supportability.
 
-## Slide 12: Architecture Fundamentals for UI Behavior
+## Slide 12: Screen Creation
 
 Charge questions addressed: CQ1, CQ4, CQ7
 
 Slide overview:
-Explain the specific architecture mechanisms that drive user-visible behavior: responsiveness, consistent data semantics, and reliable cross-tool context sharing.
+Placeholder slide for screen creation examples/workflow.
 
 Slide 12:
 - **Screen creation**
@@ -240,12 +241,12 @@ References:
 - Thin talk source: [presentations/examples/thin_MOCR002_talk.pptx](examples/thin_MOCR002_talk.pptx)
 - Ecosystem paper extract: [rod/raw_resources/_extracted/MOCR002.txt](../rod/raw_resources/_extracted/MOCR002.txt)
 
-## Slide 13: Extensibility and SPI Model
+## Slide 13: Data Browser
 
 Charge questions addressed: CQ4, CQ7
 
 Slide overview:
-Explain how SPI supports controlled evolution of tools and integrations, using the source deck’s application, data-source, and UI extension examples.
+Present Data Browser capabilities for live/historical plotting and correlation analysis.
 
 Slide 13:
 - **Data Browser**
@@ -264,12 +265,12 @@ References:
 - Thin talk source: [presentations/examples/thin_MOCR002_talk.pptx](examples/thin_MOCR002_talk.pptx)
 - SPI architecture basis: [rod/raw_resources/_extracted/MOCR002.txt](../rod/raw_resources/_extracted/MOCR002.txt)
 
-## Slide 14: Site-Specific Product Strategy for EIC
+## Slide 14: Alarm Applications
 
 Charge questions addressed: CQ4, CQ7
 
 Slide overview:
-Apply the thin-talk product model to EIC delivery planning.
+State alarm application goals for response quality and alarm-server configuration management.
 
 Slide 14:
 - **Alarm Applications**
@@ -281,12 +282,12 @@ Notes:
 1. Keep this practical for delivery planning discussions.
 2. Tie back to governance and configuration control practices.
 
-## Slide 15: Collaboration and Contribution Model
+## Slide 15: Alarm Applications (Client Views)
 
 Charge questions addressed: CQ6, CQ7
 
 Slide overview:
-Show the sustainability model based on active multi-site collaboration, as presented in the source deck’s collaboration slides.
+Describe alarm client views (tree, table, panel, annunciator, history) used in operations.
 
 Slide 15:
 - **Alarm Applications**
@@ -304,12 +305,12 @@ Notes:
 1. Keep this concise and evidence-oriented.
 2. Focus on sustainability and supportability outcomes.
 
-## Slide 16: Readiness, Risks, and Open Questions
+## Slide 16: Save and Restore
 
 Charge questions addressed: CQ5, CQ7
 
 Slide overview:
-Summarize what is ready now and what remains before final-design closure, while preserving the source deck’s concluding discussion posture.
+Present Save & Restore workflows for configurations, snapshots, and logbook integration.
 
 Slide 16:
 - **Save and Restore**
@@ -322,12 +323,12 @@ Notes:
 1. Keep this balanced: clear progress plus explicit open items.
 2. The source deck closes with a questions slide; this PDR version keeps the same discussion intent while adding readiness framing.
 
-## Slide 17: References
+## Slide 17: Logbook
 
 Charge questions addressed: CQ1, CQ4
 
 Slide overview:
-Consolidated references for all claims used in this presentation, including the source deck and extracted paper text.
+Present logbook usage for documenting operations with automatic context capture and web access.
 
 Slide 17:
 - **Logbook**
@@ -342,6 +343,9 @@ Notes:
 
 ## Slide 18: Applications Portfolio
 
+Slide overview:
+Summarize Channel Finder and PV utilities used for search, introspection, and linkage diagnostics.
+
 Slide 18:
 - **Channel Finder Clients - fast PV search enriched with metadata (IOC host, record type, tags)**
 - **PV Utilities**
@@ -351,10 +355,16 @@ Slide 18:
 
 ## Slide 19: Commissioning tools
 
+Slide overview:
+Placeholder slide indicating commissioning tools content.
+
 Slide 19:
 - **Commissioning tools**
 
 ## Slide 20: Phoebus Architecture
+
+Slide overview:
+Describe core Phoebus architecture modules, runtime behavior, and data model foundations.
 
 Slide 20:
 - **Modular framework - built on Java + JavaFX (no Eclipse RCP)**
@@ -370,6 +380,9 @@ Slide 20:
 
 ## Slide 21: Phoebus Architecture - Extensibility
 
+Slide overview:
+Describe Java SPI-based extensibility for protocols, service clients, applications, and UI extensions.
+
 Slide 21:
 - **Extensible via Java SPI (Service Provider Interface)**
 - **New data sources & protocols (CA, PVA, MQTT, Tango, ...)**
@@ -378,6 +391,9 @@ Slide 21:
 - **UI extensions (menus, toolbars, context menus)**
 
 ## Slide 22: Phoebus Architecture - eic product
+
+Slide overview:
+Define site-specific EIC product composition: applications, datasources, configurations, branding, and adapters.
 
 Slide 22:
 - **EIC phoebus product includes site specific**
@@ -390,6 +406,9 @@ Slide 22:
 
 ## Slide 23: Phoebus Collaboration
 
+Slide overview:
+Show collaboration scale and activity across facilities maintaining the Phoebus ecosystem.
+
 Slide 23:
 - **An international collaboration of dozens of research facilites**
 - **Phoebus**
@@ -398,6 +417,9 @@ Slide 23:
 
 ## Slide 24: Risks
 
+Slide overview:
+Capture key technology-evolution risk and mitigation strategy.
+
 Slide 24:
 - **Risk RT-6-007-001**
 - **Mitigation: modular, extensible framework enables targeted upgrades with minimized disruption**
@@ -405,10 +427,16 @@ Slide 24:
 
 ## Slide 25: Path forward
 
+Slide overview:
+State the forward plan from the applications/UI architecture perspective.
+
 Slide 25:
 - **Path forward**
 
 ## Slide 26: Summary
+
+Slide overview:
+Close the talk with a concise summary slide.
 
 Slide 26:
 - **Summary**
