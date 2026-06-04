@@ -35,11 +35,12 @@ Slide 2:
 - **CQ6: Are plans to address ES&H and Quality sufficient for this phase of the design?**
 - **CQ7: Is the overall design maturity sufficient to proceed with the final design phase?**
 
-## Slide 3: Outline of the Talk
+## Slide 3: Outline
 
 Charge questions addressed: CQ7 (overall maturity roadmap)
 
 Slide overview:
+Presentation roadmap across architecture, EPICS/ADO strategy, networking, services, tooling, and path forward.
 
 Slide 3:
 - **Scope**
@@ -71,12 +72,12 @@ Slide 4:
 - **Network and infrastructure architecture**
 - **CI/CD and governance model**
 
-## Slide 5: High-Level EIC Controls Architecture
+## Slide 5: Requirements
 
 Charge questions addressed: CQ1,2,7
 
 Slide overview:
-Present a single high-level diagram of the EIC controls system architecture and explain the major layers.
+Reference the PRD sources that anchor requirements for this review phase.
 
 Slide 5:
 - **Initial versions of the Performance Requirements Documents (PRDs)**
@@ -92,12 +93,12 @@ References:
 - Thin talk ecosystem visual source: [presentations/examples/thin_MOCR002_talk.pptx](examples/thin_MOCR002_talk.pptx)
 - Ecosystem text basis: [rod/raw_resources/_extracted/MOCR002.txt](../rod/raw_resources/_extracted/MOCR002.txt)
 
-## Slide 6: EPICS Introduction
+## Slide 6: Control System Architecture
 
-Charge questions addressed: CQ1, CQ3, CQ7
+Charge questions addressed: CQ1
 
 Slide overview:
-Introduction to EPICS and the core capabilities that make it suitable for EIC.
+Show the three-layer controls architecture: operator/apps, middle-layer services, and control system.
 
 Slide 6:
 - **Control System Architecture**
@@ -114,12 +115,12 @@ References:
 - EPICS modules and support resources: https://epics-controls.org/resources-and-support/modules/
 - EPICS decision baseline: [rod/EIC-ROD-EPICS-Control-System.md](../rod/EIC-ROD-EPICS-Control-System.md)
 
-## Slide 7: EPICS for EIC
+## Slide 7: Control System Architecture (Layered View)
 
-Charge questions addressed: CQ1, CQ3, CQ7
+Charge questions addressed: CQ1,2,3,4,5
 
 Slide overview:
-Core technical strengths of EPICS for EIC, organized by functional, operations, performance, and collaboration support.
+Reinforce the layered architecture view used to frame subsequent EPICS, ADO, and service slides.
 
 Slide 7:
 - **Control System Architecture**
@@ -140,12 +141,12 @@ References:
 - EPICS 7 enhancements paper (extracted): [rod/raw_resources/_extracted/mobpl01.txt](../rod/raw_resources/_extracted/mobpl01.txt)
 - EPICS 7 five-year status paper (extracted): [rod/raw_resources/_extracted/th1bco01.txt](../rod/raw_resources/_extracted/th1bco01.txt)
 
-## Slide 8: pvAccess Protocol for EIC
+## Slide 8: EPICS Control System
 
-Charge questions addressed: CQ1, CQ2, CQ7
+Charge questions addressed: CQ1,2
 
 Slide overview:
-pvAccess is EPICS's next-generation control protocol, supporting structured data, efficient subscriptions and notifications, improved security support, and various other features that make it a strong fit for EIC's modern control system needs.
+Introduce EPICS platform fundamentals, scalability, and ecosystem maturity.
 
 Slide 8:
 - **EPICS Control System**
@@ -164,12 +165,12 @@ References:
 - EPICS 7 five-year status paper (extracted): [rod/raw_resources/_extracted/th1bco01.txt](../rod/raw_resources/_extracted/th1bco01.txt)
 - EPICS 7 enhancements paper (extracted): [rod/raw_resources/_extracted/mobpl01.txt](../rod/raw_resources/_extracted/mobpl01.txt)
 
-## Slide 9: ADO Strengths, Current Use, and Transition Plan
+## Slide 9: EPICS for EIC (Functional and Reliability Support)
 
-Charge questions addressed: CQ1, CQ2, CQ3, CQ7
+Charge questions addressed: CQ1,2,3,4
 
 Slide overview:
-Introduce ADO strengths, confirm where it remains in active use, and explain the near-term dual-system architecture plan.
+Detail EPICS functional fit and reliability/operations support for EIC.
 
 Slide 9:
 - **EPICS for EIC**
@@ -186,12 +187,12 @@ Notes:
 1. Keep this slide balanced: acknowledge ADO strengths while clearly framing why transition is required.
 2. The next slides detail how dual-system coexistence is implemented and governed.
 
-## Slide 10: Two-Control-System Architecture Diagram
+## Slide 10: EPICS for EIC (Performance and Collaboration)
 
-Charge questions addressed: CQ1, CQ2, CQ7
+Charge questions addressed: CQ1,2,3,4
 
 Slide overview:
-Show the ADO and EPICS control paths side by side and identify where they converge for operations, services, and user interfaces.
+Cover EPICS performance/scale support and international collaboration reuse.
 
 Slide 10:
 - **EPICS for EIC**
@@ -208,12 +209,12 @@ Notes:
 2. Emphasize that coexistence is engineered, not accidental, and includes explicit integration contracts.
 3. The user experience target is protocol-transparent operations even while backend systems differ.
 
-## Slide 11: Coexistence Strategies
+## Slide 11: pvAccess Protocol for EIC
 
-Charge questions addressed: CQ1, CQ2, CQ3
+Charge questions addressed: CQ1,2,3,4
 
 Slide overview:
-Compare the three integration strategies for simultaneous ADO and EPICS operation and present the selected decision matrix for deployment boundaries.
+Describe pvAccess capabilities for structured data, subscriptions, RPC workflows, and supported client libraries.
 
 Slide 11:
 - **pvAccess Protocol for EIC**
@@ -229,12 +230,12 @@ Notes:
 1. No single strategy is best everywhere; deployment can combine approaches by subsystem and risk profile.
 2. The recommendation should prioritize operator transparency and measured performance under real load.
 
-## Slide 12: Network Architecture and Subnet Strategy
+## Slide 12: ADO Control System
 
-Charge questions addressed: CQ1, CQ2, CQ5, CQ7
+Charge questions addressed: CQ3,4,5
 
 Slide overview:
-Network architecture needed for distributed ADO and EPICS operation with secure, scalable service connectivity.
+Summarize ADO architecture, operational maturity, and active-use continuity during EIC construction.
 
 Slide 12:
 - **ADO Control System**
@@ -251,12 +252,12 @@ Notes:
 2. Emphasize that network segmentation is an enabler for reliability, security, and operational scalability.
 3. Highlight that distributed placement choices should be validated with mixed-mode load testing.
 
-## Slide 13: Subnet Buildout Plan (Controls, Instrumentation, Data)
+## Slide 13: Dual System Architecture Diagram (Need and Plan)
 
-Charge questions addressed: CQ2, CQ3, CQ4, CQ5
+Charge questions addressed: CQ3,4,5
 
 Slide overview:
-Placeholder for deeper network architecture and subnet implementation details.
+Explain why near-term dual-system coexistence is required and how migration is staged.
 
 Slide 13:
 - **Dual System Architecture Diagram**
@@ -270,12 +271,12 @@ Notes:
 2. Expand once network architecture decisions are finalized.
 
 
-## Slide 14: Middle-Layer Services - Technical Benefits
+## Slide 14: Dual System Architecture Diagram (Strategy 1: AdoPvaSrv)
 
-Charge questions addressed: CQ2, CQ3, CQ4, CQ5
+Charge questions addressed: CQ3,4,5
 
 Slide overview:
-Phoebus middle-layer services baseline and architecture benefits from the EIC Phoebus ROD.
+Present Strategy 1 (AdoPvaSrv): distributed pvAccess exposure directly from ADO Managers.
 
 Slide 14:
 - **Dual System Architecture Diagram**
@@ -294,12 +295,12 @@ References:
 - Phoebus tools and services decision record: [rod/EIC-ROD-Phoebus-Tools-and-Services.md](../rod/EIC-ROD-Phoebus-Tools-and-Services.md)
 - Phoebus ecosystem paper (extracted): [rod/raw_resources/_extracted/MOCR002.txt](../rod/raw_resources/_extracted/MOCR002.txt)
 
-## Slide 15: Middle-Layer Services - Individual Roles
+## Slide 15: Dual System Architecture Diagram (Strategy 2: AdoEpicsBridge)
 
-Charge questions addressed: CQ2, CQ3, CQ4, CQ5
+Charge questions addressed: CQ3,4,5
 
 Slide overview:
-What each service does and why it matters for EIC operations.
+Present Strategy 2 (AdoEpicsBridge): p4p bridge exposing ADO devices as EPICS PVs.
 
 Slide 15:
 - **Dual System Architecture Diagram**
@@ -315,12 +316,12 @@ Notes:
 2. Each service has a focused, well-defined role and can be scaled independently.
 3. These services work together to enable the consistent operator workflows shown in Slide 16.
 
-## Slide 16: Phoebus Operator Toolkit - Strategic Benefits
+## Slide 16: Dual System Architecture Diagram (Strategy 3: Ado Datasource)
 
-Charge questions addressed: CQ2, CQ3, CQ4, CQ5
+Charge questions addressed: CQ3,4,5
 
 Slide overview:
-Why a unified operator platform matters: workflow efficiency, consistency, and scalability.
+Present Strategy 3 (Ado Datasource): tool/service-layer ADO client integration.
 
 Slide 16:
 - **Dual System Architecture Diagram**
@@ -338,12 +339,12 @@ References:
 - Phoebus ecosystem paper: [rod/raw_resources/_extracted/MOCR002.txt](../rod/raw_resources/_extracted/MOCR002.txt)
 - Phoebus tools and services decision record: [rod/EIC-ROD-Phoebus-Tools-and-Services.md](../rod/EIC-ROD-Phoebus-Tools-and-Services.md)
 
-## Slide 17: Phoebus Applications - Integrated Operator Toolkit
+## Slide 17: Network Architecture and Subnet Strategy
 
-Charge questions addressed: CQ3, CQ4, CQ5
+Charge questions addressed: CQ1,2
 
 Slide overview:
-User-facing applications within Phoebus that form a cohesive operator environment.
+Define network goals, subnet segmentation, and coexistence deployment implications.
 
 Slide 17:
 - **Network Architecture and Subnet Strategy**
@@ -371,12 +372,12 @@ References:
 - Phoebus applications and ecosystem integration: [rod/raw_resources/_extracted/MOCR002.txt](../rod/raw_resources/_extracted/MOCR002.txt)
 - Phoebus tools and services decision record: [rod/EIC-ROD-Phoebus-Tools-and-Services.md](../rod/EIC-ROD-Phoebus-Tools-and-Services.md)
 
-## Slide 18: Phoebus Architecture - Modular Foundation
+## Slide 18: Network Architecture and Subnet Strategy (Diagram Continuation)
 
-Charge questions addressed: CQ3, CQ4
+Charge questions addressed: CQ1,2
 
 Slide overview:
-Core technical architecture that enables the integrated toolkit and supports independent service deployment.
+Continuation slide for subnet strategy and topology context.
 
 Slide 18:
 - **Network Architecture and Subnet Strategy**
@@ -389,12 +390,12 @@ Notes:
 References:
 - Phoebus framework architecture and SPI: [rod/raw_resources/_extracted/MOCR002.txt](../rod/raw_resources/_extracted/MOCR002.txt)
 
-## Slide 19: Web Tools and Complementary Access
+## Slide 19: Middle-Layer Services (Layered Context)
 
-Charge questions addressed: CQ1, CQ3, CQ7
+Charge questions addressed: CQ1,2,3
 
 Slide overview:
-Why web applications are needed alongside Phoebus desktop, and which web tools EIC will use.
+Place middle-layer services in the full controls stack between operator tools and EPICS.
 
 Slide 19:
 - **Middle-Layer Services**
@@ -411,12 +412,12 @@ References:
 - Phoebus tools and services decision record: [rod/EIC-ROD-Phoebus-Tools-and-Services.md](../rod/EIC-ROD-Phoebus-Tools-and-Services.md)
 - pvinfo project: https://github.com/ChannelFinder/pvinfo
 
-## Slide 20: CI/CD and Automation Stack
+## Slide 20: Middle-Layer Services (Service Model Benefits)
 
-Charge questions addressed: CQ1, CQ2, CQ3, CQ7
+Charge questions addressed: CQ1,2,3
 
 Slide overview:
-Show the end-to-end delivery backbone: governance in GitHub, CI/CD orchestration in Actions, and repeatable operations via Ansible/AWX and infrastructure as code.
+Describe architectural benefits of modular, API-driven middle-layer services.
 
 Slide 20:
 - **Middle-Layer Services**
@@ -460,12 +461,12 @@ References:
 - GitHub platform decision record: [rod/EIC-ROD-GitHub-Platform.md](../rod/EIC-ROD-GitHub-Platform.md)
 - Phoebus tools and services decision record: [rod/EIC-ROD-Phoebus-Tools-and-Services.md](../rod/EIC-ROD-Phoebus-Tools-and-Services.md)
 
-## Slide 21: QA/QC Through Code Review and Pipeline Gates
+## Slide 21: Middle-Layer Services (Service Roles)
 
-Charge questions addressed: CQ1, CQ2, CQ3
+Charge questions addressed: CQ1,2,3
 
 Slide overview:
-How QA/QC is embedded into code review, unit tests, and integration tests before changes reach operations.
+Detail responsibilities of Archiver, Alarm, ChannelFinder, NameOps, Olog, Save/Restore, and PVA Gateway.
 
 Slide 21:
 - **Middle-Layer Services**
@@ -482,12 +483,12 @@ Notes:
 2. Tie quality outcomes directly to reduced commissioning and operations risk.
 3. Reproducible environments are what make the test pipeline trustworthy at scale.
 
-## Slide 22: CI/CD Pipelines by Domain
+## Slide 22: Phoebus Operator Toolkit (Layered Context)
 
-Charge questions addressed: CQ1, CQ3, CQ7
+Charge questions addressed: CQ1,2,3
 
 Slide overview:
-CI/CD pipeline scope by domain: infrastructure, IOCs, services, tools, and resources.
+Show Phoebus toolkit placement above middle-layer services and EPICS control system.
 
 Slide 22:
 - **Phoebus Operator Toolkit**
@@ -499,12 +500,12 @@ Notes:
 1. Keep domain boundaries explicit to clarify ownership and pipeline responsibility.
 2. Use this slide as the operational view of how CI/CD supports the full controls stack.
 
-## Slide 23: Summary
+## Slide 23: Phoebus Operator Toolkit (Strategic Benefits)
 
-Charge questions addressed: CQ1, CQ3, CQ7
+Charge questions addressed: CQ1,2,3
 
 Slide overview:
-Recap key decisions and messages, affirm readiness to proceed, and clarify open items for final design phase.
+Summarize integrated-toolkit advantages for operator workflows, extensibility, and maintainability.
 
 Slide 23:
 - **Phoebus Operator Toolkit**
@@ -523,7 +524,7 @@ Notes:
 
 ## Slide 24: Phoebus Operator Toolkit - Applications
 
-Charge questions addressed: CQ2, CQ3, CQ4
+Charge questions addressed: CQ1,2,3
 
 Slide overview:
 User-facing applications within Phoebus that form a cohesive operator environment.
@@ -548,7 +549,7 @@ References:
 
 ## Slide 25: Web Tools
 
-Charge questions addressed: CQ3, CQ4
+Charge questions addressed: CQ1,2,3
 
 Slide overview:
 Why web applications are needed alongside Phoebus desktop, and which web tools EIC will use.
@@ -574,7 +575,7 @@ References:
 
 ## Slide 26: QA/QC
 
-Charge questions addressed: CQ5, CQ6
+Charge questions addressed: CQ1,2,6
 
 Slide overview:
 How QA/QC is embedded into code review, unit tests, and integration tests before changes reach operations.
@@ -599,7 +600,7 @@ Notes:
 
 ## Slide 27: CI/CD and Automation Stack
 
-Charge questions addressed: CQ4, CQ6, CQ7
+Charge questions addressed: CQ1,2,6
 
 Slide overview:
 End-to-end delivery backbone: governance in GitHub, CI/CD orchestration in Actions, and repeatable operations via Ansible/AWX and infrastructure as code.
@@ -621,7 +622,7 @@ References:
 
 ## Slide 28: CI/CD Pipelines
 
-Charge questions addressed: CQ4, CQ5, CQ6
+Charge questions addressed: CQ1,2,6
 
 Slide overview:
 CI/CD pipeline scope by domain: infrastructure, IOCs, services, tools, and resources.
@@ -652,7 +653,12 @@ Slide overview:
 Recap key decisions and messages, affirm readiness to proceed.
 
 Slide 29:
-- **Summary**
+- **EPICS 7 with pvAccess-first architecture is the controls baseline for new EIC systems**
+- **Legacy ADO systems remain part of the near-term plan, with defined coexistence paths through AdoPvaSrv, AdoEpicsBridge, and Ado Datasource**
+- **Network architecture provides the structure for scalable and maintainable operations**
+- **Middle-layer services and Phoebus tooling provide the operator and integration framework for the controls stack**
+- **The controls stack is designed to support long-term operability, collaboration, and phased migration during EIC construction**
+- **QA/QC gates and CI/CD automation provide the delivery and governance framework needed for final design progression**
 
 Notes:
 1. This summary slide ties back to all charge questions and affirms readiness for final design phase progression.
