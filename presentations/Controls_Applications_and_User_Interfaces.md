@@ -355,11 +355,42 @@ Slide 18:
 
 ## Slide 19: Commissioning tools
 
+Charge questions addressed: CQ1, CQ3, CQ4, CQ7
+
 Slide overview:
-Placeholder slide indicating commissioning tools content.
+Describe commissioning application scope and current delivery strategy: infrastructure-first, with tool requirements still being collected and shared client libraries being developed.
 
 Slide 19:
 - **Commissioning tools**
+- **Commissioning tools infrastructure**
+	- **Requirements for individual commissioning tools are still being collected and refined**
+	- **Primary near-term focus is infrastructure/framework needed to build and integrate these tools**
+	- **Python and Java client libraries are in development for controls-system and middle-layer service access**
+- **Automated Tuning and Scans**
+	- **Model-assisted scans, optimization loops, and scripted recovery/tuning workflows (HLA.1, HLA.2)**
+- **Beam Diagnostics and Optics Correction**
+	- **Orbit, tune, trajectory, and optics correction using BPM and response-matrix methods**
+- **RF and Timing Commissioning**
+	- **Phase alignment, timing synchronization, LLRF validation, and injection timing tools (HLA.3)**
+- **Configuration and State Control**
+	- **Save/Restore snapshots, versioned settings, and controlled rollback during machine studies**
+- **Operational Traceability**
+	- **Electronic logbooks, alarm/event correlation, and archiver-backed post-mortem analysis**
+- **Model-Based Commissioning**
+	- **Online model integration (virtual accelerator / digital twin style) to reduce machine time and risk (HLA.4)**
+
+Notes:
+1. Keep this slide physics-commissioning focused and exclude installation workflow tooling.
+2. Be explicit that requirements capture is in progress; this slide shows direction and enabling framework.
+3. Emphasize shared Python/Java client libraries as the foundation for faster tool delivery.
+4. All workflows align with EPICS/PVA and EIC-SEG-RSI-158 HLA requirements (Table 4-2).
+
+References:
+- HLA requirements authority: [supporting-docs/EIC-SEG-RSI-158-Control.Software-Performance.Requirements.Document.txt](../supporting-docs/EIC-SEG-RSI-158-Control.Software-Performance.Requirements.Document.txt)
+- EPICS software framework moves from controls to physics (paper): [presentations/raw/commissioning-tools/tuzzplm3.pdf](raw/commissioning-tools/tuzzplm3.pdf)
+- EPICS software framework moves from controls to physics (talk): [presentations/raw/commissioning-tools/tuzzplm3_talk.pdf](raw/commissioning-tools/tuzzplm3_talk.pdf)
+- High-level physics controls applications for FRIB (phantasy): [presentations/raw/commissioning-tools/tucpr07.pdf](raw/commissioning-tools/tucpr07.pdf)
+- EPICS decision baseline: [rod/EIC-ROD-EPICS-Control-System.md](../rod/EIC-ROD-EPICS-Control-System.md)
 
 ## Slide 20: Phoebus Architecture
 
@@ -439,7 +470,12 @@ Slide overview:
 Close the talk with a concise summary slide.
 
 Slide 26:
-- **Summary**
+- **Phoebus is the primary application environment for EIC operator workflows, with integrated tools for control, diagnostics, and documentation**
+- **Display Builder, Web Runtime, and Data Browser provide a practical path from screen creation to remote operations and post-event analysis**
+- **Alarm, Save/Restore, and Logbook workflows improve operational response quality, repeatability, and traceability**
+- **ChannelFinder and PV utilities strengthen day-to-day usability through fast discovery, metadata context, and diagnostics support**
+- **A modular Java/JavaFX architecture with SPI extensibility supports long-term maintainability and site-specific product composition**
+- **Active multi-lab collaboration and targeted risk mitigations position the applications stack for final-design progression**
 
 ## Appendix Slide A1: Alarm and Discovery Services (Optional)
 
