@@ -4,3 +4,4 @@
 *.log
 *.tmp
 /presentations/.tmp_pptx_extract/
+/presentations/.tmp_pptx_extract_ui/
