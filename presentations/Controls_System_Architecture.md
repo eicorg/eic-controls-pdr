@@ -412,15 +412,10 @@ Slide 18:
 - **Instrumentation subnet: acquisition and timing-sensitive interfaces**
 - **Slide references [Talk-6/7-Kulmatycski]**
 
-Notes:
-1. Assumption: full subnet implementation detail is owned by the network architecture talk.
-
 Speaking notes:
-Network goals are scale, segmentation, and operational clarity across controls, instrumentation, and data/service domains. This part introduces controls and instrumentation subnet placement and responsibilities. Detailed network implementation remains with the network architecture work package.
+We are aware of the challanges the size (both geographic and # of devices) of the eic controls system will pose to the network. The controls network as a private, structured stub network for EIC controls. It provides scalable connectivity for distributed components while segmenting controls traffic from instrumentation and data services. The controls subnet hosts IOCs, ADO managers, gateways, and command/control traffic, while instrumentation subnets handle acquisition and timing-sensitive interfaces.
+Full implementation details are owned by the network architecture talk.
 
-Detailed talking points:
-- State network goals clearly: segmentation, scalability, and controlled integration boundaries. Emphasize that subnet design supports both performance and operational safety.
-- Resource grounding: Network segmentation supports gateway mediation and fault-domain isolation required for mixed legacy/new controls operations.
 ## Slide 19: Network Architecture and Subnet Strategy (Part 2)
 
 Charge questions addressed: CQ1, CQ2
@@ -435,15 +430,9 @@ Slide 19:
 - **EPICS/PVA services scaled on service networks**
 - **Operator tools consume unified interfaces independent of backend protocol location**
 
-Notes:
-1. Keep emphasis on integration boundaries and operability, not deep firewall policy details.
-
 Speaking notes:
-This continuation covers controlled cross-subnet access, observability, and placement implications for coexistence clusters and EPICS services. Operator tools should remain protocol-location agnostic by consuming unified interfaces. That separation is key for maintainability and operational safety.
+We keep the controls fabric separate from the campus network, and any externally managed services cross only through a controlled gateway/firewall boundary. Monitoring and observability are focused at subnet and service boundaries to maintain visibility without overexposing internal traffic. ADO server/bridge clusters are placed for low-latency access to legacy systems, while EPICS/PVA services scale on the service network.The message here is that the facility will have a dedicated controls network, independent of the campus network and anchored at Bldg 1003a. We are not starting from scratch: the design builds on RHIC/CAD experience, with BNL ITD as the engineering partner under an MOU/SLA.
 
-Detailed talking points:
-- Continue with cross-subnet access controls, observability, and coexistence placement decisions. Operator tooling should remain backend-location agnostic through stable service interfaces.
-- Resource grounding: Boundary observability and controlled service endpoints are consistent with gateway/service roles defined in EPICS and Phoebus RODs.
 ## Slide 20: Middle-Layer Services (Layered Context)
 
 Charge questions addressed: CQ1, CQ2, CQ3
@@ -455,16 +444,10 @@ Slide 20:
 - **Operator and application layer (Phoebus, web tools, HLAs)**
 - **Middle-layer services (Archiver, Alarm, Olog, ChannelFinder, Save/Restore, Gateway)**
 - **Control system layer (EPICS 7 with PVA-first, CA compatibility)**
-
-Notes:
-1. This slide sets boundaries for service ownership and interface contracts.
-
 Speaking notes:
-Middle-layer services form the integration boundary between operator tools and underlying controls protocols. This keeps applications focused on workflows while services own storage and domain-specific behavior. The layered model also supports independent scaling and governance.
+- This is the same layered model as before, but now we are zooming in on the middle-layer services. The point is to show how these services sit between the control system protocols and the operator-facing tools, providing critical functionality and abstraction that supports maintainability and scalability.
 
-Detailed talking points:
-- Middle-layer services are the architecture decoupling layer between operator workflows and control/storage internals. This is where interoperability and lifecycle flexibility are protected.
-- Resource grounding: Phoebus ROD defines middle-layer services as the standard integration layer that preserves IOC focus on device control logic.
+
 ## Slide 21: Middle-Layer Services (Service Model Benefits)
 
 Charge questions addressed: CQ1, CQ2, CQ3
@@ -480,15 +463,13 @@ Slide 21:
 - **Consistent service contracts across client environments**
 - **Independent deployment and scaling by demand**
 
-Notes:
-1. Reinforce that interoperability is a design property, not an integration afterthought.
-
 Speaking notes:
 The service model improves maintainability through modular roles and consistent APIs. It enables backend evolution without breaking operator workflows and supports scaling by service demand. Interoperability is designed into contracts rather than added later.
 
 Detailed talking points:
 - Use service-model benefits to justify maintainability: modular ownership, consistent APIs, and independent scaling reduce coupling and support phased evolution. Mention that service contracts are as important as protocol choices.
 - Resource grounding: MOCR002 service model highlights modularity, independent scaling, and fault isolation as reasons to avoid monolithic middleware.
+
 ## Slide 22: Middle-Layer Services (Service Roles)
 
 Charge questions addressed: CQ1, CQ2, CQ3
@@ -532,9 +513,7 @@ Notes:
 Speaking notes:
 Phoebus sits in the operator/application layer above services and controls protocols. The point is to show clear boundaries while preserving end-to-end workflow continuity. This sets up the next slides on operator outcomes.
 
-Detailed talking points:
-- Transition to operator layer: Phoebus sits above services and protocols and is the user-facing expression of architecture decisions. This keeps technical depth connected to operational outcomes.
-- Resource grounding: MOCR002 positions operator toolkit integration and context transfer as the user-visible benefit of layered architecture decisions.
+
 ## Slide 24: Phoebus Operator Toolkit (Strategic Benefits)
 
 Charge questions addressed: CQ1, CQ2, CQ3, CQ5
@@ -604,9 +583,6 @@ Notes:
 Speaking notes:
 Web tools complement, not replace, the desktop operator environment. They expand access for lightweight views, remote use, and broader stakeholder interaction through tools such as `pvws`, `dbwr`, Olog web clients, and `pvinfo`. This is a coverage and usability extension of the same architecture.
 
-Detailed talking points:
-- Position web tools as access multipliers that complement the desktop control-room environment. Keep boundary language clear: same service contracts, broader consumption paths.
-- Resource grounding: Web clients are complementary access paths in the ecosystem model, while desktop remains primary for integrated control-room workflows.
 ## Slide 27: QA/QC
 
 Charge questions addressed: CQ1, CQ6, CQ7
@@ -621,15 +597,13 @@ Slide 27:
 - **Promotion gates require passing test suites with traceable artifacts**
 - **Versioned automation enables reproducible dev/test environments**
 
-Notes:
-1. Present QA/QC as architecture risk mitigation, not only software hygiene.
-
 Speaking notes:
-QA/QC gates are embedded from review to unit testing to integration testing and release promotion. The objective is repeatable validation with artifact traceability, not ad-hoc acceptance. Reproducible dev/test environments reduce deployment risk before production rollout.
+these slides should show how quality and delivery controls turn architecture into reliable operations.
+We need QA/QC to start at code review and continue through unit testing, integration testing, and release promotion so that every change is validated before it reaches production. The key idea is reproducibility: versioned automation gives us traceable artifacts and repeatable dev/test environments, which is what lets us trust the release path rather than relying on ad hoc acceptance.
 
-Detailed talking points:
 - QA/QC is part of architecture execution control: review gates, unit/integration validation, and promotion rules reduce commissioning and operations risk. This is implementation discipline, not optional process overhead.
-- Resource grounding: Governance RODs and service ownership guidance treat QA/QC gates as operational controls required before production promotion.
+
+
 ## Slide 28: CI/CD and Automation Stack
 
 Charge questions addressed: CQ1, CQ6, CQ7
@@ -650,11 +624,9 @@ References:
 - GitHub platform decision record: [rod/EIC-ROD-GitHub-Platform.md](../rod/EIC-ROD-GitHub-Platform.md)
 
 Speaking notes:
-Delivery governance is implemented through GitHub-based change control, Actions orchestration, and Ansible/AWX plus IaC for operations automation. This gives auditable, repeatable pipelines across environments. CI/CD is treated as architecture maturity, not only software process.
+This slide is the governance layer that makes QA/QC operational. GitHub provides the change-control discipline through pull requests, branch protection, CODEOWNERS, and history, while GitHub Actions provides the orchestration for build, test, package, and deploy workflows.
+Ansible/AWX and Infrastructure as Code give us the ability to automate desired-state configuration and deployment with managed execution and auditable change history. Together, this stack standardizes delivery, reduces integration risk, and improves traceability.
 
-Detailed talking points:
-- Show how GitHub governance, Actions orchestration, and Ansible/AWX + IaC create repeatable, auditable delivery. Tie this directly to change-control maturity expected for final design progression.
-- Resource grounding: GitHub platform ROD defines PR review, branch protection, CODEOWNERS, and reusable automation patterns as baseline delivery governance.
 ## Slide 29: CI/CD Pipelines
 
 Charge questions addressed: CQ1, CQ6, CQ7
